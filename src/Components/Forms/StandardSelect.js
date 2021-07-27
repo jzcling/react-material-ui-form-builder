@@ -1,6 +1,6 @@
+import React, { useMemo } from "react";
 import { FormControl, InputLabel, Select } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { useMemo } from "react";
 import _ from "lodash";
 
 function StandardSelect(props) {

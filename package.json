@@ -1,6 +1,6 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "dependencies": {
     "@date-io/moment": "^1.3.13",
     "@material-ui/core": "^4.11.3",
@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "NODE_ENV=production && rm -rf dist && mkdir dist && npx babel src --out-dir dist --copy-files",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -40,7 +40,11 @@
     ]
   },
   "description": "An easy-to-use and quick form builder using the following React Material UI input components:",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "babel": {
+    "presets": [ "react", "env", "stage-2" ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jzcling/react-material-ui-form-builder.git"
@@ -57,5 +61,18 @@
   "bugs": {
     "url": "https://github.com/jzcling/react-material-ui-form-builder/issues"
   },
-  "homepage": "https://github.com/jzcling/react-material-ui-form-builder#readme"
+  "homepage": "https://github.com/jzcling/react-material-ui-form-builder#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "react-scripts": "^4.0.3"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+}
 }
