@@ -1,0 +1,61 @@
+{
+  "name": "@jeremyling/react-material-ui-form-builder",
+  "version": "0.1.0",
+  "dependencies": {
+    "@date-io/moment": "^1.3.13",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@material-ui/pickers": "^3.3.10",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.8.3",
+    "lodash": "^4.17.21",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "description": "An easy-to-use and quick form builder using the following React Material UI input components:",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzcling/react-material-ui-form-builder.git"
+  },
+  "keywords": [
+    "form",
+    "builder",
+    "form builder",
+    "material ui",
+    "react"
+  ],
+  "author": "Jeremy Ling",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jzcling/react-material-ui-form-builder/issues"
+  },
+  "homepage": "https://github.com/jzcling/react-material-ui-form-builder#readme"
+}
