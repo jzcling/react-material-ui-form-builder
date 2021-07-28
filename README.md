@@ -189,7 +189,7 @@ export default function EmployeeForm(props) {
 
   return (
     <FormBuilder
-      fields={fields(jobs, form)}
+      fields={fields(jobs, form, errors)}
       form={form}
       updateForm={(key, value) => updateForm(key, value)}
     />
