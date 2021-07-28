@@ -96,9 +96,9 @@ const fields = (jobs, form, errors) => [
     component: "text-field",
     props: {
       // Here you can pass any props that are accepted by Material UI's TextField component
-      error: !!errors.email
-      helperText: errors.email
-      onBlur: (event) => validateEmail(form.email)
+      error: !!errors.email,
+      helperText: errors.email,
+      onBlur: (event) => validateEmail(form.email),
     },
   },
   {
