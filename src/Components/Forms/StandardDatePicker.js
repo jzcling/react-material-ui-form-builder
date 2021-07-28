@@ -22,30 +22,34 @@ function StandardDatePicker(props) {
   const classes = useStyles();
   const { field, form, updateForm } = props;
 
+  const componentProps = (field) => {
+    return {
+      className: classes.datePicker,
+      disableToolbar: true,
+      fullWidth: true,
+      variant: "inline",
+      inputVariant: "outlined",
+      margin: "dense",
+      format: "DD/MM/YYYY",
+      label: field.label,
+      value: _.get(form, field.attribute) || null,
+      onChange: (value) =>
+        updateForm(field.attribute, value.format("YYYY-MM-DD")),
+      KeyboardButtonProps: {
+        "aria-label": field.label,
+      },
+      InputProps: {
+        className: classes.datePickerInput,
+      },
+      ...(field.props || {}),
+    };
+  };
+
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <KeyboardDatePicker
         id={field.id || field.attribute}
-        className={classes.datePicker}
-        disableToolbar
-        fullWidth
-        variant="inline"
-        inputVariant="outlined"
-        margin="dense"
-        format="DD/MM/YYYY"
-        label={field.label}
-        value={_.get(form, field.attribute) || null}
-        onChange={
-          (field.props && field.props.onChange) ||
-          ((value) => updateForm(field.attribute, value.format("YYYY-MM-DD")))
-        }
-        KeyboardButtonProps={{
-          "aria-label": field.label,
-        }}
-        InputProps={{
-          className: classes.datePickerInput,
-        }}
-        {...field.props}
+        {...componentProps(field)}
       />
     </MuiPickersUtilsProvider>
   );

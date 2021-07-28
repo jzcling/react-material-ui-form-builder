@@ -33,26 +33,27 @@ function StandardSelect(props) {
     [field]
   );
 
+  const componentProps = (field) => {
+    return {
+      native: true,
+      margin: "dense",
+      inputProps: {
+        name: field.attribute,
+        id: field.id || field.attribute,
+      },
+      value: _.get(form, field.attribute),
+      onChange: (event) => updateForm(field.attribute, event.target.value),
+      label: field.label,
+      ...(field.props || {}),
+    };
+  };
+
   return (
     <FormControl variant="outlined" fullWidth>
       <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
         {field.label}
       </InputLabel>
-      <Select
-        native
-        margin="dense"
-        inputProps={{
-          name: field.attribute,
-          id: field.id || field.attribute,
-        }}
-        value={_.get(form, field.attribute)}
-        onChange={
-          (field.props && field.props.onChange) ||
-          ((event) => updateForm(field.attribute, event.target.value))
-        }
-        label={field.label}
-        {...field.props}
-      >
+      <Select id={field.id || field.attribute} {...componentProps(field)}>
         <option aria-label="None" value="" />
         {field.options.map((option) => (
           <option

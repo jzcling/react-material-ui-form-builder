@@ -32,60 +32,56 @@ function StandardAutocomplete(props) {
     return config;
   }, [field]);
 
+  const componentProps = (field) => {
+    return {
+      size: "small",
+      options:
+        field.props && field.props.multiple
+          ? field.options.map((option) => option[optionConfig.key])
+          : field.options,
+      getOptionSelected: (option, value) =>
+        (_.isString(option) || _.isInteger(option)
+          ? option
+          : _.get(option, optionConfig.key) || "") === value,
+      getOptionLabel: (option) =>
+        _.isString(option)
+          ? option
+          : _.isNumber(option)
+          ? (field.options.find((item) => item.id === option) || {})[
+              optionConfig.label
+            ] || ""
+          : option[optionConfig.label],
+      renderInput: (params) => (
+        <TextField
+          {...params}
+          variant="outlined"
+          margin="dense"
+          inputProps={{
+            ...params.inputProps,
+            autoComplete: "off", // disable autocomplete and autofill
+          }}
+          label={field.label}
+        />
+      ),
+      value:
+        _.get(form, field.attribute) ||
+        (field.props && field.props.multiple ? [] : ""),
+      onChange: (event, value) => {
+        updateForm(
+          field.attribute,
+          _.isString(value) ? value : _.get(value, optionConfig.key) || value
+        );
+      },
+      className: classes.autocomplete,
+      ...(field.props || {}),
+    };
+  };
+
   return (
     <FormControl variant="outlined" fullWidth>
       <Autocomplete
         id={field.id || field.attribute}
-        size="small"
-        options={
-          field.props && field.props.multiple
-            ? field.options.map((option) => option[optionConfig.key])
-            : field.options
-        }
-        getOptionSelected={(option, value) =>
-          (_.isString(option) || _.isInteger(option)
-            ? option
-            : _.get(option, optionConfig.key) || "") === value
-        }
-        getOptionLabel={(option) =>
-          _.isString(option)
-            ? option
-            : _.isNumber(option)
-            ? (field.options.find((item) => item.id === option) || {})[
-                optionConfig.label
-              ] || ""
-            : option[optionConfig.label]
-        }
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            margin="dense"
-            inputProps={{
-              ...params.inputProps,
-              autoComplete: "off", // disable autocomplete and autofill
-            }}
-            label={field.label}
-          />
-        )}
-        value={
-          _.get(form, field.attribute) ||
-          (field.props && field.props.multiple ? [] : "")
-        }
-        onChange={
-          (field.props && field.props.onChange) ||
-          ((event, value) => {
-            console.log(value);
-            updateForm(
-              field.attribute,
-              _.isString(value)
-                ? value
-                : _.get(value, optionConfig.key) || value
-            );
-          })
-        }
-        className={classes.autocomplete}
-        {...field.props}
+        {...componentProps(field)}
       />
     </FormControl>
   );

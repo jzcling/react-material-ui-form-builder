@@ -13,26 +13,26 @@ function StandardTextField(props) {
   const classes = useStyles();
   const { field, form, updateForm } = props;
 
-  return (
-    <TextField
-      id={field.id || field.attribute}
-      classes={{
+  const componentProps = (field) => {
+    return {
+      classes: {
         root: classes.textFieldRoot,
-      }}
-      fullWidth
-      variant="outlined"
-      margin="dense"
-      label={field.label}
-      value={_.get(form, field.attribute) || ""}
-      onChange={
-        (field.props && field.props.onChange) ||
-        ((event) => updateForm(field.attribute, event.target.value))
-      }
-      InputLabelProps={{
+      },
+      fullWidth: true,
+      variant: "outlined",
+      margin: "dense",
+      label: field.label,
+      value: _.get(form, field.attribute) || "",
+      onChange: (event) => updateForm(field.attribute, event.target.value),
+      InputLabelProps: {
         shrink: !!_.get(form, field.attribute),
-      }}
-      {...field.props}
-    />
+      },
+      ...(field.props || {}),
+    };
+  };
+
+  return (
+    <TextField id={field.id || field.attribute} {...componentProps(field)} />
   );
 }
 
