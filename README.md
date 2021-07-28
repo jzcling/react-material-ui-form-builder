@@ -150,15 +150,14 @@ const fields = (jobs, form, errors) => [
 
 function validateEmail(email) {
   if (!email) {
-      updateErrors("email", "Email is required");
-      return;
-    }
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-      updateErrors("email", "Invalid email");
-      return;
-    }
-    updateErrors("email", null);
+    updateErrors("email", "Email is required");
+    return;
   }
+  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+    updateErrors("email", "Invalid email");
+    return;
+  }
+  updateErrors("email", null);
 }
 
 export default function EmployeeForm(props) {
@@ -175,7 +174,7 @@ export default function EmployeeForm(props) {
     const copy = JSON.parse(JSON.stringify(errors));
     _.set(copy, key, value);
     setErrors(copy);
-  }
+  };
 
   return (
     <FormBuilder
