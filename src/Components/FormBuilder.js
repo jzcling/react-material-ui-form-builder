@@ -6,6 +6,7 @@ import StandardDatePicker from "./Forms/StandardDatePicker";
 import StandardTextField from "./Forms/StandardTextField";
 import StandardSelect from "./Forms/StandardSelect";
 import StandardAutocomplete from "./Forms/StandardAutocomplete";
+import StandardDateTimePicker from "./Forms/StandardDateTimePicker";
 
 function sanitizeCol(col) {
   col = col || {};
@@ -42,6 +43,14 @@ function FormBuilder(props) {
       case "date-picker":
         return (
           <StandardDatePicker
+            field={field}
+            form={form}
+            updateForm={updateForm}
+          />
+        );
+      case "date-time-picker":
+        return (
+          <StandardDateTimePicker
             field={field}
             form={form}
             updateForm={updateForm}
