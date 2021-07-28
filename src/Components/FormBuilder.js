@@ -101,9 +101,7 @@ function FormBuilder(props) {
 }
 
 FormBuilder.defaultProps = {
-  updateForm: () => {},
-  index: null,
-  idPrefix: null,
+  updateForm: (key, value) => {},
 };
 
 FormBuilder.propTypes = {
