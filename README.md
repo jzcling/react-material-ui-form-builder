@@ -27,11 +27,9 @@ Suppose you need to submit a form with the following structure:
   jobId: 1,
   status: "Active",
   subordinates: [2, 3],
-  details: [
-    {
-      joinDate: '2021-01-01',
-    },
-  ],
+  details: {
+    joinDate: '2021-01-01',
+  },
 }
 ```
 
