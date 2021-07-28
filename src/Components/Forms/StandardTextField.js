@@ -1,18 +1,23 @@
 import React from "react";
-import { TextField } from "@material-ui/core";
+import { makeStyles, TextField } from "@material-ui/core";
 import PropTypes from "prop-types";
-import useBaseStyles from "../../Hooks/useBaseStyles";
 import _ from "lodash";
 
+const useStyles = makeStyles((theme) => ({
+  textFieldRoot: {
+    marginTop: 0,
+  },
+}));
+
 function StandardTextField(props) {
-  const baseClasses = useBaseStyles();
+  const classes = useStyles();
   const { field, form, updateForm } = props;
 
   return (
     <TextField
       id={field.id || field.attribute}
       classes={{
-        root: baseClasses.mt0,
+        root: classes.textFieldRoot,
       }}
       fullWidth
       variant="outlined"

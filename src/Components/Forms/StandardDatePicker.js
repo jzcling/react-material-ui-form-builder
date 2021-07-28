@@ -5,18 +5,28 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import PropTypes from "prop-types";
-import useBaseStyles from "../../Hooks/useBaseStyles";
 import _ from "lodash";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  datePicker: {
+    marginTop: 0,
+    marginBottom: 0,
+  },
+  datePickerInput: {
+    paddingRight: 0,
+  },
+}));
 
 function StandardDatePicker(props) {
-  const baseClasses = useBaseStyles();
+  const classes = useStyles();
   const { field, form, updateForm } = props;
 
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <KeyboardDatePicker
         id={field.id || field.attribute}
-        className={baseClasses.my0}
+        className={classes.datePicker}
         disableToolbar
         fullWidth
         variant="inline"
@@ -33,7 +43,7 @@ function StandardDatePicker(props) {
           "aria-label": field.label,
         }}
         InputProps={{
-          className: baseClasses.pr0,
+          className: classes.datePickerInput,
         }}
         {...field.props}
       />

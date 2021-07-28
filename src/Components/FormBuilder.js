@@ -1,27 +1,33 @@
 import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
 import StandardDatePicker from "./Forms/StandardDatePicker";
 import StandardTextField from "./Forms/StandardTextField";
 import StandardSelect from "./Forms/StandardSelect";
 import StandardAutocomplete from "./Forms/StandardAutocomplete";
-import useBaseStyles from "../Hooks/useBaseStyles";
 
-const sanitizeCol = (col) => {
+function sanitizeCol(col) {
   col = col || {};
   return {
-    xs: col.xs,
+    xs: col.xs || 12,
     sm: col.sm,
     md: col.md,
     lg: col.lg,
     xl: col.xl,
   };
-};
+}
+
+const useStyles = makeStyles((theme) => ({
+  flex: {
+    display: "flex",
+    alignItems: "center",
+  },
+}));
 
 function FormBuilder(props) {
   const { title, fields, form, updateForm, children, index, idPrefix } = props;
-  const baseClasses = useBaseStyles();
+  const classes = useStyles();
 
   const getFormComponent = (field) => {
     field.id = field.attribute;
@@ -70,7 +76,7 @@ function FormBuilder(props) {
   return (
     <div
       key={String(index) || false}
-      className={clsx(baseClasses.flex, props.className)}
+      className={clsx(classes.flex, props.className)}
     >
       <Grid container spacing={1}>
         {title && (
