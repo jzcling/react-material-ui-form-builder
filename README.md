@@ -169,21 +169,13 @@ export default function EmployeeForm(props) {
 
   const updateForm = (key, value) => {
     const copy = JSON.parse(JSON.stringify(form));
-    if (value !== null) {
-      _.set(copy, key, value);
-    } else {
-      delete copy[key];
-    }
+    _.set(copy, key, value);
     setForm(copy);
   };
 
   const updateErrors = (key, value) => {
     const copy = JSON.parse(JSON.stringify(errors));
-    if (value !== null) {
-      _.set(copy, key, value);
-    } else {
-      delete copy[key];
-    }
+    _.set(copy, key, value);
     setErrors(copy);
   }
 
