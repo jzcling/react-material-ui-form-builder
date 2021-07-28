@@ -8,6 +8,17 @@ import StandardSelect from "./Forms/StandardSelect";
 import StandardAutocomplete from "./Forms/StandardAutocomplete";
 import useBaseStyles from "../Hooks/useBaseStyles";
 
+const sanitizeCol = (col) => {
+  col = col || {};
+  return {
+    xs: col.xs,
+    sm: col.sm,
+    md: col.md,
+    lg: col.lg,
+    xl: col.xl,
+  };
+};
+
 function FormBuilder(props) {
   const { title, fields, form, updateForm, children, index, idPrefix } = props;
   const baseClasses = useBaseStyles();
@@ -71,7 +82,7 @@ function FormBuilder(props) {
         {fields.map(
           (field) =>
             !field.hideCondition && (
-              <Grid key={field.attribute} item {...(field.col || {})}>
+              <Grid key={field.attribute} item {...sanitizeCol(field.col)}>
                 {getFormComponent(field)}
               </Grid>
             )
