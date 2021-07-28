@@ -5,6 +5,7 @@ An easy-to-use and quick form builder using the following React Material UI inpu
 - TextField
 - Select
 - KeyboardDatePicker
+- KeyboardDateTimePicker
 - Autocomplete
 
 This project aims to make building standard forms a breeze while leveraging Material UI components to create a more familiar UI. See below for usage examples.
@@ -200,13 +201,13 @@ export default function EmployeeForm(props) {
 
 ## Field Props
 
-| Prop          | Type     | Default                                                                                                                            | Description                                                                        |
-| ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| attribute     | `string` | `undefined`                                                                                                                        | Form attribute used to be modified by input                                        |
-| label         | `string` | `undefined`                                                                                                                        | Component label                                                                    |
-| col           | `object` | `{ xs: 12 }`                                                                                                                       | Grid columns that component should take                                            |
-| component     | `string` | `text-field`                                                                                                                       | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`autocomplete` |
-| options       | `array`  | `undefined`                                                                                                                        | Required if component is `select` or `autocomplete`                                |
-| optionConfig  | `object` | select: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ key: "id", value: "id", label: "name" }` | Required if options is an array of objects                                         |
-| props         | `object` | `undefined`                                                                                                                        | Any additional props to pass to Material UI component                              |
-| hideCondition | `bool`   | `undefined`                                                                                                                        | Hides field if truthy                                                              |
+| Prop          | Type     | Default                                                                                                                            | Description                                                                                                 |
+| ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| attribute     | `string` | `undefined`                                                                                                                        | Form attribute used to be modified by input                                                                 |
+| label         | `string` | `undefined`                                                                                                                        | Component label                                                                                             |
+| col           | `object` | `{ xs: 12 }`                                                                                                                       | Grid columns that component should take                                                                     |
+| component     | `string` | `text-field`                                                                                                                       | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`autocomplete` |
+| options       | `array`  | `undefined`                                                                                                                        | Required if component is `select` or `autocomplete`                                                         |
+| optionConfig  | `object` | select: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ key: "id", value: "id", label: "name" }` | Required if options is an array of objects                                                                  |
+| props         | `object` | `undefined`                                                                                                                        | Any additional props to pass to Material UI component                                                       |
+| hideCondition | `bool`   | `undefined`                                                                                                                        | Hides field if truthy                                                                                       |

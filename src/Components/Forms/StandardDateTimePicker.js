@@ -25,12 +25,12 @@ function StandardDateTimePicker(props) {
   const componentProps = (field) => {
     return {
       className: classes.picker,
-      disableToolbar: true,
+      ampm: false,
       fullWidth: true,
       variant: "inline",
       inputVariant: "outlined",
       margin: "dense",
-      format: "DD/MM/YYYY hh:mm:ss a",
+      format: "DD/MM/YYYY HH:mm:ss",
       label: field.label,
       value: _.get(form, field.attribute) || null,
       onChange: (value) =>
