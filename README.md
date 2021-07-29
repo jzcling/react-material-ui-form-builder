@@ -76,7 +76,7 @@ import React, { useState } from "react";
 import FormBuilder from "@jeremyling/react-material-ui-form-builder";
 import _ from "lodash";
 
-const fields = (jobs, form, errors) => [
+const fields = (jobs, form, errors, validateEmail) => [
   {
     // Default component is Material UI's TextField
     attribute: "name",
@@ -149,18 +149,6 @@ const fields = (jobs, form, errors) => [
   },
 ];
 
-function validateEmail(email) {
-  if (!email) {
-    updateErrors("email", "Email is required");
-    return;
-  }
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-    updateErrors("email", "Invalid email");
-    return;
-  }
-  updateErrors("email", null);
-}
-
 export default function EmployeeForm(props) {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
@@ -177,9 +165,21 @@ export default function EmployeeForm(props) {
     setErrors(copy);
   };
 
+  const validateEmail = (email) => {
+    if (!email) {
+      updateErrors("email", "Email is required");
+      return;
+    }
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      updateErrors("email", "Invalid email");
+      return;
+    }
+    updateErrors("email", null);
+  };
+
   return (
     <FormBuilder
-      fields={fields(jobs, form, errors)}
+      fields={fields(jobs, form, errors, validateEmail)}
       form={form}
       updateForm={(key, value) => updateForm(key, value)}
     />
