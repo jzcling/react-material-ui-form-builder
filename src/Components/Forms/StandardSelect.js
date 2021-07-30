@@ -35,6 +35,7 @@ function StandardSelect(props) {
 
   const componentProps = (field) => {
     return {
+      id: field.id || field.attribute,
       native: true,
       margin: "dense",
       inputProps: {
@@ -53,7 +54,7 @@ function StandardSelect(props) {
       <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
         {field.label}
       </InputLabel>
-      <Select id={field.id || field.attribute} {...componentProps(field)}>
+      <Select {...componentProps(field)}>
         <option aria-label="None" value="" />
         {field.options.map((option) => (
           <option

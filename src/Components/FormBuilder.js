@@ -8,8 +8,10 @@ import StandardSelect from "./Forms/StandardSelect";
 import StandardAutocomplete from "./Forms/StandardAutocomplete";
 import StandardDateTimePicker from "./Forms/StandardDateTimePicker";
 import StandardChipGroup from "./Forms/StandardChipGroup";
+import StandardCheckboxGroup from "./Forms/StandardCheckboxGroup";
+import StandardRadioGroup from "./Forms/StandardRadioGroup";
 
-function sanitizeCol(col) {
+function sanitizeColProps(col) {
   col = col || {};
   return {
     xs: col.xs || 12,
@@ -77,6 +79,22 @@ function FormBuilder(props) {
             updateForm={updateForm}
           />
         );
+      case "checkbox-group":
+        return (
+          <StandardCheckboxGroup
+            field={field}
+            form={form}
+            updateForm={updateForm}
+          />
+        );
+      case "radio-group":
+        return (
+          <StandardRadioGroup
+            field={field}
+            form={form}
+            updateForm={updateForm}
+          />
+        );
       case "custom":
         return field.customComponent(field, form, updateForm);
       case "text-field":
@@ -109,7 +127,7 @@ function FormBuilder(props) {
               <Grid
                 key={field.attribute}
                 item
-                {...sanitizeCol(field.col)}
+                {...sanitizeColProps(field.col)}
                 {...field.containerProps}
               >
                 {getFormComponent(field)}

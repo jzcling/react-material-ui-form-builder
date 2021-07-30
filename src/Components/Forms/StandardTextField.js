@@ -15,6 +15,7 @@ function StandardTextField(props) {
 
   const componentProps = (field) => {
     return {
+      id: field.id || field.attribute,
       classes: {
         root: classes.textFieldRoot,
       },
@@ -31,9 +32,7 @@ function StandardTextField(props) {
     };
   };
 
-  return (
-    <TextField id={field.id || field.attribute} {...componentProps(field)} />
-  );
+  return <TextField {...componentProps(field)} />;
 }
 
 StandardTextField.defaultProps = {

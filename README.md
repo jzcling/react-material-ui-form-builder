@@ -8,6 +8,8 @@ An easy-to-use and quick form builder using the following React Material UI inpu
 - KeyboardDateTimePicker
 - Autocomplete
 - Chip
+- Checkbox
+- Radio
 
 This project aims to make building standard forms a breeze while leveraging Material UI components to create a more familiar UI. See below for usage examples.
 
@@ -83,89 +85,11 @@ import React, { useState } from "react";
 import FormBuilder from "@jeremyling/react-material-ui-form-builder";
 import _ from "lodash";
 
-const fields = (jobs, form, errors, validateEmail) => [
-  {
-    // Default component is Material UI's TextField
-    attribute: "name",
-    label: "Name",
-    col: {
-      // Here you can specify how many Grid columns the field should take for the corresponding breakpoints
-      sm: 6,
-    },
+const useStyles = makeStyles((theme) => ({
+  flexRow: {
+    flexDirection: "row",
   },
-  {
-    attribute: "email",
-    label: "Email",
-    col: {
-      sm: 6,
-    },
-    component: "text-field",
-    props: {
-      // Here you can pass any props that are accepted by Material UI's TextField component
-      error: !!errors.email,
-      helperText: errors.email,
-      onBlur: (event) => validateEmail(form.email),
-    },
-  },
-  {
-    attribute: "jobId",
-    label: "Job",
-    col: {
-      sm: 4,
-    },
-    component: "select",
-    options: jobs,
-    // If options is an array of objects, optionConfig is required
-    optionConfig: {
-      key: "id", // The attribute to use for the key required for each option
-      value: "id", // The attribute to use to determine the value that should be passed to the form field
-      label: "title", // The attribute to use to determine the label for the select option
-    },
-  },
-  {
-    attribute: "status",
-    label: "Status",
-    col: {
-      sm: 4,
-    },
-    component: "select",
-    options: statuses, // optionConfig not required as options is an array of strings
-  },
-  {
-    attribute: "details.joinDate",
-    label: "Join Date",
-    col: {
-      sm: 4,
-    },
-    component: "date-picker",
-    props: {
-      // Here you can pass any props that are accepted by Material UI's KeyboardDatePicker component
-    },
-  },
-  {
-    attribute: "skills",
-    label: "Skills",
-    col: {
-      sm: 12,
-    },
-    component: "chip-group",
-    options: skills, // optionConfig not required as options is an array of strings
-    labelProps: { variant: "body2" },
-    chipContainerProps: { style: { overflow: auto } },
-  },
-  {
-    attribute: "subordinates",
-    label: "Subordinates",
-    component: "autocomplete",
-    options: employees,
-    props: {
-      // Here you can pass any props that are accepted by Material UI's Autocomplete component
-      autoHighlight: true,
-      multiple: true,
-    },
-    hideCondition: form.title === "Entry Level Staff", // This will hide the form field if the condition is truthy
-  },
-];
+}));
 
 export default function EmployeeForm(props) {
   const [form, setForm] = useState({});
@@ -178,26 +102,166 @@ export default function EmployeeForm(props) {
   };
 
   const updateErrors = (key, value) => {
-    const copy = JSON.parse(JSON.stringify(errors));
-    _.set(copy, key, value);
-    setErrors(copy);
+    ...
   };
 
   const validateEmail = (email) => {
-    if (!email) {
-      updateErrors("email", "Email is required");
-      return;
-    }
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-      updateErrors("email", "Invalid email");
-      return;
-    }
-    updateErrors("email", null);
+    // Update errors on failed validation
+    ...
   };
+
+  const fields = [
+    {
+      // Default component is Material UI's TextField
+      attribute: "name",
+      label: "Name",
+      col: {
+        // Here you can specify how many Grid columns the field should take for the corresponding breakpoints
+        sm: 6,
+      },
+    },
+    {
+      attribute: "email",
+      label: "Email",
+      col: {
+        sm: 6,
+      },
+      component: "text-field",
+      props: {
+        // Here you can pass any props that are accepted by Material UI's TextField component
+        error: !!errors.email,
+        helperText: errors.email,
+        onBlur: (event) => validateEmail(form.email),
+      },
+    },
+    {
+      attribute: "jobId",
+      label: "Job",
+      col: {
+        sm: 6,
+      },
+      component: "select",
+      options: jobs,
+      // If options is an array of objects, optionConfig is required
+      optionConfig: {
+        key: "id", // The attribute to use for the key required for each option
+        value: "id", // The attribute to use to determine the value that should be passed to the form field
+        label: "title", // The attribute to use to determine the label for the select option
+      },
+    },
+    {
+      attribute: "details.joinDate",
+      label: "Join Date",
+      col: {
+        sm: 6,
+      },
+      component: "date-picker",
+      props: {
+        // Here you can pass any props that are accepted by Material UI's KeyboardDatePicker component
+      },
+    },
+    {
+      attribute: "status",
+      label: "Status",
+      col: {
+        sm: 4,
+      },
+      component: "select",
+      options: statuses, // optionConfig not required as options is an array of strings
+      props: {
+        // Here you can pass any props that are accepted by Material UI's Select component
+      },
+      idPrefix: "select",
+    },
+    {
+      attribute: "status",
+      label: "Status", // You can omit this if you do not want a title for the field
+      col: {
+        sm: 4,
+      },
+      component: "checkbox-group",
+      options: ["Active"], // Single option for a single checkbox
+      props: {
+        // Here you can pass any props that are accepted by Material UI's Checkbox component
+        onChange: (event) => {
+          if (event.target.checked) {
+            updateForm(field.attribute, "Active");
+          } else {
+            updateForm(field.attribute, "Inactive");
+          }
+        },
+      },
+      labelProps: {
+        // Here you can pass any props that are accepted by Material UI's Typography component
+        variant: "body2",
+      },
+      groupContainerProps: {
+        // Here you can pass any props that are accepted by Material UI's FormGroup component
+      },
+      idPrefix: "checkbox",
+    },
+    {
+      attribute: "status",
+      label: "Status", // You can omit this if you do not want a title for the field
+      col: {
+        sm: 4,
+      },
+      component: "radio-group",
+      options: statuses,
+      props: {
+        // Here you can pass any props that are accepted by Material UI's Radio component
+        color: "secondary",
+      },
+      labelProps: {
+        // Here you can pass any props that are accepted by Material UI's Typography component
+        variant: "body2",
+      },
+      groupContainerProps: {
+        // Here you can pass any props that are accepted by Material UI's FormGroup component
+        classes: {
+          root: classes.flexRow,
+        },
+      },
+      idPrefix: "radio",
+    },
+    {
+      attribute: "skills",
+      label: "Skills",
+      col: {
+        sm: 12,
+      },
+      component: "chip-group",
+      options: skills, // optionConfig not required as options is an array of strings
+      multiple: true, // Allow multiple selections
+      props: {
+        // Here you can pass any props that are accepted by Material UI's Chip component
+      },
+      labelProps: {
+        // Here you can pass any props that are accepted by Material UI's Typography component
+        variant: "body2",
+      },
+      groupContainerProps: {
+        // Here you can pass any props to a div wrapper
+        style: { overflow: auto },
+      },
+    },
+    {
+      attribute: "subordinates",
+      label: "Subordinates",
+      component: "autocomplete",
+      options: employees,
+      props: {
+        // Here you can pass any props that are accepted by Material UI's Autocomplete component
+        autoHighlight: true,
+        multiple: true,
+      },
+      hideCondition: form.title === "Entry Level Staff", // This will hide the form field if the condition is truthy
+    },
+  ];
 
   return (
     <FormBuilder
-      fields={fields(jobs, form, errors, validateEmail)}
+      fields={fields}
       form={form}
       updateForm={(key, value) => updateForm(key, value)}
     />
@@ -219,17 +283,17 @@ export default function EmployeeForm(props) {
 
 ## Field Props
 
-| Prop               | Type     | Default                                                                                                                                                 | Description                                                                                                                    |
-| ------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| attribute          | `string` | `undefined`                                                                                                                                             | Form attribute that controls input and is modified by input                                                                    |
-| label              | `string` | `undefined`                                                                                                                                             | Component label                                                                                                                |
-| col                | `object` | `{ xs: 12 }`                                                                                                                                            | Grid columns that component should take                                                                                        |
-| component          | `string` | `text-field`                                                                                                                                            | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`autocomplete`,<br />`chip-group` |
-| options            | `array`  | `undefined`                                                                                                                                             | Required if component is one of `select`, `autocomplete` or `chip-group`                                                       |
-| optionConfig       | `object` | `select` and `chip-group`: <br />`{ key: option, value: option, label: option }`<br />`autocomplete`: <br />`{ key: "id", value: "id", label: "name" }` | Required if options is an array of objects                                                                                     |
-| multiple           | `bool`   | `undefined`                                                                                                                                             | Only for `chip-group`. If true, multiple options will be selectible                                                            |
-| props              | `object` | `undefined`                                                                                                                                             | Any additional props to pass to the Material UI component                                                                      |
-| containerProps     | `object` | `undefined`                                                                                                                                             | Any additional props to pass to the Material UI Grid item that contains the component                                          |
-| labelProps         | `object` | `undefined`                                                                                                                                             | Only for `chip-group`. Any additional props to pass to the Material UI Typography component that wraps the label.              |
-| chipContainerProps | `object` | `undefined`                                                                                                                                             | Only for `chip-group`. Any additional props to pass to the `div` that wraps the Chip group.                                    |
-| hideCondition      | `bool`   | `undefined`                                                                                                                                             | Hides field if truthy                                                                                                          |
+| Prop                | Type     | Default                                                                                                                                                 | Description                                                                                                                                                                                             |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| attribute           | `string` | `undefined`                                                                                                                                             | Form attribute that controls input and is modified by input                                                                                                                                             |
+| label               | `string` | `undefined`                                                                                                                                             | Component label. Can be omitted for `chip-group`, `checkbox-group` and `radio-group` if label is not required.                                                                                          |
+| col                 | `object` | `{ xs: 12 }`                                                                                                                                            | Grid columns that component should take                                                                                                                                                                 |
+| component           | `string` | `text-field`                                                                                                                                            | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`autocomplete`,<br />`chip-group`,<br />`checkbox-group`,<br />`radio-group`                               |
+| options             | `array`  | `undefined`                                                                                                                                             | Required if component is one of `select`, `autocomplete` or `chip-group`                                                                                                                                |
+| optionConfig        | `object` | `select` and `chip-group`: <br />`{ key: option, value: option, label: option }`<br />`autocomplete`: <br />`{ key: "id", value: "id", label: "name" }` | Required if options is an array of objects                                                                                                                                                              |
+| multiple            | `bool`   | `undefined`                                                                                                                                             | Only for `chip-group` and `checkbox-group`. If true, multiple options will be selectible                                                                                                                |
+| props               | `object` | `undefined`                                                                                                                                             | Any additional props to pass to the Material UI component                                                                                                                                               |
+| containerProps      | `object` | `undefined`                                                                                                                                             | Any additional props to pass to the Material UI Grid item that contains the component                                                                                                                   |
+| labelProps          | `object` | `undefined`                                                                                                                                             | Only for `chip-group`, `checkbox-group` and `radio-group`. Any additional props to pass to the Material UI Typography component that wraps the label.                                                   |
+| groupContainerProps | `object` | `undefined`                                                                                                                                             | Only for `chip-group`, `checkbox-group` and `radio-group`. Any additional props to pass to the `div` (chip-group) or `FormControlGroup` (others) that wraps the individual components within the group. |
+| hideCondition       | `bool`   | `undefined`                                                                                                                                             | Hides field if truthy                                                                                                                                                                                   |

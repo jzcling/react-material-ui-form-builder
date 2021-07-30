@@ -24,6 +24,7 @@ function StandardDateTimePicker(props) {
 
   const componentProps = (field) => {
     return {
+      id: field.id || field.attribute,
       className: classes.picker,
       ampm: false,
       fullWidth: true,
@@ -47,10 +48,7 @@ function StandardDateTimePicker(props) {
 
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
-      <KeyboardDateTimePicker
-        id={field.id || field.attribute}
-        {...componentProps(field)}
-      />
+      <KeyboardDateTimePicker {...componentProps(field)} />
     </MuiPickersUtilsProvider>
   );
 }

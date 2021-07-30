@@ -34,6 +34,7 @@ function StandardAutocomplete(props) {
 
   const componentProps = (field) => {
     return {
+      id: field.id || field.attribute,
       size: "small",
       options:
         field.props && field.props.multiple
@@ -79,10 +80,7 @@ function StandardAutocomplete(props) {
 
   return (
     <FormControl variant="outlined" fullWidth>
-      <Autocomplete
-        id={field.id || field.attribute}
-        {...componentProps(field)}
-      />
+      <Autocomplete {...componentProps(field)} />
     </FormControl>
   );
 }

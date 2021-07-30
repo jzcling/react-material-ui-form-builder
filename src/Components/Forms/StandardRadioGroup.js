@@ -1,19 +1,24 @@
 import React, { useMemo } from "react";
-import { Chip, makeStyles, Typography } from "@material-ui/core";
+import {
+  Radio,
+  FormControlLabel,
+  FormGroup,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
 
 const useStyles = makeStyles((theme) => ({
-  chip: {
-    marginRight: theme.spacing(1),
-    marginTop: theme.spacing(1),
+  groupContainer: {
+    margin: theme.spacing(1),
   },
 }));
 
-function StandardChipGroup(props) {
-  const classes = useStyles();
+function StandardRadioGroup(props) {
   const { field, form, updateForm } = props;
+  const classes = useStyles();
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -42,30 +47,9 @@ function StandardChipGroup(props) {
     [field]
   );
 
-  const handleChipClick = (option) => {
-    if (field.multiple) {
-      const index = (_.get(form, field.attribute) || []).findIndex(
-        (value) => value === optionConfig(option).value
-      );
-      if (index >= 0) {
-        var copy = [..._.get(form, field.attribute)];
-        copy.splice(index, 1);
-        if (copy.length === 0) {
-          copy = null;
-        }
-        updateForm(field.attribute, copy);
-        return;
-      }
-      updateForm(field.attribute, [
-        ...(_.get(form, field.attribute) || []),
-        optionConfig(option).value,
-      ]);
-    } else {
-      if (_.get(form, field.attribute) === optionConfig(option).value) {
-        updateForm(field.attribute, undefined);
-        return;
-      }
-      updateForm(field.attribute, optionConfig(option).value);
+  const handleRadioChange = (value, checked) => {
+    if (checked) {
+      updateForm(field.attribute, value);
     }
   };
 
@@ -80,14 +64,21 @@ function StandardChipGroup(props) {
     }
     return {
       id: field.id || field.attribute,
-      className: classes.chip,
       key: optionConfig(option).key,
-      size: "small",
-      label: optionConfig(option).label,
-      color: isSelected ? "primary" : "default",
-      variant: isSelected ? "default" : "outlined",
-      onClick: () => handleChipClick(option),
+      color: "primary",
+      checked: isSelected,
+      value: optionConfig(option).value,
+      onChange: (event) =>
+        handleRadioChange(event.target.value, event.target.checked),
       ...(field.props || {}),
+    };
+  };
+
+  const containerProps = (field) => {
+    return {
+      className: classes.groupContainer,
+      component: "fieldset",
+      ...field.groupContainerProps,
     };
   };
 
@@ -96,23 +87,26 @@ function StandardChipGroup(props) {
       {field.label && (
         <Typography {...field.labelProps}>{field.label}</Typography>
       )}
-      <div {...field.groupContainerProps}>
+      <FormGroup {...containerProps(field)}>
         {field.options.map((option) => (
-          <Chip {...componentProps(field, option)} />
+          <FormControlLabel
+            control={<Radio {...componentProps(field, option)} />}
+            label={optionConfig(option).label}
+          />
         ))}
-      </div>
+      </FormGroup>
     </Fragment>
   );
 }
 
-StandardChipGroup.defaultProps = {
+StandardRadioGroup.defaultProps = {
   updateForm: () => {},
 };
 
-StandardChipGroup.propTypes = {
+StandardRadioGroup.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
 };
 
-export default StandardChipGroup;
+export default StandardRadioGroup;
