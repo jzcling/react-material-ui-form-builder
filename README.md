@@ -7,6 +7,7 @@ An easy-to-use and quick form builder using the following React Material UI inpu
 - KeyboardDatePicker
 - KeyboardDateTimePicker
 - Autocomplete
+- Chip
 
 This project aims to make building standard forms a breeze while leveraging Material UI components to create a more familiar UI. See below for usage examples.
 
@@ -27,6 +28,7 @@ Suppose you need to submit a form with the following structure:
   email: "firstlast@email.com",
   jobId: 1,
   status: "Active",
+  skills: ['People Management'],
   subordinates: [2, 3],
   details: {
     joinDate: '2021-01-01',
@@ -64,6 +66,11 @@ const jobs = [
     id: 2,
     title: "Entry Level Staff",
   },
+];
+
+const skills = [
+  'Data Entry',
+  'People Management',
 ];
 
 const statuses = ["Active", "Inactive"];
@@ -136,6 +143,17 @@ const fields = (jobs, form, errors, validateEmail) => [
     },
   },
   {
+    attribute: "skills",
+    label: "Skills",
+    col: {
+      sm: 12,
+    },
+    component: "chip-group",
+    options: skills, // optionConfig not required as options is an array of strings
+    labelProps: { variant: "body2" },
+    chipContainerProps: { style: { overflow: auto } },
+  },
+  {
     attribute: "subordinates",
     label: "Subordinates",
     component: "autocomplete",
@@ -201,13 +219,17 @@ export default function EmployeeForm(props) {
 
 ## Field Props
 
-| Prop          | Type     | Default                                                                                                                            | Description                                                                                                 |
-| ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| attribute     | `string` | `undefined`                                                                                                                        | Form attribute used to be modified by input                                                                 |
-| label         | `string` | `undefined`                                                                                                                        | Component label                                                                                             |
-| col           | `object` | `{ xs: 12 }`                                                                                                                       | Grid columns that component should take                                                                     |
-| component     | `string` | `text-field`                                                                                                                       | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`autocomplete` |
-| options       | `array`  | `undefined`                                                                                                                        | Required if component is `select` or `autocomplete`                                                         |
-| optionConfig  | `object` | select: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ key: "id", value: "id", label: "name" }` | Required if options is an array of objects                                                                  |
-| props         | `object` | `undefined`                                                                                                                        | Any additional props to pass to Material UI component                                                       |
-| hideCondition | `bool`   | `undefined`                                                                                                                        | Hides field if truthy                                                                                       |
+| Prop               | Type     | Default                                                                                                                                                 | Description                                                                                                                    |
+| ------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| attribute          | `string` | `undefined`                                                                                                                                             | Form attribute that controls input and is modified by input                                                                    |
+| label              | `string` | `undefined`                                                                                                                                             | Component label                                                                                                                |
+| col                | `object` | `{ xs: 12 }`                                                                                                                                            | Grid columns that component should take                                                                                        |
+| component          | `string` | `text-field`                                                                                                                                            | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`autocomplete`,<br />`chip-group` |
+| options            | `array`  | `undefined`                                                                                                                                             | Required if component is one of `select`, `autocomplete` or `chip-group`                                                       |
+| optionConfig       | `object` | `select` and `chip-group`: <br />`{ key: option, value: option, label: option }`<br />`autocomplete`: <br />`{ key: "id", value: "id", label: "name" }` | Required if options is an array of objects                                                                                     |
+| multiple           | `bool`   | `undefined`                                                                                                                                             | Only for `chip-group`. If true, multiple options will be selectible                                                            |
+| props              | `object` | `undefined`                                                                                                                                             | Any additional props to pass to the Material UI component                                                                      |
+| containerProps     | `object` | `undefined`                                                                                                                                             | Any additional props to pass to the Material UI Grid item that contains the component                                          |
+| labelProps         | `object` | `undefined`                                                                                                                                             | Only for `chip-group`. Any additional props to pass to the Material UI Typography component that wraps the label.              |
+| chipContainerProps | `object` | `undefined`                                                                                                                                             | Only for `chip-group`. Any additional props to pass to the `div` that wraps the Chip group.                                    |
+| hideCondition      | `bool`   | `undefined`                                                                                                                                             | Hides field if truthy                                                                                                          |

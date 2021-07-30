@@ -7,6 +7,7 @@ import StandardTextField from "./Forms/StandardTextField";
 import StandardSelect from "./Forms/StandardSelect";
 import StandardAutocomplete from "./Forms/StandardAutocomplete";
 import StandardDateTimePicker from "./Forms/StandardDateTimePicker";
+import StandardChipGroup from "./Forms/StandardChipGroup";
 
 function sanitizeCol(col) {
   col = col || {};
@@ -68,8 +69,16 @@ function FormBuilder(props) {
             updateForm={updateForm}
           />
         );
+      case "chip-group":
+        return (
+          <StandardChipGroup
+            field={field}
+            form={form}
+            updateForm={updateForm}
+          />
+        );
       case "custom":
-        return field.customComponent(form, updateForm);
+        return field.customComponent(field, form, updateForm);
       case "text-field":
       default:
         return (
@@ -97,7 +106,12 @@ function FormBuilder(props) {
         {fields.map(
           (field) =>
             !field.hideCondition && (
-              <Grid key={field.attribute} item {...sanitizeCol(field.col)}>
+              <Grid
+                key={field.attribute}
+                item
+                {...sanitizeCol(field.col)}
+                {...field.containerProps}
+              >
                 {getFormComponent(field)}
               </Grid>
             )
