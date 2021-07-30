@@ -84,6 +84,7 @@ With the predefined data above, the following functional component illustrates h
 import React, { useState } from "react";
 import FormBuilder from "@jeremyling/react-material-ui-form-builder";
 import _ from "lodash";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   flexRow: {
