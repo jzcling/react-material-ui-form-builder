@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { FormControl, makeStyles, TextField } from "@material-ui/core";
+import { makeStyles, TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import _ from "lodash";
 import PropTypes from "prop-types";
@@ -16,42 +16,43 @@ function StandardAutocomplete(props) {
   const classes = useStyles();
   const { field, form, updateForm } = props;
 
-  const optionConfig = useMemo(() => {
-    const config = {
-      key: "id",
-      label: "name",
-    };
+  const optionConfig = useMemo(
+    (option) => {
+      const config = {
+        value: option,
+        label: option,
+      };
 
-    if (!field.optionConfig) {
+      if (!field.optionConfig) {
+        return config;
+      }
+
+      config.value = field.optionConfig.value
+        ? _.get(option, field.optionConfig.value)
+        : config.value;
+      config.label = field.optionConfig.label
+        ? String(_.get(option, field.optionConfig.label))
+        : config.label;
+
       return config;
-    }
-
-    config.key = field.optionConfig.key || config.key;
-    config.label = field.optionConfig.label || config.label;
-
-    return config;
-  }, [field]);
+    },
+    [field]
+  );
 
   const componentProps = (field) => {
     return {
       id: field.id || field.attribute,
       size: "small",
-      options:
-        field.props && field.props.multiple
-          ? field.options.map((option) => option[optionConfig.key])
-          : field.options,
+      fullWidth: true,
+      options: field.options,
       getOptionSelected: (option, value) =>
-        (_.isString(option) || _.isInteger(option)
-          ? option
-          : _.get(option, optionConfig.key) || "") === value,
+        _.isObject(value)
+          ? optionConfig(option).value === optionConfig(value).value
+          : optionConfig(option).value === value,
       getOptionLabel: (option) =>
-        _.isString(option)
-          ? option
-          : _.isNumber(option)
-          ? (field.options.find((item) => item.id === option) || {})[
-              optionConfig.label
-            ] || ""
-          : option[optionConfig.label],
+        _.isObject(option)
+          ? String(optionConfig(option).label)
+          : String(option),
       renderInput: (params) => (
         <TextField
           {...params}
@@ -66,23 +67,15 @@ function StandardAutocomplete(props) {
       ),
       value:
         _.get(form, field.attribute) ||
-        (field.props && field.props.multiple ? [] : ""),
-      onChange: (event, value) => {
-        updateForm(
-          field.attribute,
-          _.isString(value) ? value : _.get(value, optionConfig.key) || value
-        );
-      },
+        (field.props && field.props.multiple ? [] : null),
+      onChange: (event, option) =>
+        updateForm(field.attribute, optionConfig(option).value),
       className: classes.autocomplete,
       ...(field.props || {}),
     };
   };
 
-  return (
-    <FormControl variant="outlined" fullWidth>
-      <Autocomplete {...componentProps(field)} />
-    </FormControl>
-  );
+  return <Autocomplete {...componentProps(field)} />;
 }
 
 StandardAutocomplete.defaultProps = {
