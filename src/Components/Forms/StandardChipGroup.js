@@ -28,13 +28,13 @@ function StandardChipGroup(props) {
       }
 
       config.key = field.optionConfig.key
-        ? option[field.optionConfig.key]
+        ? _.get(option, field.optionConfig.key)
         : config.key;
       config.value = field.optionConfig.value
-        ? option[field.optionConfig.value]
+        ? _.get(option, field.optionConfig.value)
         : config.value;
       config.label = field.optionConfig.label
-        ? option[field.optionConfig.label]
+        ? String(_.get(option, field.optionConfig.label))
         : config.label;
 
       return config;
@@ -97,8 +97,8 @@ function StandardChipGroup(props) {
         <Typography {...field.labelProps}>{field.label}</Typography>
       )}
       <div {...field.groupContainerProps}>
-        {field.options.map((option) => (
-          <Chip {...componentProps(field, option)} />
+        {(field.options || []).map((option) => (
+          <Chip key={field.id} {...componentProps(field, option)} />
         ))}
       </div>
     </Fragment>

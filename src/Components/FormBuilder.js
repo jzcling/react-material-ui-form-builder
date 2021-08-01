@@ -33,7 +33,7 @@ function FormBuilder(props) {
   const { title, fields, form, updateForm, children, index, idPrefix } = props;
   const classes = useStyles();
 
-  const getFormComponent = (field) => {
+  const handleField = (field) => {
     field.id = field.attribute;
     if (index) {
       field.id = index + "-" + field.id;
@@ -41,7 +41,10 @@ function FormBuilder(props) {
     if (idPrefix) {
       field.id = idPrefix + "-" + field.id;
     }
+    return field;
+  };
 
+  const getFormComponent = (field) => {
     switch (field.component) {
       case "date-picker":
         return (
@@ -121,11 +124,12 @@ function FormBuilder(props) {
           </Grid>
         )}
 
-        {fields.map(
-          (field) =>
+        {fields.map((field) => {
+          field = handleField(field);
+          return (
             !field.hideCondition && (
               <Grid
-                key={field.attribute}
+                key={field.id}
                 item
                 {...sanitizeColProps(field.col)}
                 {...field.containerProps}
@@ -133,7 +137,8 @@ function FormBuilder(props) {
                 {getFormComponent(field)}
               </Grid>
             )
-        )}
+          );
+        })}
       </Grid>
 
       {children}

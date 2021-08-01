@@ -33,13 +33,13 @@ function StandardCheckboxGroup(props) {
       }
 
       config.key = field.optionConfig.key
-        ? option[field.optionConfig.key]
+        ? _.get(option, field.optionConfig.key)
         : config.key;
       config.value = field.optionConfig.value
-        ? option[field.optionConfig.value]
+        ? _.get(option, field.optionConfig.value)
         : config.value;
       config.label = field.optionConfig.label
-        ? option[field.optionConfig.label]
+        ? String(_.get(option, field.optionConfig.label))
         : config.label;
 
       return config;
@@ -110,8 +110,9 @@ function StandardCheckboxGroup(props) {
         <Typography {...field.labelProps}>{field.label}</Typography>
       )}
       <FormGroup {...containerProps(field)}>
-        {field.options.map((option) => (
+        {(field.options || []).map((option) => (
           <FormControlLabel
+            key={field.id}
             control={<Checkbox {...componentProps(field, option)} />}
             label={optionConfig(option).label}
           />

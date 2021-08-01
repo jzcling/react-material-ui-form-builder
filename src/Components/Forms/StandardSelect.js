@@ -19,13 +19,13 @@ function StandardSelect(props) {
       }
 
       config.key = field.optionConfig.key
-        ? option[field.optionConfig.key]
+        ? _.get(option, field.optionConfig.key)
         : config.key;
       config.value = field.optionConfig.value
-        ? option[field.optionConfig.value]
+        ? _.get(option, field.optionConfig.value)
         : config.value;
       config.label = field.optionConfig.label
-        ? option[field.optionConfig.label]
+        ? String(_.get(option, field.optionConfig.label))
         : config.label;
 
       return config;
@@ -56,7 +56,7 @@ function StandardSelect(props) {
       </InputLabel>
       <Select {...componentProps(field)}>
         <option aria-label="None" value="" />
-        {field.options.map((option) => (
+        {(field.options || []).map((option) => (
           <option
             key={optionConfig(option).key}
             value={optionConfig(option).value}
