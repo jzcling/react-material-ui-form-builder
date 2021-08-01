@@ -10,6 +10,7 @@ An easy-to-use and quick form builder using the following React Material UI inpu
 - Chip
 - Checkbox
 - Radio
+- Switch
 
 This project aims to make building standard forms a breeze while leveraging Material UI components to create a more familiar UI. See below for usage examples.
 
@@ -165,7 +166,7 @@ export default function EmployeeForm(props) {
       attribute: "status",
       label: "Status",
       col: {
-        sm: 4,
+        sm: 6,
       },
       component: "select",
       options: statuses, // optionConfig not required as options is an array of strings
@@ -178,7 +179,7 @@ export default function EmployeeForm(props) {
       attribute: "status",
       label: "Status", // You can omit this if you do not want a title for the field
       col: {
-        sm: 4,
+        sm: 6,
       },
       component: "checkbox-group",
       options: ["Active"], // Single option for a single checkbox
@@ -186,9 +187,9 @@ export default function EmployeeForm(props) {
         // Here you can pass any props that are accepted by Material UI's Checkbox component
         onChange: (event) => {
           if (event.target.checked) {
-            updateForm(field.attribute, "Active");
+            updateForm("status", "Active");
           } else {
-            updateForm(field.attribute, "Inactive");
+            updateForm("status", "Inactive");
           }
         },
       },
@@ -205,7 +206,7 @@ export default function EmployeeForm(props) {
       attribute: "status",
       label: "Status", // You can omit this if you do not want a title for the field
       col: {
-        sm: 4,
+        sm: 6,
       },
       component: "radio-group",
       options: statuses,
@@ -224,6 +225,23 @@ export default function EmployeeForm(props) {
         },
       },
       idPrefix: "radio",
+    },
+    {
+      attribute: "status",
+      label: "Active",
+      col: {
+        sm: 6,
+      },
+      component: "switch",
+      props: {
+        // Here you can pass any props that are accepted by Material UI's Radio component
+        color: "secondary",
+        checked: _.get(form, "status") === 'Active',
+        onChange: (event) => event.target.checked
+          ? updateForm("status", "Active")
+          : updateForm("status", "Inactive"),
+      },
+      idPrefix: "switch",
     },
     {
       attribute: "skills",
@@ -251,12 +269,16 @@ export default function EmployeeForm(props) {
       label: "Subordinates",
       component: "autocomplete",
       options: employees,
+      optionConfig: {
+        value: "id",
+        label: "name",
+      },
       props: {
         // Here you can pass any props that are accepted by Material UI's Autocomplete component
         autoHighlight: true,
         multiple: true,
       },
-      hideCondition: form.title === "Entry Level Staff", // This will hide the form field if the condition is truthy
+      hideCondition: (jobs.find((j) => j.id === form.jobId) || {}).title === "Entry Level Staff", // This will hide the form field if the condition is truthy
     },
   ];
 
@@ -284,17 +306,17 @@ export default function EmployeeForm(props) {
 
 ## Field Props
 
-| Prop                | Type     | Default                                                                                                                                                                     | Description                                                                                                                                                                                             |
-| ------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| attribute           | `string` | `undefined`                                                                                                                                                                 | Form attribute that controls input and is modified by input                                                                                                                                             |
-| label               | `string` | `undefined`                                                                                                                                                                 | Component label. Can be omitted for `chip-group`, `checkbox-group` and `radio-group` if label is not required.                                                                                          |
-| col                 | `object` | `{ xs: 12 }`                                                                                                                                                                | Grid columns that component should take                                                                                                                                                                 |
-| component           | `string` | `text-field`                                                                                                                                                                | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`autocomplete`,<br />`chip-group`,<br />`checkbox-group`,<br />`radio-group`                               |
-| options             | `array`  | `undefined`                                                                                                                                                                 | Required if component is one of `select`, `autocomplete` or `chip-group`                                                                                                                                |
-| optionConfig        | `object` | select, chip-group, checkbox-group, radio-group: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ key: "id", value: "id", label: "name" }` | Required if options is an array of objects                                                                                                                                                              |
-| multiple            | `bool`   | `undefined`                                                                                                                                                                 | Only for `chip-group` and `checkbox-group`. If true, multiple options will be selectible                                                                                                                |
-| props               | `object` | `undefined`                                                                                                                                                                 | Any additional props to pass to the Material UI component                                                                                                                                               |
-| containerProps      | `object` | `undefined`                                                                                                                                                                 | Any additional props to pass to the Material UI Grid item that contains the component                                                                                                                   |
-| labelProps          | `object` | `undefined`                                                                                                                                                                 | Only for `chip-group`, `checkbox-group` and `radio-group`. Any additional props to pass to the Material UI Typography component that wraps the label.                                                   |
-| groupContainerProps | `object` | `undefined`                                                                                                                                                                 | Only for `chip-group`, `checkbox-group` and `radio-group`. Any additional props to pass to the `div` (chip-group) or `FormControlGroup` (others) that wraps the individual components within the group. |
-| hideCondition       | `bool`   | `undefined`                                                                                                                                                                 | Hides field if truthy                                                                                                                                                                                   |
+| Prop                | Type     | Default                                                                                                                                                            | Description                                                                                                                                                                                             |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| attribute           | `string` | `undefined`                                                                                                                                                        | Form attribute that controls input and is modified by input                                                                                                                                             |
+| label               | `string` | `undefined`                                                                                                                                                        | Component label. Can be omitted for `chip-group`, `checkbox-group` and `radio-group` if label is not required.                                                                                          |
+| col                 | `object` | `{ xs: 12 }`                                                                                                                                                       | Grid columns that component should take                                                                                                                                                                 |
+| component           | `string` | `text-field`                                                                                                                                                       | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`autocomplete`,<br />`chip-group`,<br />`checkbox-group`,<br />`radio-group`,<br />`switch`                |
+| options             | `array`  | `[]`                                                                                                                                                               | Required if component is one of `select`, `autocomplete`, `chip-group`, `checkbox-group` or `radio-group`                                                                                               |
+| optionConfig        | `object` | select, chip-group, checkbox-group, radio-group: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ value: option, label: option }` | Required if options is an array of objects                                                                                                                                                              |
+| multiple            | `bool`   | `undefined`                                                                                                                                                        | Only for `chip-group` and `checkbox-group`. If true, multiple options will be selectible                                                                                                                |
+| props               | `object` | `undefined`                                                                                                                                                        | Any additional props to pass to the Material UI component                                                                                                                                               |
+| containerProps      | `object` | `undefined`                                                                                                                                                        | Any additional props to pass to the Material UI Grid item that contains the component                                                                                                                   |
+| labelProps          | `object` | `undefined`                                                                                                                                                        | Only for `chip-group`, `checkbox-group` and `radio-group`. Any additional props to pass to the Material UI Typography component that wraps the label.                                                   |
+| groupContainerProps | `object` | `undefined`                                                                                                                                                        | Only for `chip-group`, `checkbox-group` and `radio-group`. Any additional props to pass to the `div` (chip-group) or `FormControlGroup` (others) that wraps the individual components within the group. |
+| hideCondition       | `bool`   | `undefined`                                                                                                                                                        | Hides field if truthy                                                                                                                                                                                   |

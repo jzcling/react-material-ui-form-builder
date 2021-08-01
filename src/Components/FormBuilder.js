@@ -10,6 +10,7 @@ import StandardDateTimePicker from "./Forms/StandardDateTimePicker";
 import StandardChipGroup from "./Forms/StandardChipGroup";
 import StandardCheckboxGroup from "./Forms/StandardCheckboxGroup";
 import StandardRadioGroup from "./Forms/StandardRadioGroup";
+import { StandardSwitch } from "..";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -97,6 +98,10 @@ function FormBuilder(props) {
             form={form}
             updateForm={updateForm}
           />
+        );
+      case "switch":
+        return (
+          <StandardSwitch field={field} form={form} updateForm={updateForm} />
         );
       case "custom":
         return field.customComponent(field, form, updateForm);

@@ -6,6 +6,7 @@ import StandardDatePicker from "./Components/Forms/StandardDatePicker";
 import StandardDateTimePicker from "./Components/Forms/StandardDateTimePicker";
 import StandardRadioGroup from "./Components/Forms/StandardRadioGroup";
 import StandardSelect from "./Components/Forms/StandardSelect";
+import StandardSwitch from "./Components/Forms/StandardSwitch";
 import StandardTextField from "./Components/Forms/StandardTextField";
 
 export {
@@ -16,6 +17,7 @@ export {
   StandardDateTimePicker,
   StandardRadioGroup,
   StandardSelect,
+  StandardSwitch,
   StandardTextField,
 };
 export default FormBuilder;
