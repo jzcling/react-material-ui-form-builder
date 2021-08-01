@@ -17,7 +17,7 @@ function StandardAutocomplete(props) {
   const { field, form, updateForm } = props;
 
   const optionConfig = useMemo(
-    (option) => {
+    () => (option) => {
       const config = {
         value: option,
         label: option,
