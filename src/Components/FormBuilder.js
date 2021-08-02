@@ -10,7 +10,7 @@ import StandardDateTimePicker from "./Forms/StandardDateTimePicker";
 import StandardChipGroup from "./Forms/StandardChipGroup";
 import StandardCheckboxGroup from "./Forms/StandardCheckboxGroup";
 import StandardRadioGroup from "./Forms/StandardRadioGroup";
-import { StandardSwitch } from "..";
+import StandardSwitch from "./Forms/StandardSwitch";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -103,6 +103,8 @@ function FormBuilder(props) {
         return (
           <StandardSwitch field={field} form={form} updateForm={updateForm} />
         );
+      case "display-text":
+        return <Typography {...(field.props || {})}>{field.label}</Typography>;
       case "custom":
         return field.customComponent(field, form, updateForm);
       case "text-field":
@@ -129,12 +131,12 @@ function FormBuilder(props) {
           </Grid>
         )}
 
-        {fields.map((field) => {
+        {fields.map((field, index) => {
           field = handleField(field);
           return (
             !field.hideCondition && (
               <Grid
-                key={field.id}
+                key={field.id || index}
                 item
                 {...sanitizeColProps(field.col)}
                 {...field.containerProps}

@@ -26,7 +26,6 @@ function StandardDatePicker(props) {
     return {
       id: field.id || field.attribute,
       className: classes.datePicker,
-      disableToolbar: true,
       fullWidth: true,
       variant: "inline",
       inputVariant: "outlined",

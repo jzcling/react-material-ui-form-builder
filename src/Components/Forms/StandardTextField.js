@@ -24,7 +24,13 @@ function StandardTextField(props) {
       margin: "dense",
       label: field.label,
       value: _.get(form, field.attribute) || "",
-      onChange: (event) => updateForm(field.attribute, event.target.value),
+      onChange: (event) => {
+        var value = event.target.value;
+        if (field.props && field.props.type === "number") {
+          value = Number(value);
+        }
+        updateForm(field.attribute, value);
+      },
       InputLabelProps: {
         shrink: !!_.get(form, field.attribute),
       },
