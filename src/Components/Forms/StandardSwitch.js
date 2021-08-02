@@ -34,6 +34,7 @@ function StandardSwitchGroup(props) {
         key={field.id}
         control={<Switch {...componentProps(field)} />}
         label={field.label}
+        {...(field.labelProps || {})}
       />
     </Fragment>
   );
