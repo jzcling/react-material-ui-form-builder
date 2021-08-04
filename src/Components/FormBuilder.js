@@ -7,6 +7,7 @@ import StandardCheckboxGroup from "./Forms/StandardCheckboxGroup";
 import StandardChipGroup from "./Forms/StandardChipGroup";
 import StandardDatePicker from "./Forms/StandardDatePicker";
 import StandardDateTimePicker from "./Forms/StandardDateTimePicker";
+import StandardFileUpload from "./Forms/StandardFileUpload";
 import StandardRadioGroup from "./Forms/StandardRadioGroup";
 import StandardSelect from "./Forms/StandardSelect";
 import StandardSwitch from "./Forms/StandardSwitch";
@@ -104,6 +105,14 @@ function FormBuilder(props) {
       case "switch":
         return (
           <StandardSwitch field={field} form={form} updateForm={updateForm} />
+        );
+      case "file-upload":
+        return (
+          <StandardFileUpload
+            field={field}
+            form={form}
+            updateForm={updateForm}
+          />
         );
       case "display-text":
         return <Typography {...field.titleProps}>{field.title}</Typography>;
