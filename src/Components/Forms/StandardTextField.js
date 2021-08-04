@@ -1,5 +1,5 @@
-import React from "react";
-import { makeStyles, TextField } from "@material-ui/core";
+import React, { Fragment } from "react";
+import { makeStyles, TextField, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
@@ -38,7 +38,14 @@ function StandardTextField(props) {
     };
   };
 
-  return <TextField {...componentProps(field)} />;
+  return (
+    <Fragment>
+      {field.title && (
+        <Typography {...field.titleProps}>{field.title}</Typography>
+      )}
+      <TextField {...componentProps(field)} />
+    </Fragment>
+  );
 }
 
 StandardTextField.defaultProps = {

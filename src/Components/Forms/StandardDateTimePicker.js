@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import MomentUtils from "@date-io/moment";
 import {
   KeyboardDateTimePicker,
@@ -6,7 +6,7 @@ import {
 } from "@material-ui/pickers";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   picker: {
@@ -47,9 +47,14 @@ function StandardDateTimePicker(props) {
   };
 
   return (
-    <MuiPickersUtilsProvider utils={MomentUtils}>
-      <KeyboardDateTimePicker {...componentProps(field)} />
-    </MuiPickersUtilsProvider>
+    <Fragment>
+      {field.title && (
+        <Typography {...field.titleProps}>{field.title}</Typography>
+      )}
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <KeyboardDateTimePicker {...componentProps(field)} />
+      </MuiPickersUtilsProvider>
+    </Fragment>
   );
 }
 

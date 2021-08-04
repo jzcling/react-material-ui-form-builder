@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { FormControl, InputLabel, Select } from "@material-ui/core";
+import React, { Fragment, useMemo } from "react";
+import { FormControl, InputLabel, Select, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
@@ -50,22 +50,27 @@ function StandardSelect(props) {
   };
 
   return (
-    <FormControl variant="outlined" fullWidth>
-      <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
-        {field.label}
-      </InputLabel>
-      <Select {...componentProps(field)}>
-        <option aria-label="None" value="" />
-        {(field.options || []).map((option) => (
-          <option
-            key={optionConfig(option).key}
-            value={optionConfig(option).value}
-          >
-            {optionConfig(option).label}
-          </option>
-        ))}
-      </Select>
-    </FormControl>
+    <Fragment>
+      {field.title && (
+        <Typography {...field.titleProps}>{field.title}</Typography>
+      )}
+      <FormControl variant="outlined" fullWidth>
+        <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
+          {field.label}
+        </InputLabel>
+        <Select {...componentProps(field)}>
+          <option aria-label="None" value="" />
+          {(field.options || []).map((option) => (
+            <option
+              key={optionConfig(option).key}
+              value={optionConfig(option).value}
+            >
+              {optionConfig(option).label}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+    </Fragment>
   );
 }
 

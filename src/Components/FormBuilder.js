@@ -35,12 +35,14 @@ function FormBuilder(props) {
   const classes = useStyles();
 
   const handleField = (field) => {
-    field.id = field.attribute;
-    if (index) {
-      field.id = index + "-" + field.id;
-    }
-    if (idPrefix) {
-      field.id = idPrefix + "-" + field.id;
+    if (!field.id) {
+      field.id = field.attribute;
+      if (index) {
+        field.id = index + "-" + field.id;
+      }
+      if (idPrefix) {
+        field.id = idPrefix + "-" + field.id;
+      }
     }
     return field;
   };
@@ -104,7 +106,7 @@ function FormBuilder(props) {
           <StandardSwitch field={field} form={form} updateForm={updateForm} />
         );
       case "display-text":
-        return <Typography {...(field.props || {})}>{field.label}</Typography>;
+        return <Typography {...field.titleProps}>{field.title}</Typography>;
       case "custom":
         return field.customComponent(field, form, updateForm);
       case "text-field":

@@ -1,5 +1,11 @@
 import React, { useMemo } from "react";
-import { Chip, makeStyles, Typography } from "@material-ui/core";
+import {
+  Chip,
+  FormControlLabel,
+  FormGroup,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
@@ -8,6 +14,10 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     marginRight: theme.spacing(1),
     marginTop: theme.spacing(1),
+  },
+  groupContainer: {
+    margin: theme.spacing(1),
+    flexDirection: "row",
   },
 }));
 
@@ -91,16 +101,27 @@ function StandardChipGroup(props) {
     };
   };
 
+  const containerProps = (field) => {
+    return {
+      className: classes.groupContainer,
+      component: "fieldset",
+      ...field.groupContainerProps,
+    };
+  };
+
   return (
     <Fragment>
-      {field.label && (
-        <Typography {...field.labelProps}>{field.label}</Typography>
+      {field.title && (
+        <Typography {...field.titleProps}>{field.title}</Typography>
       )}
-      <div {...field.groupContainerProps}>
-        {(field.options || []).map((option) => (
-          <Chip key={field.id} {...componentProps(field, option)} />
+      <FormGroup {...containerProps(field)}>
+        {(field.options || []).map((option, index) => (
+          <FormControlLabel
+            key={field.id + "-" + index}
+            control={<Chip key={field.id} {...componentProps(field, option)} />}
+          />
         ))}
-      </div>
+      </FormGroup>
     </Fragment>
   );
 }

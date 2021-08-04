@@ -106,15 +106,16 @@ function StandardCheckboxGroup(props) {
 
   return (
     <Fragment>
-      {field.label && (
-        <Typography {...field.labelProps}>{field.label}</Typography>
+      {field.title && (
+        <Typography {...field.titleProps}>{field.title}</Typography>
       )}
       <FormGroup {...containerProps(field)}>
-        {(field.options || []).map((option) => (
+        {(field.options || []).map((option, index) => (
           <FormControlLabel
-            key={field.id}
+            key={field.id + "-" + index}
             control={<Checkbox {...componentProps(field, option)} />}
             label={optionConfig(option).label}
+            {...field.labelProps}
           />
         ))}
       </FormGroup>

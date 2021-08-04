@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { makeStyles, TextField } from "@material-ui/core";
+import React, { Fragment, useMemo } from "react";
+import { makeStyles, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import _ from "lodash";
 import PropTypes from "prop-types";
@@ -89,7 +89,14 @@ function StandardAutocomplete(props) {
     };
   };
 
-  return <Autocomplete {...componentProps(field)} />;
+  return (
+    <Fragment>
+      {field.title && (
+        <Typography {...field.titleProps}>{field.title}</Typography>
+      )}
+      <Autocomplete {...componentProps(field)} />
+    </Fragment>
+  );
 }
 
 StandardAutocomplete.defaultProps = {

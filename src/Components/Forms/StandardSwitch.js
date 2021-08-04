@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, FormControlLabel } from "@material-ui/core";
+import { Switch, FormControlLabel, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
@@ -30,11 +30,14 @@ function StandardSwitchGroup(props) {
 
   return (
     <Fragment>
+      {field.title && (
+        <Typography {...field.titleProps}>{field.title}</Typography>
+      )}
       <FormControlLabel
         key={field.id}
         control={<Switch {...componentProps(field)} />}
         label={field.label}
-        {...(field.labelProps || {})}
+        {...field.labelProps}
       />
     </Fragment>
   );
