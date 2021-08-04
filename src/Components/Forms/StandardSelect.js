@@ -45,7 +45,7 @@ function StandardSelect(props) {
       value: _.get(form, field.attribute),
       onChange: (event) => updateForm(field.attribute, event.target.value),
       label: field.label,
-      ...(field.props || {}),
+      ...field.props,
     };
   };
 

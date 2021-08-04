@@ -70,7 +70,7 @@ function StandardRadioGroup(props) {
       value: optionConfig(option).value,
       onChange: (event) =>
         handleRadioChange(event.target.value, event.target.checked),
-      ...(field.props || {}),
+      ...field.props,
     };
   };
 

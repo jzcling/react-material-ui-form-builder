@@ -97,7 +97,7 @@ function StandardChipGroup(props) {
       color: isSelected ? "primary" : "default",
       variant: isSelected ? "default" : "outlined",
       onClick: () => handleChipClick(option),
-      ...(field.props || {}),
+      ...field.props,
     };
   };
 

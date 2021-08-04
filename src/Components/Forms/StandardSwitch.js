@@ -24,7 +24,7 @@ function StandardSwitchGroup(props) {
       color: "primary",
       checked: isSelected,
       onChange: (event) => handleSwitchChange(event.target.checked),
-      ...(field.props || {}),
+      ...field.props,
     };
   };
 

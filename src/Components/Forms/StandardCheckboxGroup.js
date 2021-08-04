@@ -92,7 +92,7 @@ function StandardCheckboxGroup(props) {
       color: "primary",
       checked: isSelected,
       onChange: (event) => handleCheckboxChange(option, event.target.checked),
-      ...(field.props || {}),
+      ...field.props,
     };
   };
 

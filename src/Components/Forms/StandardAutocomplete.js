@@ -85,7 +85,7 @@ function StandardAutocomplete(props) {
       onChange: (event, option) =>
         updateForm(field.attribute, optionConfig(option).value),
       className: classes.autocomplete,
-      ...(field.props || {}),
+      ...field.props,
     };
   };
 

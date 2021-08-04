@@ -34,7 +34,7 @@ function StandardTextField(props) {
       InputLabelProps: {
         shrink: !!_.get(form, field.attribute),
       },
-      ...(field.props || {}),
+      ...field.props,
     };
   };
 

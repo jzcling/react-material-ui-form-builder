@@ -41,7 +41,7 @@ function StandardDatePicker(props) {
       InputProps: {
         className: classes.datePickerInput,
       },
-      ...(field.props || {}),
+      ...field.props,
     };
   };
 
