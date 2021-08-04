@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
+  imageContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
 }));
 
 function FormBuilder(props) {
@@ -116,6 +120,17 @@ function FormBuilder(props) {
         );
       case "display-text":
         return <Typography {...field.titleProps}>{field.title}</Typography>;
+      case "display-image":
+        return (
+          <div className={classes.imageContainer}>
+            <img
+              src={field.src}
+              alt={field.alt}
+              {...field.props}
+              loading="lazy"
+            />
+          </div>
+        );
       case "custom":
         return field.customComponent(field, form, updateForm);
       case "text-field":
