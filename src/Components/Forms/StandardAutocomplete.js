@@ -27,12 +27,39 @@ function StandardAutocomplete(props) {
         return config;
       }
 
-      config.value = field.optionConfig.value
-        ? _.get(option, field.optionConfig.value)
-        : config.value;
-      config.label = field.optionConfig.label
-        ? String(_.get(option, field.optionConfig.label))
-        : config.label;
+      if (field.optionConfig.value) {
+        // This is to account for the quirky behaviour of onChange returning an array
+        if (field.props && field.props.multiple && _.isArray(option)) {
+          const value = [];
+          for (const item of option) {
+            if (_.isObject(item)) {
+              value.push(_.get(item, field.optionConfig.value));
+            } else {
+              value.push(item);
+            }
+          }
+          config.value = value;
+        } else {
+          config.value = _.get(option, field.optionConfig.value);
+        }
+      }
+
+      if (field.optionConfig.label) {
+        // This is to account for the quirky behaviour of onChange returning an array
+        if (field.props && field.props.multiple && _.isArray(option)) {
+          const label = [];
+          for (const item of option) {
+            if (_.isObject(item)) {
+              label.push(item);
+            } else {
+              label.push(_.get(item, field.optionConfig.label));
+            }
+          }
+          config.label = label;
+        } else {
+          config.label = _.get(option, field.optionConfig.label);
+        }
+      }
 
       return config;
     },
@@ -60,12 +87,13 @@ function StandardAutocomplete(props) {
       size: "small",
       fullWidth: true,
       options: field.options,
-      getOptionSelected: (option, value) =>
+      getOptionSelected: (option, value) => {
         // Required to handle the quirky behaviour of Autocomplete component
         // where it returns the value object sometimes and value value sometimes
-        _.isObject(value)
+        return _.isObject(value)
           ? optionConfig(option).value === optionConfig(value).value
-          : optionConfig(option).value === value,
+          : optionConfig(option).value === value;
+      },
       getOptionLabel: (option) => getLabel(option),
       renderInput: (params) => (
         <TextField
@@ -82,8 +110,9 @@ function StandardAutocomplete(props) {
       value:
         _.get(form, field.attribute) ||
         (field.props && field.props.multiple ? [] : null),
-      onChange: (event, option) =>
-        updateForm(field.attribute, optionConfig(option).value),
+      onChange: (event, option) => {
+        updateForm(field.attribute, optionConfig(option).value);
+      },
       className: classes.autocomplete,
       ...field.props,
     };
