@@ -78,6 +78,11 @@ export default function StandardFileUpload(props) {
       input.push(file);
     }
 
+    // If not multiple, there should be only 1 file
+    if (field.props && !field.props.multiple) {
+      input = input[0];
+    }
+
     updateForm(field.attribute, input);
   };
 
