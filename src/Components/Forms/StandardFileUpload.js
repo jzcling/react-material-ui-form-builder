@@ -44,7 +44,13 @@ export default function StandardFileUpload(props) {
   const { field, form, updateForm } = props;
 
   const files = useMemo(() => {
-    return _.get(form, field.attribute) || [];
+    if (_.get(form, field.attribute)) {
+      if (_.isArray(_.get(form, field.attribute))) {
+        return _.get(form, field.attribute);
+      }
+      return [_.get(form, field.attribute)];
+    }
+    return [];
   }, [form, field.attribute]);
 
   const maxSizeMb = useMemo(() => {
@@ -79,7 +85,7 @@ export default function StandardFileUpload(props) {
     }
 
     // If not multiple, there should be only 1 file
-    if (field.props && !field.props.multiple) {
+    if (!(field.props || {}).multiple) {
       input = input[0];
     }
 
