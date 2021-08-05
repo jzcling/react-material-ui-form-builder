@@ -102,8 +102,10 @@ export default function StandardFileUpload(props) {
       <label htmlFor={componentProps(field).id}>
         {files.length > 0 ? (
           <ButtonBase className={classes.buttonBase} component="div">
-            {files.map((file) => (
-              <Typography className={classes.input}>{file.name}</Typography>
+            {files.map((file, index) => (
+              <Typography key={index} className={classes.input}>
+                {file.name}
+              </Typography>
             ))}
           </ButtonBase>
         ) : (
