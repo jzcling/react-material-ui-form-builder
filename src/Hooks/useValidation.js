@@ -14,7 +14,7 @@ export default function useValidation(type, validations) {
         if (key === "matches") {
           schema = handleMatches(value, schema);
         } else {
-          if (_.isArray(value)) {
+          if (_.isArray(value) && !["oneOf", "notOneOf"].includes(key)) {
             schema = schema[key](...value);
           } else {
             schema = schema[key](value);

@@ -1,6 +1,6 @@
 # React Material UI Form Builder
 
-An easy-to-use and quick form builder using the following React Material UI input components:
+An easy-to-use and quick form builder with validation using the following React [Material UI](https://material-ui.com/) input components:
 
 - TextField
 - Select
@@ -11,6 +11,8 @@ An easy-to-use and quick form builder using the following React Material UI inpu
 - Checkbox
 - Radio
 - Switch
+
+Validation is done using [yup](https://github.com/jquense/yup).
 
 This project aims to make building standard forms a breeze while leveraging Material UI components to create a more familiar UI. See below for usage examples.
 
@@ -24,7 +26,7 @@ npm install --save @jeremyling/react-material-ui-form-builder
 
 Suppose you need to submit a form with the following structure:
 
-```javascript
+```jsx
 // Employee
 {
   name: "First Last",
@@ -42,7 +44,7 @@ Suppose you need to submit a form with the following structure:
 
 Subordinates are other employees with the same data structure as above. Other data you have include:
 
-```javascript
+```jsx
 const employees = [
   {
     id: 1,
@@ -354,5 +356,54 @@ export default function EmployeeForm(props) {
 | groupContainerProps | `object`            | `undefined`                                                                                                                                                                                    | Only for `chip-group`, `checkbox-group` and `radio-group`. Any additional props to pass to Material UI's FormControlGroup that wraps the individual components within the group.                                                                                                   |
 | hideCondition       | `bool`              | `undefined`                                                                                                                                                                                    | Hides field if truthy                                                                                                                                                                                                                                                              |
 | customComponent     | `func`              | `undefined`                                                                                                                                                                                    | Function that accepts the props `(field, form, updateForm)` and returns a node                                                                                                                                                                                                     |
-| validationType      | `string`            | `undefined`                                                                                                                                                                                    | Only used for `text-field`. One of: `string` or `number`.                                                                                                                                                                                                                          |
-| validations         | `object`            | `undefined`                                                                                                                                                                                    | These are validation options accepted by `yup` in the form of `{validation: arguments}`. Arguments can be a `string` or an `array` of strings in the order that it is accepted by the `yup` option. For validations that do not require any arguments, set the argument to `true`. |
+| validationType^     | `string`            | `undefined`                                                                                                                                                                                    | Only used for `text-field`. One of: `string` or `number`.                                                                                                                                                                                                                          |
+| validations^        | `object`            | `undefined`                                                                                                                                                                                    | These are validation options accepted by `yup` in the form of `{validation: arguments}`. Arguments can be a `string` or an `array` of strings in the order that it is accepted by the `yup` option. For validations that do not require any arguments, set the argument to `true`. |
+
+^See below for examples
+
+## Validation
+
+Validation is done using yup, which has 6 core types that inherit from the `mixed` type: `string`, `number`, `boolean`, `date`, `array` and `object`. For this project, it should be sufficient to use only `string` and `number` for the various components. In fact, other than the `text-field` component, it is unlikely you would need any validation beyond `required`. Here are some examples of how you might use validation.
+
+```jsx
+// Example field 1
+{
+  attribute: ...,
+  component: 'text-field',
+  label: ...,
+  validationType: 'string',
+  validations: {
+    required: true,
+    length: 10,
+    min: 5,
+    max: 20,
+    matches: [/[a-z]/i, 'Can only contain letters'],
+    email: true,
+    url: true,
+    uuid: true,
+  }
+}
+
+// Example field 2
+{
+  attribute: ...,
+  component: 'text-field',
+  props: {
+    type: 'number',
+  },
+  label: ...,
+  validationType: 'number',
+  validations: {
+    required: true,
+    min: 5,
+    max: 20,
+    lessThan: 20,
+    moreThan: 5,
+    positive: true,
+    negative: true,
+    integer: true,
+  }
+}
+```
+
+For dates, most validation can already be done with Material UI's pickers.
