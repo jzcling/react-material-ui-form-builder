@@ -9,6 +9,7 @@ import StandardRadioGroup from "./Components/Forms/StandardRadioGroup";
 import StandardSelect from "./Components/Forms/StandardSelect";
 import StandardSwitch from "./Components/Forms/StandardSwitch";
 import StandardTextField from "./Components/Forms/StandardTextField";
+import useValidation from "./Hooks/useValidation";
 
 export {
   StandardAutocomplete,
@@ -21,5 +22,6 @@ export {
   StandardSelect,
   StandardSwitch,
   StandardTextField,
+  useValidation,
 };
 export default FormBuilder;
