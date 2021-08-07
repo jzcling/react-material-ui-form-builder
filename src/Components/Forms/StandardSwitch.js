@@ -5,14 +5,23 @@ import {
   Typography,
   FormHelperText,
   FormControl,
+  makeStyles,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
 import { getValidations } from "../../Helpers";
+import classes from "*.module.css";
+
+const useStyles = makeStyles((theme) => ({
+  ml0: {
+    marginLeft: 0,
+  },
+}));
 
 function StandardSwitch(props) {
+  const classes = useStyles();
   const { field, form, updateForm } = props;
   const { errors, validate } = useValidation("mixed", getValidations(field));
 
@@ -48,6 +57,7 @@ function StandardSwitch(props) {
           key={field.id}
           control={<Switch {...componentProps(field)} />}
           label={field.label}
+          className={classes.ml0}
           {...field.labelProps}
         />
         <FormHelperText>{errors[0]}</FormHelperText>
