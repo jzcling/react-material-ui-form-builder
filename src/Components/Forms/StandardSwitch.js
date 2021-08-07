@@ -43,7 +43,7 @@ function StandardSwitch(props) {
       {field.title && (
         <Typography {...field.titleProps}>{field.title}</Typography>
       )}
-      <FormControl fullWidth error={errors.length > 0}>
+      <FormControl error={errors.length > 0}>
         <FormControlLabel
           key={field.id}
           control={<Switch {...componentProps(field)} />}
