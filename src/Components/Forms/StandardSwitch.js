@@ -12,7 +12,6 @@ import _ from "lodash";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
 import { getValidations } from "../../Helpers";
-import classes from "*.module.css";
 
 const useStyles = makeStyles((theme) => ({
   ml0: {
