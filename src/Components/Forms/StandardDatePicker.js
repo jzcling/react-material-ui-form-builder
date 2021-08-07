@@ -7,8 +7,8 @@ import {
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { makeStyles, Typography } from "@material-ui/core";
-import useValidation from "./useValidation";
 import { getValidations } from "../../Helpers";
+import useValidation from "../../Hooks/useValidation";
 
 const useStyles = makeStyles((theme) => ({
   datePicker: {

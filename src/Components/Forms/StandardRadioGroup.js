@@ -74,6 +74,7 @@ function StandardRadioGroup(props) {
   const containerProps = (field) => {
     return {
       component: "fieldset",
+      error: errors.length > 0,
       ...field.groupContainerProps,
     };
   };
