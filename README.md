@@ -96,7 +96,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EmployeeForm(props) {
   const [form, setForm] = useState({});
-  const [errors, setErrors] = useState({});
 
   const updateForm = (key, value) => {
     const copy = JSON.parse(JSON.stringify(form));
@@ -104,22 +103,13 @@ export default function EmployeeForm(props) {
     setForm(copy);
   };
 
-  const updateErrors = (key, value) => {
-    ...
-  };
-
-  const validateEmail = (email) => {
-    // Update errors on failed validation
-    ...
-  };
-
   const fields = [
     {
-      component: 'display-text',
+      component: "display-text",
       titleProps: {
-        variant: 'h6',
+        variant: "h6",
       },
-      title: 'Create Employee',
+      title: "Create Employee",
     },
     {
       component: "display-image",
@@ -141,6 +131,11 @@ export default function EmployeeForm(props) {
         // Here you can specify how many Grid columns the field should take for the corresponding breakpoints
         sm: 6,
       },
+      validationType: "string",
+      validations: {
+        required: true,
+        max: 50,
+      },
     },
     {
       attribute: "email",
@@ -151,9 +146,11 @@ export default function EmployeeForm(props) {
       component: "text-field",
       props: {
         // Here you can pass any props that are accepted by Material UI's TextField component
-        error: !!errors.email,
-        helperText: errors.email,
-        onBlur: (event) => validateEmail(form.email),
+      },
+      validationType: "string",
+      validations: {
+        required: true,
+        email: true,
       },
     },
     {
@@ -214,7 +211,7 @@ export default function EmployeeForm(props) {
         },
       },
       labelProps: {
-        // Here you can pass any props that are accepted by Material UI's Typography component
+        // Here you can pass any props that are accepted by Material UI's FormControlLabel component
         variant: "body2",
       },
       groupContainerProps: {
@@ -235,7 +232,7 @@ export default function EmployeeForm(props) {
         color: "secondary",
       },
       labelProps: {
-        // Here you can pass any props that are accepted by Material UI's Typography component
+        // Here you can pass any props that are accepted by Material UI's FormControlLabel component
         variant: "body2",
       },
       groupContainerProps: {
@@ -256,10 +253,11 @@ export default function EmployeeForm(props) {
       props: {
         // Here you can pass any props that are accepted by Material UI's Radio component
         color: "secondary",
-        checked: _.get(form, "status") === 'Active',
-        onChange: (event) => event.target.checked
-          ? updateForm("status", "Active")
-          : updateForm("status", "Inactive"),
+        checked: _.get(form, "status") === "Active",
+        onChange: (event) =>
+          event.target.checked
+            ? updateForm("status", "Active")
+            : updateForm("status", "Inactive"),
       },
       idPrefix: "switch",
     },
@@ -276,7 +274,7 @@ export default function EmployeeForm(props) {
         // Here you can pass any props that are accepted by Material UI's Chip component
       },
       labelProps: {
-        // Here you can pass any props that are accepted by Material UI's Typography component
+        // Here you can pass any props that are accepted by Material UI's FormControlLabel component
         variant: "body2",
       },
       groupContainerProps: {
@@ -298,7 +296,9 @@ export default function EmployeeForm(props) {
         autoHighlight: true,
         multiple: true,
       },
-      hideCondition: (jobs.find((j) => j.id === form.jobId) || {}).title === "Entry Level Staff", // This will hide the form field if the condition is truthy
+      hideCondition:
+        (jobs.find((j) => j.id === form.jobId) || {}).title ===
+        "Entry Level Staff", // This will hide the form field if the condition is truthy
     },
     {
       attribute: "profilePicFile",
@@ -336,20 +336,23 @@ export default function EmployeeForm(props) {
 
 ## Field Props
 
-| Prop                | Type                | Default                                                                                                                                                                                        | Description                                                                                                                                                                                                                         |
-| ------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| attribute           | `string`            | `undefined`                                                                                                                                                                                    | Form attribute that controls input and is modified by input                                                                                                                                                                         |
-| label               | `string`            | `undefined`                                                                                                                                                                                    | Component label for `text-field`, `select`, `autocomplete`, `date-picker`, `date-time-picker`, `switch`. Can be omitted if label is not required.                                                                                   |
-| title               | `string`            | `undefined`                                                                                                                                                                                    | Title for component. Can be used to describe input or hold a question.                                                                                                                                                              |
-| col                 | `object`            | `{ xs: 12 }`                                                                                                                                                                                   | Grid columns that component should take                                                                                                                                                                                             |
-| component           | `string`            | `text-field`                                                                                                                                                                                   | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`autocomplete`,<br />`chip-group`,<br />`checkbox-group`,<br />`radio-group`,<br />`switch`,<br />`display-text`,<br />`display-image` |
-| options             | `array`             | `[]`                                                                                                                                                                                           | Required if component is one of `select`, `autocomplete`, `chip-group`, `checkbox-group` or `radio-group`                                                                                                                           |
-| optionConfig        | `object`            | select, chip-group, checkbox-group, radio-group: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ value: option, label: option }`                             | Required if options is an array of objects                                                                                                                                                                                          |
-| multiple            | `bool`              | `undefined`                                                                                                                                                                                    | Only for `chip-group` and `checkbox-group`. If true, multiple options will be selectible                                                                                                                                            |
-| acceptTypes         | `string` or `array` | `[".pdf", ".doc", ".docx", ".xml", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", ".xls", ".xlsx", ".csv", "image/*", "audio/*", "video/*"]` | Only for `file-upload`. Concatenated value will be passed as `accept` prop to `input`                                                                                                                                               |
-| maxSizeMb           | `number`            | `2`                                                                                                                                                                                            | Only for `file-upload`. Max size of each uploaded file.                                                                                                                                                                             |
-| props               | `object`            | `undefined`                                                                                                                                                                                    | Any additional props to pass to the Material UI component                                                                                                                                                                           |
-| containerProps      | `object`            | `undefined`                                                                                                                                                                                    | Any additional props to pass to the Material UI Grid item that contains the component                                                                                                                                               |
-| labelProps          | `object`            | `undefined`                                                                                                                                                                                    | Only for `checkbox-group`, `radio-group` and `switch`. Any additional props to pass to Material UI's FormControlLabel that wraps the label.                                                                                         |
-| groupContainerProps | `object`            | `undefined`                                                                                                                                                                                    | Only for `chip-group`, `checkbox-group` and `radio-group`. Any additional props to pass to Material UI's FormControlGroup that wraps the individual components within the group.                                                    |
-| hideCondition       | `bool`              | `undefined`                                                                                                                                                                                    | Hides field if truthy                                                                                                                                                                                                               |
+| Prop                | Type                | Default                                                                                                                                                                                        | Description                                                                                                                                                                                                                                                                        |
+| ------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| attribute           | `string`            | `undefined`                                                                                                                                                                                    | Form attribute that controls input and is modified by input                                                                                                                                                                                                                        |
+| label               | `string`            | `undefined`                                                                                                                                                                                    | Component label for `text-field`, `select`, `autocomplete`, `date-picker`, `date-time-picker`, `switch`. Can be omitted if label is not required.                                                                                                                                  |
+| title               | `string`            | `undefined`                                                                                                                                                                                    | Title for component. Can be used to describe input or hold a question.                                                                                                                                                                                                             |
+| col                 | `object`            | `{ xs: 12 }`                                                                                                                                                                                   | Grid columns that component should take                                                                                                                                                                                                                                            |
+| component           | `string`            | `text-field`                                                                                                                                                                                   | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`autocomplete`,<br />`chip-group`,<br />`checkbox-group`,<br />`radio-group`,<br />`switch`,<br />`file-upload`,<br />`display-text`,<br />`display-image`,<br />`custom`             |
+| options             | `array`             | `[]`                                                                                                                                                                                           | Required if component is one of `select`, `autocomplete`, `chip-group`, `checkbox-group` or `radio-group`                                                                                                                                                                          |
+| optionConfig        | `object`            | select, chip-group, checkbox-group, radio-group: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ value: option, label: option }`                             | Required if options is an array of objects                                                                                                                                                                                                                                         |
+| multiple            | `bool`              | `undefined`                                                                                                                                                                                    | Only for `chip-group` and `checkbox-group`. If true, multiple options will be selectible                                                                                                                                                                                           |
+| acceptTypes         | `string` or `array` | `[".pdf", ".doc", ".docx", ".xml", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", ".xls", ".xlsx", ".csv", "image/*", "audio/*", "video/*"]` | Only for `file-upload`. Concatenated value will be passed as `accept` prop to `input`                                                                                                                                                                                              |
+| maxSizeMb           | `number`            | `2`                                                                                                                                                                                            | Only for `file-upload`. Max size of each uploaded file.                                                                                                                                                                                                                            |
+| props               | `object`            | `undefined`                                                                                                                                                                                    | Any additional props to pass to the Material UI component                                                                                                                                                                                                                          |
+| containerProps      | `object`            | `undefined`                                                                                                                                                                                    | Any additional props to pass to the Material UI Grid item that contains the component                                                                                                                                                                                              |
+| labelProps          | `object`            | `undefined`                                                                                                                                                                                    | Only for `checkbox-group`, `radio-group` and `switch`. Any additional props to pass to Material UI's FormControlLabel that wraps the label.                                                                                                                                        |
+| groupContainerProps | `object`            | `undefined`                                                                                                                                                                                    | Only for `chip-group`, `checkbox-group` and `radio-group`. Any additional props to pass to Material UI's FormControlGroup that wraps the individual components within the group.                                                                                                   |
+| hideCondition       | `bool`              | `undefined`                                                                                                                                                                                    | Hides field if truthy                                                                                                                                                                                                                                                              |
+| customComponent     | `func`              | `undefined`                                                                                                                                                                                    | Function that accepts the props `(field, form, updateForm)` and returns a node                                                                                                                                                                                                     |
+| validationType      | `string`            | `undefined`                                                                                                                                                                                    | Only used for `text-field`. One of: `string` or `number`.                                                                                                                                                                                                                          |
+| validations         | `object`            | `undefined`                                                                                                                                                                                    | These are validation options accepted by `yup` in the form of `{validation: arguments}`. Arguments can be a `string` or an `array` of strings in the order that it is accepted by the `yup` option. For validations that do not require any arguments, set the argument to `true`. |
