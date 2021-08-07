@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { makeStyles, TextField, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import useValidation from "../../Hooks/useValidation";
 
 const useStyles = makeStyles((theme) => ({
   textFieldRoot: {
@@ -9,9 +10,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getType = (field) => {
+  if (field.validationType) {
+    return field.validationType;
+  }
+  if (!(field.props && field.props.type) || field.props.type !== "number") {
+    return "string";
+  }
+  return "number";
+};
+
+const getValidations = (field) => {
+  var validations = {};
+  const type = field.props && field.props.type;
+  if (type === "email") {
+    validations.email = true;
+  }
+  if (type === "url") {
+    validations.url = true;
+  }
+  if (field.label) {
+    validations.label = field.label;
+  }
+  validations = { ...validations, ...field.validations };
+  return validations;
+};
+
+const getValue = (value) => {
+  if (value === null || value === undefined) {
+    return "";
+  }
+  return value;
+};
+
 function StandardTextField(props) {
   const classes = useStyles();
   const { field, form, updateForm } = props;
+  const { errors, validate } = useValidation(
+    getType(field),
+    getValidations(field)
+  );
 
   const componentProps = (field) => {
     return {
@@ -23,7 +61,7 @@ function StandardTextField(props) {
       variant: "outlined",
       margin: "dense",
       label: field.label,
-      value: _.get(form, field.attribute) || "",
+      value: getValue(_.get(form, field.attribute)),
       onChange: (event) => {
         var value = event.target.value;
         if (field.props && field.props.type === "number") {
@@ -33,6 +71,14 @@ function StandardTextField(props) {
       },
       InputLabelProps: {
         shrink: !!_.get(form, field.attribute),
+      },
+      error: errors.length > 0,
+      helperText: errors[0],
+      onBlur: (event) => validate(_.get(form, field.attribute)),
+      onKeyUp: (event) => {
+        if (event.key === "Enter") {
+          validate(_.get(form, field.attribute));
+        }
       },
       ...field.props,
     };

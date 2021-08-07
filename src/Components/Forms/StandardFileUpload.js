@@ -1,8 +1,15 @@
 import React, { Fragment, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
-import { ButtonBase, makeStyles, Typography } from "@material-ui/core";
+import {
+  ButtonBase,
+  makeStyles,
+  Typography,
+  useTheme,
+} from "@material-ui/core";
 import _ from "lodash";
+import useValidation from "../../Hooks/useValidation";
+import { getValidations } from "../../Helpers";
 
 const fileTypes = [
   ".pdf",
@@ -22,7 +29,8 @@ const fileTypes = [
 const useStyles = makeStyles((theme) => ({
   input: {
     justifyContent: "start",
-    border: "1px solid #b9b9b9",
+    border: (errors) =>
+      `1px solid ${errors.length > 0 ? theme.palette.error.main : "#b9b9b9"}`,
     borderRadius: "4px",
     width: "100%",
     padding: "7px 10px",
@@ -39,9 +47,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function StandardFileUpload(props) {
-  const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { field, form, updateForm } = props;
+  const { errors, validate } = useValidation("mixed", getValidations(field));
+  const classes = useStyles(errors);
 
   const files = useMemo(() => {
     if (_.get(form, field.attribute)) {
@@ -110,7 +119,10 @@ export default function StandardFileUpload(props) {
         <Typography {...field.titleProps}>{field.title}</Typography>
       )}
       <input {...componentProps(field)} />
-      <label htmlFor={componentProps(field).id}>
+      <label
+        htmlFor={componentProps(field).id}
+        onBlur={(event) => validate(_.get(form, field.attribute))}
+      >
         {files.length > 0 ? (
           <ButtonBase className={classes.buttonBase} component="div">
             {files.map((file, index) => (
@@ -123,6 +135,9 @@ export default function StandardFileUpload(props) {
           <ButtonBase className={classes.input} component="div">
             <Typography style={{ color: "#777777" }}>{field.label}</Typography>
           </ButtonBase>
+        )}
+        {errors.length > 0 && (
+          <Typography className={classes.errorText}>{errors[0]}</Typography>
         )}
       </label>
     </Fragment>

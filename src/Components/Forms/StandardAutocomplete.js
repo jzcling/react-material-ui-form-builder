@@ -3,6 +3,8 @@ import { makeStyles, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import _ from "lodash";
 import PropTypes from "prop-types";
+import useValidation from "../../Hooks/useValidation";
+import { getValidations } from "../../Helpers";
 
 const useStyles = makeStyles((theme) => ({
   autocomplete: {
@@ -15,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 function StandardAutocomplete(props) {
   const classes = useStyles();
   const { field, form, updateForm } = props;
+  const { errors, validate } = useValidation("mixed", getValidations(field));
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -105,6 +108,8 @@ function StandardAutocomplete(props) {
             autoComplete: "off", // disable autocomplete and autofill
           }}
           label={field.label}
+          error={errors.length > 0}
+          helperText={errors[0]}
         />
       ),
       value:
@@ -113,6 +118,7 @@ function StandardAutocomplete(props) {
       onChange: (event, option) => {
         updateForm(field.attribute, optionConfig(option).value);
       },
+      onBlur: (event) => validate(_.get(form, field.attribute)),
       className: classes.autocomplete,
       ...field.props,
     };

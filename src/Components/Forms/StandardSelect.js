@@ -1,10 +1,26 @@
 import React, { Fragment, useMemo } from "react";
-import { FormControl, InputLabel, Select, Typography } from "@material-ui/core";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  Select,
+  Typography,
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { getValidations } from "../../Helpers";
+import useValidation from "../../Hooks/useValidation";
+
+const getValue = (value) => {
+  if (value === null || value === undefined) {
+    return "";
+  }
+  return value;
+};
 
 function StandardSelect(props) {
   const { field, form, updateForm } = props;
+  const { errors, validate } = useValidation("string", getValidations(field));
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -42,8 +58,9 @@ function StandardSelect(props) {
         name: field.attribute,
         id: field.id || field.attribute,
       },
-      value: _.get(form, field.attribute) || "",
+      value: getValue(_.get(form, field.attribute)),
       onChange: (event) => updateForm(field.attribute, event.target.value),
+      onBlur: (event) => validate(_.get(form, field.attribute)),
       label: field.label,
       ...field.props,
     };
@@ -54,7 +71,7 @@ function StandardSelect(props) {
       {field.title && (
         <Typography {...field.titleProps}>{field.title}</Typography>
       )}
-      <FormControl variant="outlined" fullWidth>
+      <FormControl variant="outlined" fullWidth error={errors.length > 0}>
         <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
           {field.label}
         </InputLabel>
@@ -69,6 +86,7 @@ function StandardSelect(props) {
             </option>
           ))}
         </Select>
+        <FormHelperText>{errors[0]}</FormHelperText>
       </FormControl>
     </Fragment>
   );

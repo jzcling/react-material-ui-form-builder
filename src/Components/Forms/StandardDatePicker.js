@@ -7,6 +7,8 @@ import {
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { makeStyles, Typography } from "@material-ui/core";
+import useValidation from "./useValidation";
+import { getValidations } from "../../Helpers";
 
 const useStyles = makeStyles((theme) => ({
   datePicker: {
@@ -21,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 function StandardDatePicker(props) {
   const classes = useStyles();
   const { field, form, updateForm } = props;
+  const { errors, validate } = useValidation("date", getValidations(field));
 
   const componentProps = (field) => {
     return {
@@ -40,6 +43,14 @@ function StandardDatePicker(props) {
       },
       InputProps: {
         className: classes.datePickerInput,
+      },
+      error: errors.length > 0,
+      helperText: errors[0],
+      onBlur: (event) => validate(_.get(form, field.attribute)),
+      onKeyUp: (event) => {
+        if (event.key === "Enter") {
+          validate(_.get(form, field.attribute));
+        }
       },
       ...field.props,
     };

@@ -1,11 +1,19 @@
 import React from "react";
-import { Switch, FormControlLabel, Typography } from "@material-ui/core";
+import {
+  Switch,
+  FormControlLabel,
+  Typography,
+  FormHelperText,
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
+import useValidation from "../../Hooks/useValidation";
+import { getValidations } from "../../Helpers";
 
 function StandardSwitchGroup(props) {
   const { field, form, updateForm } = props;
+  const { errors, validate } = useValidation("mixed", getValidations(field));
 
   const handleSwitchChange = (checked) => {
     if (checked) {
@@ -24,6 +32,7 @@ function StandardSwitchGroup(props) {
       color: "primary",
       checked: isSelected,
       onChange: (event) => handleSwitchChange(event.target.checked),
+      onBlur: (event) => validate(_.get(form, field.attribute)),
       ...field.props,
     };
   };
@@ -37,8 +46,10 @@ function StandardSwitchGroup(props) {
         key={field.id}
         control={<Switch {...componentProps(field)} />}
         label={field.label}
+        error={errors.length > 0}
         {...field.labelProps}
       />
+      <FormHelperText>{errors[0]}</FormHelperText>
     </Fragment>
   );
 }

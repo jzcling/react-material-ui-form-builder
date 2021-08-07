@@ -3,22 +3,18 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
-  makeStyles,
+  FormHelperText,
   Typography,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
-
-const useStyles = makeStyles((theme) => ({
-  groupContainer: {
-    margin: theme.spacing(1),
-  },
-}));
+import useValidation from "../../Hooks/useValidation";
+import { getValidations } from "../../Helpers";
 
 function StandardCheckboxGroup(props) {
   const { field, form, updateForm } = props;
-  const classes = useStyles();
+  const { errors, validate } = useValidation("mixed", getValidations(field));
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -92,13 +88,13 @@ function StandardCheckboxGroup(props) {
       color: "primary",
       checked: isSelected,
       onChange: (event) => handleCheckboxChange(option, event.target.checked),
+      onBlur: (event) => validate(_.get(form, field.attribute)),
       ...field.props,
     };
   };
 
   const containerProps = (field) => {
     return {
-      className: classes.groupContainer,
       component: "fieldset",
       ...field.groupContainerProps,
     };
@@ -115,9 +111,11 @@ function StandardCheckboxGroup(props) {
             key={field.id + "-" + index}
             control={<Checkbox {...componentProps(field, option)} />}
             label={optionConfig(option).label}
+            error={errors.length > 0}
             {...field.labelProps}
           />
         ))}
+        <FormHelperText>{errors[0]}</FormHelperText>
       </FormGroup>
     </Fragment>
   );

@@ -3,27 +3,27 @@ import {
   Chip,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
   makeStyles,
   Typography,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
+import useValidation from "../../Hooks/useValidation";
+import { getValidations } from "../../Helpers";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
     marginRight: theme.spacing(1),
     marginTop: theme.spacing(1),
   },
-  groupContainer: {
-    margin: theme.spacing(1),
-    flexDirection: "row",
-  },
 }));
 
 function StandardChipGroup(props) {
   const classes = useStyles();
   const { field, form, updateForm } = props;
+  const { errors, validate } = useValidation("mixed", getValidations(field));
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -97,13 +97,13 @@ function StandardChipGroup(props) {
       color: isSelected ? "primary" : "default",
       variant: isSelected ? "default" : "outlined",
       onClick: () => handleChipClick(option),
+      onBlur: (event) => validate(_.get(form, field.attribute)),
       ...field.props,
     };
   };
 
   const containerProps = (field) => {
     return {
-      className: classes.groupContainer,
       component: "fieldset",
       ...field.groupContainerProps,
     };
@@ -119,8 +119,11 @@ function StandardChipGroup(props) {
           <FormControlLabel
             key={field.id + "-" + index}
             control={<Chip key={field.id} {...componentProps(field, option)} />}
+            error={errors.length > 0}
+            {...field.labelProps}
           />
         ))}
+        <FormHelperText>{errors[0]}</FormHelperText>
       </FormGroup>
     </Fragment>
   );
