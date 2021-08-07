@@ -5,6 +5,7 @@ import {
   FormGroup,
   Typography,
   FormHelperText,
+  FormControl,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
@@ -85,16 +86,17 @@ function StandardRadioGroup(props) {
         <Typography {...field.titleProps}>{field.title}</Typography>
       )}
       <FormGroup {...containerProps(field)}>
-        {(field.options || []).map((option, index) => (
-          <FormControlLabel
-            key={field.id + "-" + index}
-            control={<Radio {...componentProps(field, option)} />}
-            label={optionConfig(option).label}
-            error={errors.length > 0}
-            {...field.labelProps}
-          />
-        ))}
-        <FormHelperText>{errors[0]}</FormHelperText>
+        <FormControl error={errors.length > 0}>
+          {(field.options || []).map((option, index) => (
+            <FormControlLabel
+              key={field.id + "-" + index}
+              control={<Radio {...componentProps(field, option)} />}
+              label={optionConfig(option).label}
+              {...field.labelProps}
+            />
+          ))}
+          <FormHelperText>{errors[0]}</FormHelperText>
+        </FormControl>
       </FormGroup>
     </Fragment>
   );

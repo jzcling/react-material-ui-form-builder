@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import {
   Checkbox,
+  FormControl,
   FormControlLabel,
   FormGroup,
   FormHelperText,
@@ -107,16 +108,17 @@ function StandardCheckboxGroup(props) {
         <Typography {...field.titleProps}>{field.title}</Typography>
       )}
       <FormGroup {...containerProps(field)}>
-        {(field.options || []).map((option, index) => (
-          <FormControlLabel
-            key={field.id + "-" + index}
-            control={<Checkbox {...componentProps(field, option)} />}
-            label={optionConfig(option).label}
-            error={errors.length > 0}
-            {...field.labelProps}
-          />
-        ))}
-        <FormHelperText>{errors[0]}</FormHelperText>
+        <FormControl error={errors.length > 0}>
+          {(field.options || []).map((option, index) => (
+            <FormControlLabel
+              key={field.id + "-" + index}
+              control={<Checkbox {...componentProps(field, option)} />}
+              label={optionConfig(option).label}
+              {...field.labelProps}
+            />
+          ))}
+          <FormHelperText>{errors[0]}</FormHelperText>
+        </FormControl>
       </FormGroup>
     </Fragment>
   );
