@@ -1,12 +1,7 @@
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
-import {
-  ButtonBase,
-  makeStyles,
-  Typography,
-  useTheme,
-} from "@material-ui/core";
+import { ButtonBase, Grid, makeStyles, Typography } from "@material-ui/core";
 import _ from "lodash";
 import useValidation from "../../Hooks/useValidation";
 import { getValidations } from "../../Helpers";
@@ -27,8 +22,31 @@ const fileTypes = [
 ];
 
 const useStyles = makeStyles((theme) => ({
+  inputRoot: {
+    textAlign: "center",
+  },
+  imageContainerRoot: {
+    display: "inline-block",
+    position: "relative",
+    width: "150px",
+  },
+  imageSizer: {
+    marginTop: "100%",
+  },
+  imageContainer: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    objectFit: "contain",
+  },
   input: {
-    justifyContent: "start",
+    textAlign: "start",
     border: (errors) =>
       `1px solid ${errors.length > 0 ? theme.palette.error.main : "#b9b9b9"}`,
     borderRadius: "4px",
@@ -40,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1, 0),
   },
   buttonBase: {
-    textAlign: "start",
     width: "100%",
     display: "block",
   },
@@ -50,7 +67,9 @@ export default function StandardFileUpload(props) {
   const { enqueueSnackbar } = useSnackbar();
   const { field, form, updateForm } = props;
   const { errors, validate } = useValidation("mixed", getValidations(field));
-  const classes = useStyles(errors);
+  const classes = useStyles({ errors: errors });
+
+  const [imageUrls, setImageUrls] = useState([]);
 
   const files = useMemo(() => {
     if (_.get(form, field.attribute)) {
@@ -83,6 +102,7 @@ export default function StandardFileUpload(props) {
     }
 
     var input = [];
+    var imageUrls = [];
     for (const file of files) {
       if (file.size > maxSizeMb * 1024 * 1024) {
         enqueueSnackbar("File should be less than " + maxSizeMb + " MB", {
@@ -91,6 +111,9 @@ export default function StandardFileUpload(props) {
         continue;
       }
       input.push(file);
+
+      const url = URL.createObjectURL(file);
+      imageUrls.push(url);
     }
 
     // If not multiple, there should be only 1 file
@@ -99,6 +122,7 @@ export default function StandardFileUpload(props) {
     }
 
     updateForm(field.attribute, input);
+    setImageUrls(imageUrls);
   };
 
   const componentProps = (field) => {
@@ -126,14 +150,65 @@ export default function StandardFileUpload(props) {
         {files.length > 0 ? (
           <ButtonBase className={classes.buttonBase} component="div">
             {files.map((file, index) => (
-              <Typography key={index} className={classes.input}>
-                {file.name}
-              </Typography>
+              <div className={classes.inputRoot} key={index}>
+                {field.imageUrl && (
+                  <div
+                    item
+                    className={classes.imageContainerRoot}
+                    style={{
+                      width: (field.imageSize || [])[0],
+                      height: (field.imageSize || [])[1],
+                    }}
+                  >
+                    <div className={classes.imageSizer} />
+                    <div className={classes.imageContainer}>
+                      <img
+                        src={
+                          (imageUrls || [])[index] ||
+                          (field.imageUrl || [])[index]
+                        }
+                        alt={
+                          field.label ? `${field.label} ${index}` : file.name
+                        }
+                        loading="lazy"
+                        className={classes.image}
+                      />
+                    </div>
+                  </div>
+                )}
+                <Typography className={classes.input}>{file.name}</Typography>
+              </div>
             ))}
           </ButtonBase>
         ) : (
-          <ButtonBase className={classes.input} component="div">
-            <Typography style={{ color: "#777777" }}>{field.label}</Typography>
+          <ButtonBase className={classes.buttonBase} component="div">
+            <div className={classes.inputRoot}>
+              {field.imageUrl && (
+                <div
+                  className={classes.imageContainerRoot}
+                  style={{
+                    width: (field.imageSize || [])[0],
+                    height: (field.imageSize || [])[1],
+                  }}
+                >
+                  <div className={classes.imageSizer} />
+                  <div className={classes.imageContainer}>
+                    <img
+                      src={imageUrls[0] || field.imageUrl}
+                      alt={field.label || files[0].name}
+                      loading="lazy"
+                      className={classes.image}
+                    />
+                  </div>
+                </div>
+              )}
+              <Typography
+                style={{ color: "#777777" }}
+                className={classes.input}
+              >
+                {field.label}
+              </Typography>
+            </div>
           </ButtonBase>
         )}
         {errors.length > 0 && (
