@@ -12,6 +12,7 @@ import StandardRadioGroup from "./Forms/StandardRadioGroup";
 import StandardSelect from "./Forms/StandardSelect";
 import StandardSwitch from "./Forms/StandardSwitch";
 import StandardTextField from "./Forms/StandardTextField";
+import ReactPlayer from "react-player";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -128,6 +129,17 @@ function FormBuilder(props) {
               alt={field.alt}
               {...field.props}
               loading="lazy"
+            />
+          </div>
+        );
+      case "display-media":
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <ReactPlayer
+              url={field.src}
+              controls
+              width={field.width}
+              height={field.height}
             />
           </div>
         );
