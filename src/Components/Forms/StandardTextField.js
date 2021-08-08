@@ -65,12 +65,18 @@ function StandardTextField(props) {
       onChange: (event) => {
         var value = event.target.value;
         if (field.props && field.props.type === "number") {
-          value = Number(value);
+          if (value === "" || value === null || value === undefined) {
+            value = undefined;
+          } else {
+            value = Number(value);
+          }
         }
         updateForm(field.attribute, value);
       },
       InputLabelProps: {
-        shrink: !!_.get(form, field.attribute),
+        shrink:
+          _.get(form, field.attribute) !== null &&
+          _.get(form, field.attribute) !== undefined,
       },
       error: errors.length > 0,
       helperText: errors[0],
