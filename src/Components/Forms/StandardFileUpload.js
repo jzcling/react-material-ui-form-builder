@@ -1,7 +1,7 @@
 import React, { Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
-import { ButtonBase, Grid, makeStyles, Typography } from "@material-ui/core";
+import { ButtonBase, makeStyles, Typography } from "@material-ui/core";
 import _ from "lodash";
 import useValidation from "../../Hooks/useValidation";
 import { getValidations } from "../../Helpers";
@@ -28,11 +28,15 @@ const useStyles = makeStyles((theme) => ({
   imageContainerRoot: {
     display: "inline-block",
     position: "relative",
-    width: "150px",
+    width: "100%",
   },
-  imageSizer: {
-    marginTop: "100%",
-  },
+  imageSizer: ({ aspectRatio, imageSize }) => ({
+    marginTop: `${
+      ((imageSize[1] || aspectRatio[1] || 1) /
+        (imageSize[0] || aspectRatio[0] || 1)) *
+      100
+    }%`,
+  }),
   imageContainer: {
     position: "absolute",
     top: 0,
@@ -47,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     textAlign: "start",
-    border: (errors) =>
+    border: ({ errors }) =>
       `1px solid ${errors.length > 0 ? theme.palette.error.main : "#b9b9b9"}`,
     borderRadius: "4px",
     width: "100%",
@@ -67,7 +71,11 @@ export default function StandardFileUpload(props) {
   const { enqueueSnackbar } = useSnackbar();
   const { field, form, updateForm } = props;
   const { errors, validate } = useValidation("mixed", getValidations(field));
-  const classes = useStyles({ errors: errors });
+  const classes = useStyles({
+    errors: errors,
+    aspectRatio: field.aspectRatio || [],
+    imageSize: field.imageSize || [],
+  });
 
   const [imageUrls, setImageUrls] = useState([]);
 
@@ -167,16 +175,18 @@ export default function StandardFileUpload(props) {
                           (imageUrls || [])[index] ||
                           (field.imageUrl || [])[index]
                         }
-                        alt={
-                          field.label ? `${field.label} ${index}` : file.name
-                        }
+                        alt={file.name}
                         loading="lazy"
                         className={classes.image}
                       />
                     </div>
                   </div>
                 )}
-                <Typography className={classes.input}>{file.name}</Typography>
+                <Typography className={classes.input}>
+                  {imageUrls[index] ||
+                    (field.imageUrl || [])[index] ||
+                    file.name}
+                </Typography>
               </div>
             ))}
           </ButtonBase>
@@ -194,8 +204,8 @@ export default function StandardFileUpload(props) {
                   <div className={classes.imageSizer} />
                   <div className={classes.imageContainer}>
                     <img
-                      src={imageUrls[0] || field.imageUrl}
-                      alt={field.label || files[0].name}
+                      src={field.imageUrl}
+                      alt={field.label}
                       loading="lazy"
                       className={classes.image}
                     />
@@ -206,7 +216,7 @@ export default function StandardFileUpload(props) {
                 style={{ color: "#777777" }}
                 className={classes.input}
               >
-                {field.label}
+                {field.imageUrl || field.label}
               </Typography>
             </div>
           </ButtonBase>
