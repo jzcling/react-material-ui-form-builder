@@ -129,8 +129,10 @@ export default function StandardFileUpload(props) {
       input = input[0];
     }
 
-    updateForm(field.attribute, input);
-    setImageUrls(imageUrls);
+    if (field.fileType === "image") {
+      updateForm(field.attribute, input);
+      setImageUrls(imageUrls);
+    }
   };
 
   const componentProps = (field) => {
@@ -159,7 +161,7 @@ export default function StandardFileUpload(props) {
           <ButtonBase className={classes.buttonBase} component="div">
             {files.map((file, index) => (
               <div className={classes.inputRoot} key={index}>
-                {field.imageUrl && (
+                {(field.imageUrl || imageUrls.length > 0) && (
                   <div
                     item
                     className={classes.imageContainerRoot}
