@@ -69,9 +69,11 @@ function StandardAutocomplete(props) {
     [field]
   );
 
-  // Required to handle quirky behaviour of Autocomplete component
-  // where it returns the option object when opening the selection box
-  // and returns the option value upon selection
+  /* 
+  Required to handle quirky behaviour of Autocomplete component
+  where it returns the option object when opening the selection box
+  and returns the option value upon selection 
+  */
   function getLabel(option) {
     if (_.isObject(option)) {
       return String(optionConfig(option).label);
@@ -91,8 +93,10 @@ function StandardAutocomplete(props) {
       fullWidth: true,
       options: field.options,
       getOptionSelected: (option, value) => {
-        // Required to handle the quirky behaviour of Autocomplete component
-        // where it returns the value object sometimes and value value sometimes
+        /* 
+        Required to handle the quirky behaviour of Autocomplete component
+        where it returns the value object sometimes and value value sometimes
+        */
         return _.isObject(value)
           ? optionConfig(option).value === optionConfig(value).value
           : optionConfig(option).value === value;
