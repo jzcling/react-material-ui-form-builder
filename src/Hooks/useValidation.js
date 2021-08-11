@@ -25,7 +25,6 @@ export default function useValidation(type, validations) {
   }
 
   async function validate(value) {
-    console.log(schema);
     try {
       await schema.validate(value);
       setErrors([]);
