@@ -217,7 +217,7 @@ export default function EmployeeForm(props) {
         variant: "body2",
       },
       groupContainerProps: {
-        // Here you can pass any props that are accepted by Material UI's FormGroup component
+        // Here you can pass any props that are accepted by Material UI's FormControl component
       },
       idPrefix: "checkbox",
     },
@@ -238,7 +238,7 @@ export default function EmployeeForm(props) {
         variant: "body2",
       },
       groupContainerProps: {
-        // Here you can pass any props that are accepted by Material UI's FormGroup component
+        // Here you can pass any props that are accepted by Material UI's FormControl component
         classes: {
           root: classes.flexRow,
         },
@@ -275,12 +275,8 @@ export default function EmployeeForm(props) {
       props: {
         // Here you can pass any props that are accepted by Material UI's Chip component
       },
-      labelProps: {
-        // Here you can pass any props that are accepted by Material UI's FormControlLabel component
-        variant: "body2",
-      },
       groupContainerProps: {
-        // Here you can pass any props to a div wrapper
+        // Here you can pass any props that are accepted by Material UI's FormControl component
         style: { overflow: auto },
       },
     },

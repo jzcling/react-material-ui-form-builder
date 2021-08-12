@@ -74,7 +74,6 @@ function StandardRadioGroup(props) {
 
   const containerProps = (field) => {
     return {
-      component: "fieldset",
       error: errors.length > 0,
       ...field.groupContainerProps,
     };
@@ -85,8 +84,8 @@ function StandardRadioGroup(props) {
       {field.title && (
         <Typography {...field.titleProps}>{field.title}</Typography>
       )}
-      <FormGroup {...containerProps(field)}>
-        <FormControl error={errors.length > 0}>
+      <FormGroup component="fieldset">
+        <FormControl {...containerProps(field)}>
           {(field.options || []).map((option, index) => (
             <FormControlLabel
               key={field.id + "-" + index}
