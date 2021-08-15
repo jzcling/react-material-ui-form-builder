@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Grid, makeStyles, Typography } from "@material-ui/core";
@@ -13,6 +13,8 @@ import StandardSelect from "./Forms/StandardSelect";
 import StandardSwitch from "./Forms/StandardSwitch";
 import StandardTextField from "./Forms/StandardTextField";
 import ReactPlayer from "react-player";
+import Editor from "@jeremyling/react-material-ui-rich-text-editor";
+import _ from "lodash";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -36,9 +38,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const initialDocument = [
+  {
+    type: "Paragraph",
+    children: [{ text: "Rich Text" }],
+  },
+];
+
 function FormBuilder(props) {
   const { title, fields, form, updateForm, children, index, idPrefix } = props;
   const classes = useStyles();
+
+  const [documents, setDocuments] = useState({});
+
+  const updateDocument = (attribute, document) => {
+    const copy = _.deepClone(documents);
+    _.set(copy, attribute, document);
+    setDocuments(copy);
+  };
 
   const handleField = (field) => {
     if (!field.id) {
@@ -142,6 +159,14 @@ function FormBuilder(props) {
               height={field.height}
             />
           </div>
+        );
+      case "rich-text":
+        return (
+          <Editor
+            document={_.get(documents, field.attribute) || initialDocument}
+            onChange={(document) => updateDocument(field.attribute, document)}
+            onBlur={(html) => updateForm(field.attribute, html)}
+          />
         );
       case "custom":
         return field.customComponent(field, form, updateForm);

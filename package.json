@@ -1,6 +1,6 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "0.3.12",
+  "version": "0.4.1",
   "scripts": {
     "start": "react-scripts start",
     "build": "NODE_ENV=production && rm -rf dist && mkdir dist && npx babel src --out-dir dist --copy-files --no-comments",
@@ -69,6 +69,7 @@
   },
   "dependencies": {
     "@date-io/moment": "^1.3.13",
+    "@jeremyling/react-material-ui-rich-text-editor": "^0.1.3",
     "@material-ui/core": "^4.11.3",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.3.10",
