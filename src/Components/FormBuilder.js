@@ -157,6 +157,7 @@ function FormBuilder(props) {
               controls
               width={field.width}
               height={field.height}
+              {...field.props}
             />
           </div>
         );
@@ -166,6 +167,7 @@ function FormBuilder(props) {
             document={_.get(documents, field.attribute) || initialDocument}
             onChange={(document) => updateDocument(field.attribute, document)}
             onBlur={(html) => updateForm(field.attribute, html)}
+            {...field.props}
           />
         );
       case "custom":
