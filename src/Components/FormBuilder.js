@@ -12,6 +12,7 @@ import StandardRadioGroup from "./Forms/StandardRadioGroup";
 import StandardSelect from "./Forms/StandardSelect";
 import StandardSwitch from "./Forms/StandardSwitch";
 import StandardTextField from "./Forms/StandardTextField";
+import StandardTimePicker from "./Forms/StandardTimePicker";
 import ReactPlayer from "react-player";
 import Editor from "@jeremyling/react-material-ui-rich-text-editor";
 import _ from "lodash";
@@ -88,6 +89,14 @@ function FormBuilder(props) {
             updateForm={updateForm}
           />
         );
+      case "time-picker":
+        return (
+          <StandardTimePicker
+            field={field}
+            form={form}
+            updateForm={updateForm}
+          />
+        );
       case "select":
         return (
           <StandardSelect field={field} form={form} updateForm={updateForm} />
@@ -144,6 +153,7 @@ function FormBuilder(props) {
             <img
               src={field.src}
               alt={field.alt}
+              title={field.alt}
               {...field.props}
               loading="lazy"
             />
@@ -167,7 +177,8 @@ function FormBuilder(props) {
             document={_.get(documents, field.attribute) || initialDocument}
             onChange={(document) => updateDocument(field.attribute, document)}
             onBlur={(html) => updateForm(field.attribute, html)}
-            {...field.props}
+            containerProps={field.groupContainerProps}
+            editableProps={field.props}
           />
         );
       case "custom":

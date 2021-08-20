@@ -75,8 +75,7 @@ function StandardTextField(props) {
       },
       InputLabelProps: {
         shrink:
-          _.get(form, field.attribute) !== null &&
-          _.get(form, field.attribute) !== undefined,
+          !!_.get(form, field.attribute) || _.get(form, field.attribute) === 0,
       },
       error: errors.length > 0,
       helperText: errors[0],
