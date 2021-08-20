@@ -39,13 +39,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialDocument = [
-  {
-    type: "Paragraph",
-    children: [{ text: "Rich Text" }],
-  },
-];
-
 function FormBuilder(props) {
   const { title, fields, form, updateForm, children, index, idPrefix } = props;
   const classes = useStyles();
@@ -53,7 +46,7 @@ function FormBuilder(props) {
   const [documents, setDocuments] = useState({});
 
   const updateDocument = (attribute, document) => {
-    const copy = _.deepClone(documents);
+    const copy = _.cloneDeep(documents);
     _.set(copy, attribute, document);
     setDocuments(copy);
   };
@@ -174,7 +167,8 @@ function FormBuilder(props) {
       case "rich-text":
         return (
           <Editor
-            document={_.get(documents, field.attribute) || initialDocument}
+            html={_.get(form, field.attribute)}
+            document={_.get(documents, field.attribute)}
             onChange={(document) => updateDocument(field.attribute, document)}
             onBlur={(html) => updateForm(field.attribute, html)}
             containerProps={field.groupContainerProps}
