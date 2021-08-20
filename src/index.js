@@ -9,6 +9,7 @@ import StandardRadioGroup from "./Components/Forms/StandardRadioGroup";
 import StandardSelect from "./Components/Forms/StandardSelect";
 import StandardSwitch from "./Components/Forms/StandardSwitch";
 import StandardTextField from "./Components/Forms/StandardTextField";
+import StandardTimePicker from "./Components/Forms/StandardTimePicker";
 import useValidation from "./Hooks/useValidation";
 
 export {
@@ -22,6 +23,7 @@ export {
   StandardSelect,
   StandardSwitch,
   StandardTextField,
+  StandardTimePicker,
   useValidation,
 };
 export default FormBuilder;
