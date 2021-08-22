@@ -1,6 +1,6 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "0.4.9",
+  "version": "0.4.13",
   "scripts": {
     "start": "react-scripts start",
     "build": "NODE_ENV=production && rm -rf dist && mkdir dist && npx babel src --out-dir dist --copy-files --no-comments",

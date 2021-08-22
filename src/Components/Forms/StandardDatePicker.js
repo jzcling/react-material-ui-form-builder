@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { forwardRef, Fragment } from "react";
 import MomentUtils from "@date-io/moment";
 import {
   KeyboardDatePicker,
@@ -7,7 +7,6 @@ import {
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { makeStyles, Typography } from "@material-ui/core";
-import { getValidations } from "../../Helpers";
 import useValidation from "../../Hooks/useValidation";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,10 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function StandardDatePicker(props) {
+const StandardDatePicker = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm } = props;
-  const { errors, validate } = useValidation("date", getValidations(field));
+  const { errors, validate } = useValidation("date", field, form, updateForm);
 
   const componentProps = (field) => {
     return {
@@ -36,8 +35,11 @@ function StandardDatePicker(props) {
       format: "DD/MM/YYYY",
       label: field.label,
       value: _.get(form, field.attribute) || null,
-      onChange: (value) =>
-        updateForm(field.attribute, value.format("YYYY-MM-DD")),
+      onChange: (value) => {
+        if (value) {
+          updateForm(field.attribute, value.format("YYYY-MM-DD"));
+        }
+      },
       KeyboardButtonProps: {
         "aria-label": field.label,
       },
@@ -61,12 +63,21 @@ function StandardDatePicker(props) {
       {field.title && (
         <Typography {...field.titleProps}>{field.title}</Typography>
       )}
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <KeyboardDatePicker {...componentProps(field)} />
-      </MuiPickersUtilsProvider>
+      <div
+        ref={(el) => {
+          if (el && ref) {
+            el.blur = () => validate(_.get(form, field.attribute));
+            ref(el);
+          }
+        }}
+      >
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <KeyboardDatePicker {...componentProps(field)} />
+        </MuiPickersUtilsProvider>
+      </div>
     </Fragment>
   );
-}
+});
 
 StandardDatePicker.defaultProps = {
   updateForm: () => {},

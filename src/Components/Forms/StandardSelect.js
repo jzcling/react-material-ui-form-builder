@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from "react";
+import React, { forwardRef, Fragment, useMemo } from "react";
 import {
   FormControl,
   FormHelperText,
@@ -8,7 +8,6 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { getValidations } from "../../Helpers";
 import useValidation from "../../Hooks/useValidation";
 
 const getValue = (value) => {
@@ -18,9 +17,9 @@ const getValue = (value) => {
   return value;
 };
 
-function StandardSelect(props) {
+const StandardSelect = forwardRef((props, ref) => {
   const { field, form, updateForm } = props;
-  const { errors, validate } = useValidation("string", getValidations(field));
+  const { errors, validate } = useValidation("string", field, form, updateForm);
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -75,7 +74,7 @@ function StandardSelect(props) {
         <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
           {field.label}
         </InputLabel>
-        <Select {...componentProps(field)}>
+        <Select inputRef={ref} {...componentProps(field)}>
           <option aria-label="None" value="" />
           {(field.options || []).map((option) => (
             <option
@@ -90,7 +89,7 @@ function StandardSelect(props) {
       </FormControl>
     </Fragment>
   );
-}
+});
 
 StandardSelect.defaultProps = {
   updateForm: () => {},

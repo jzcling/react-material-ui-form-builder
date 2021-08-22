@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { forwardRef, Fragment } from "react";
 import { makeStyles, TextField, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
 import _ from "lodash";
@@ -43,11 +43,14 @@ const getValue = (value) => {
   return value;
 };
 
-function StandardTextField(props) {
+const StandardTextField = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm } = props;
   const { errors, validate } = useValidation(
     getType(field),
+    field,
+    form,
+    updateForm,
     getValidations(field)
   );
 
@@ -94,10 +97,10 @@ function StandardTextField(props) {
       {field.title && (
         <Typography {...field.titleProps}>{field.title}</Typography>
       )}
-      <TextField {...componentProps(field)} />
+      <TextField inputRef={ref} {...componentProps(field)} />
     </Fragment>
   );
-}
+});
 
 StandardTextField.defaultProps = {
   updateForm: () => {},

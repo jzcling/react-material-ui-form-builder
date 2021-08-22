@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { forwardRef, useMemo } from "react";
 import {
   Radio,
   FormControlLabel,
@@ -11,11 +11,10 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
-import { getValidations } from "../../Helpers";
 
-function StandardRadioGroup(props) {
+const StandardRadioGroup = forwardRef((props, ref) => {
   const { field, form, updateForm } = props;
-  const { errors, validate } = useValidation("mixed", getValidations(field));
+  const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -67,7 +66,6 @@ function StandardRadioGroup(props) {
       value: optionConfig(option).value,
       onChange: (event) =>
         handleRadioChange(event.target.value, event.target.checked),
-      onBlur: (event) => validate(_.get(form, field.attribute)),
       ...field.props,
     };
   };
@@ -75,6 +73,7 @@ function StandardRadioGroup(props) {
   const containerProps = (field) => {
     return {
       error: errors.length > 0,
+      onBlur: (event) => validate(_.get(form, field.attribute)),
       ...field.groupContainerProps,
     };
   };
@@ -88,6 +87,7 @@ function StandardRadioGroup(props) {
         <FormControl {...containerProps(field)}>
           {(field.options || []).map((option, index) => (
             <FormControlLabel
+              inputRef={ref}
               key={field.id + "-" + index}
               control={<Radio {...componentProps(field, option)} />}
               label={optionConfig(option).label}
@@ -99,7 +99,7 @@ function StandardRadioGroup(props) {
       </FormGroup>
     </Fragment>
   );
-}
+});
 
 StandardRadioGroup.defaultProps = {
   updateForm: () => {},

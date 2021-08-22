@@ -1,10 +1,9 @@
-import React, { Fragment, useMemo } from "react";
+import React, { forwardRef, Fragment, useMemo } from "react";
 import { makeStyles, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
-import { getValidations } from "../../Helpers";
 
 const useStyles = makeStyles((theme) => ({
   autocomplete: {
@@ -14,10 +13,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function StandardAutocomplete(props) {
+const StandardAutocomplete = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm } = props;
-  const { errors, validate } = useValidation("mixed", getValidations(field));
+  const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -105,6 +104,7 @@ function StandardAutocomplete(props) {
       renderInput: (params) => (
         <TextField
           {...params}
+          inputRef={ref}
           variant="outlined"
           margin="dense"
           inputProps={{
@@ -136,7 +136,7 @@ function StandardAutocomplete(props) {
       <Autocomplete {...componentProps(field)} />
     </Fragment>
   );
-}
+});
 
 StandardAutocomplete.defaultProps = {
   updateForm: () => {},

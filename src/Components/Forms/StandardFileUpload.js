@@ -1,10 +1,9 @@
-import React, { Fragment, useMemo, useState } from "react";
+import React, { forwardRef, Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
 import { ButtonBase, makeStyles, Typography } from "@material-ui/core";
 import _ from "lodash";
 import useValidation from "../../Hooks/useValidation";
-import { getValidations } from "../../Helpers";
 
 const fileTypes = [
   ".pdf",
@@ -65,12 +64,16 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "block",
   },
+  errorText: {
+    fontSize: "0.75rem",
+    color: theme.palette.error.main,
+  },
 }));
 
-export default function StandardFileUpload(props) {
+const StandardFileUpload = forwardRef((props, ref) => {
   const { enqueueSnackbar } = useSnackbar();
   const { field, form, updateForm } = props;
-  const { errors, validate } = useValidation("mixed", getValidations(field));
+  const { errors, validate } = useValidation("mixed", field, form, updateForm);
   const classes = useStyles({
     errors: errors,
     aspectRatio: field.aspectRatio || [],
@@ -152,7 +155,15 @@ export default function StandardFileUpload(props) {
       {field.title && (
         <Typography {...field.titleProps}>{field.title}</Typography>
       )}
-      <input {...componentProps(field)} />
+      <input
+        ref={(el) => {
+          if (el && ref) {
+            el.blur = () => validate(_.get(form, field.attribute));
+            ref(el);
+          }
+        }}
+        {...componentProps(field)}
+      />
       <label
         htmlFor={componentProps(field).id}
         onBlur={(event) => validate(_.get(form, field.attribute))}
@@ -229,7 +240,7 @@ export default function StandardFileUpload(props) {
       </label>
     </Fragment>
   );
-}
+});
 
 StandardFileUpload.defaultProps = {
   updateForm: () => {},
@@ -240,3 +251,5 @@ StandardFileUpload.propTypes = {
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
 };
+
+export default StandardFileUpload;

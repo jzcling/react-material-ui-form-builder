@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { forwardRef, useMemo } from "react";
 import {
   Checkbox,
   FormControl,
@@ -11,11 +11,10 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
-import { getValidations } from "../../Helpers";
 
-function StandardCheckboxGroup(props) {
+const StandardCheckboxGroup = forwardRef((props, ref) => {
   const { field, form, updateForm } = props;
-  const { errors, validate } = useValidation("mixed", getValidations(field));
+  const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -89,7 +88,6 @@ function StandardCheckboxGroup(props) {
       color: "primary",
       checked: isSelected,
       onChange: (event) => handleCheckboxChange(option, event.target.checked),
-      onBlur: (event) => validate(_.get(form, field.attribute)),
       ...field.props,
     };
   };
@@ -97,6 +95,7 @@ function StandardCheckboxGroup(props) {
   const containerProps = (field) => {
     return {
       error: errors.length > 0,
+      onBlur: (event) => validate(_.get(form, field.attribute)),
       ...field.groupContainerProps,
     };
   };
@@ -110,6 +109,7 @@ function StandardCheckboxGroup(props) {
         <FormControl {...containerProps(field)}>
           {(field.options || []).map((option, index) => (
             <FormControlLabel
+              inputRef={ref}
               key={field.id + "-" + index}
               control={<Checkbox {...componentProps(field, option)} />}
               label={optionConfig(option).label}
@@ -121,7 +121,7 @@ function StandardCheckboxGroup(props) {
       </FormGroup>
     </Fragment>
   );
-}
+});
 
 StandardCheckboxGroup.defaultProps = {
   updateForm: () => {},

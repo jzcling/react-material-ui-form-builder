@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useCallback } from "react";
 import {
   Switch,
   FormControlLabel,
@@ -11,7 +11,6 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
-import { getValidations } from "../../Helpers";
 
 const useStyles = makeStyles((theme) => ({
   ml0: {
@@ -19,18 +18,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function StandardSwitch(props) {
+const StandardSwitch = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm } = props;
-  const { errors, validate } = useValidation("mixed", getValidations(field));
+  const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
-  const handleSwitchChange = (checked) => {
+  const handleSwitchChange = useCallback((checked) => {
     if (checked) {
       updateForm(field.attribute, checked);
     } else {
       updateForm(field.attribute, undefined);
     }
-  };
+  }, []);
 
   const componentProps = (field) => {
     const isSelected = !!_.get(form, field.attribute);
@@ -53,6 +52,7 @@ function StandardSwitch(props) {
       )}
       <FormControl error={errors.length > 0}>
         <FormControlLabel
+          inputRef={ref}
           key={field.id}
           control={<Switch {...componentProps(field)} />}
           label={field.label}
@@ -63,7 +63,7 @@ function StandardSwitch(props) {
       </FormControl>
     </Fragment>
   );
-}
+});
 
 StandardSwitch.defaultProps = {
   updateForm: () => {},

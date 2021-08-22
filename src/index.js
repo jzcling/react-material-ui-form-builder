@@ -4,6 +4,7 @@ import StandardCheckboxGroup from "./Components/Forms/StandardCheckboxGroup";
 import StandardChipGroup from "./Components/Forms/StandardChipGroup";
 import StandardDatePicker from "./Components/Forms/StandardDatePicker";
 import StandardDateTimePicker from "./Components/Forms/StandardDateTimePicker";
+import StandardEditor from "./Components/Forms/StandardEditor";
 import StandardFileUpload from "./Components/Forms/StandardFileUpload";
 import StandardRadioGroup from "./Components/Forms/StandardRadioGroup";
 import StandardSelect from "./Components/Forms/StandardSelect";
@@ -18,6 +19,7 @@ export {
   StandardChipGroup,
   StandardDatePicker,
   StandardDateTimePicker,
+  StandardEditor,
   StandardFileUpload,
   StandardRadioGroup,
   StandardSelect,

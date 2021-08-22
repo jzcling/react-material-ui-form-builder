@@ -2,9 +2,18 @@ import _ from "lodash";
 import React from "react";
 import * as yup from "yup";
 
-export default function useValidation(type, validations) {
+export default function useValidation(
+  type,
+  field,
+  form,
+  updateForm,
+  validations = null
+) {
   const [errors, setErrors] = React.useState([]);
 
+  if (!validations) {
+    validations = getValidations(field);
+  }
   var schema = yup[type]();
   for (var [key, value] of Object.entries(validations)) {
     if (value === true) {
@@ -12,7 +21,7 @@ export default function useValidation(type, validations) {
     } else {
       if (value !== null && value !== undefined) {
         if (key === "matches") {
-          schema = handleMatches(value, schema);
+          schema = handleMatches(key, value, schema);
         } else {
           if (_.isArray(value) && !["oneOf", "notOneOf"].includes(key)) {
             schema = schema[key](...value);
@@ -25,35 +34,49 @@ export default function useValidation(type, validations) {
   }
 
   async function validate(value) {
+    const formErrors = _.cloneDeep(form.errors || {});
     try {
       await schema.validate(value);
       setErrors([]);
+      _.unset(formErrors, field.attribute);
+      updateForm("errors", formErrors);
     } catch (error) {
       setErrors(error.errors);
+      _.set(formErrors, field.attribute, error.errors);
+      updateForm("errors", formErrors);
     }
-  }
-
-  function handleMatches(value, schema) {
-    var re, message;
-    if (_.isArray(value)) {
-      [re, message] = value;
-    } else {
-      re = value;
-    }
-    try {
-      var flags = re.replace(/.*\/([gimy]*)$/, "$1");
-      var pattern = re.replace(new RegExp("^/(.*?)/" + flags + "$"), "$1");
-      var regex = new RegExp(pattern, flags);
-      if (message) {
-        schema = schema[key](regex, message);
-      } else {
-        schema = schema[key](regex);
-      }
-    } catch (error) {
-      // console.log(error);
-    }
-    return schema;
   }
 
   return { errors: errors, validate: validate };
+}
+
+function handleMatches(key, value, schema) {
+  var re, message;
+  if (_.isArray(value)) {
+    [re, message] = value;
+  } else {
+    re = value;
+  }
+  try {
+    var flags = re.replace(/.*\/([gimy]*)$/, "$1");
+    var pattern = re.replace(new RegExp("^/(.*?)/" + flags + "$"), "$1");
+    var regex = new RegExp(pattern, flags);
+    if (message) {
+      schema = schema[key](regex, message);
+    } else {
+      schema = schema[key](regex);
+    }
+  } catch (error) {
+    // console.log(error);
+  }
+  return schema;
+}
+
+function getValidations(field) {
+  var validations = {};
+  if (field.label) {
+    validations.label = field.label;
+  }
+  validations = { ...validations, ...field.validations };
+  return validations;
 }

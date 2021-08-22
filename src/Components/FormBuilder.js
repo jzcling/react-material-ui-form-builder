@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Grid, makeStyles, Typography } from "@material-ui/core";
@@ -14,8 +14,8 @@ import StandardSwitch from "./Forms/StandardSwitch";
 import StandardTextField from "./Forms/StandardTextField";
 import StandardTimePicker from "./Forms/StandardTimePicker";
 import ReactPlayer from "react-player";
-import Editor from "@jeremyling/react-material-ui-rich-text-editor";
 import _ from "lodash";
+import StandardEditor from "./Forms/StandardEditor";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -42,14 +42,6 @@ const useStyles = makeStyles((theme) => ({
 function FormBuilder(props) {
   const { title, fields, form, updateForm, children, index, idPrefix } = props;
   const classes = useStyles();
-
-  const [documents, setDocuments] = useState({});
-
-  const updateDocument = (attribute, document) => {
-    const copy = _.cloneDeep(documents);
-    _.set(copy, attribute, document);
-    setDocuments(copy);
-  };
 
   const handleField = (field) => {
     if (!field.id) {
@@ -166,14 +158,7 @@ function FormBuilder(props) {
         );
       case "rich-text":
         return (
-          <Editor
-            html={_.get(form, field.attribute)}
-            document={_.get(documents, field.attribute)}
-            onChange={(document) => updateDocument(field.attribute, document)}
-            onBlur={(html) => updateForm(field.attribute, html)}
-            containerProps={field.groupContainerProps}
-            editableProps={field.props}
-          />
+          <StandardEditor field={field} form={form} updateForm={updateForm} />
         );
       case "custom":
         return field.customComponent(field, form, updateForm);
@@ -201,7 +186,7 @@ function FormBuilder(props) {
           </Grid>
         )}
 
-        {fields.map((field, index) => {
+        {(fields || []).map((field, index) => {
           field = handleField(field);
           return (
             !field.hideCondition && (

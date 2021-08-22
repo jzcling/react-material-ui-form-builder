@@ -1,8 +1,7 @@
-import React, { useMemo } from "react";
+import React, { forwardRef, useMemo } from "react";
 import {
   Chip,
   FormControl,
-  FormControlLabel,
   FormGroup,
   FormHelperText,
   makeStyles,
@@ -12,7 +11,6 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
-import { getValidations } from "../../Helpers";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -21,10 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function StandardChipGroup(props) {
+const StandardChipGroup = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm } = props;
-  const { errors, validate } = useValidation("mixed", getValidations(field));
+  const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -98,7 +96,6 @@ function StandardChipGroup(props) {
       color: isSelected ? "primary" : "default",
       variant: isSelected ? "default" : "outlined",
       onClick: () => handleChipClick(option),
-      onBlur: (event) => validate(_.get(form, field.attribute)),
       ...field.props,
     };
   };
@@ -106,6 +103,7 @@ function StandardChipGroup(props) {
   const containerProps = (field) => {
     return {
       error: errors.length > 0,
+      onBlur: (event) => validate(_.get(form, field.attribute)),
       ...field.groupContainerProps,
     };
   };
@@ -118,7 +116,15 @@ function StandardChipGroup(props) {
       <FormGroup component="fieldset">
         <FormControl {...containerProps(field)}>
           {(field.options || []).map((option, index) => (
-            <div key={field.id + "-" + index}>
+            <div
+              ref={(el) => {
+                if (el && ref) {
+                  el.blur = () => validate(_.get(form, field.attribute));
+                  ref(el);
+                }
+              }}
+              key={field.id + "-" + index}
+            >
               <Chip {...componentProps(field, option)} />
             </div>
           ))}
@@ -127,7 +133,7 @@ function StandardChipGroup(props) {
       </FormGroup>
     </Fragment>
   );
-}
+});
 
 StandardChipGroup.defaultProps = {
   updateForm: () => {},
