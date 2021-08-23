@@ -69,7 +69,7 @@
   },
   "dependencies": {
     "@date-io/moment": "^1.3.13",
-    "@jeremyling/react-material-ui-rich-text-editor": "^0.1.9",
+    "@jeremyling/react-material-ui-rich-text-editor": "^0.1.13",
     "@material-ui/core": "^4.11.3",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.3.10",
