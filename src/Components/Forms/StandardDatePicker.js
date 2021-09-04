@@ -5,7 +5,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import PropTypes from "prop-types";
-import _ from "lodash";
+import get from "lodash/get";
 import { makeStyles, Typography } from "@material-ui/core";
 import useValidation from "../../Hooks/useValidation";
 
@@ -34,7 +34,7 @@ const StandardDatePicker = forwardRef((props, ref) => {
       margin: "dense",
       format: "DD/MM/YYYY",
       label: field.label,
-      value: _.get(form, field.attribute) || null,
+      value: get(form, field.attribute) || null,
       onChange: (value) => {
         if (value) {
           updateForm(field.attribute, value.format("YYYY-MM-DD"));
@@ -48,10 +48,10 @@ const StandardDatePicker = forwardRef((props, ref) => {
       },
       error: errors.length > 0,
       helperText: errors[0],
-      onBlur: (event) => validate(_.get(form, field.attribute)),
+      onBlur: (event) => validate(get(form, field.attribute)),
       onKeyUp: (event) => {
         if (event.key === "Enter") {
-          validate(_.get(form, field.attribute));
+          validate(get(form, field.attribute));
         }
       },
       ...field.props,
@@ -66,7 +66,7 @@ const StandardDatePicker = forwardRef((props, ref) => {
       <div
         ref={(el) => {
           if (el && ref) {
-            el.blur = () => validate(_.get(form, field.attribute));
+            el.blur = () => validate(get(form, field.attribute));
             ref(el);
           }
         }}

@@ -14,7 +14,6 @@ import StandardSwitch from "./Forms/StandardSwitch";
 import StandardTextField from "./Forms/StandardTextField";
 import StandardTimePicker from "./Forms/StandardTimePicker";
 import ReactPlayer from "react-player";
-import _ from "lodash";
 import StandardEditor from "./Forms/StandardEditor";
 
 function sanitizeColProps(col) {

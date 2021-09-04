@@ -8,7 +8,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import _ from "lodash";
+import get from "lodash/get";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
 
@@ -32,7 +32,7 @@ const StandardSwitch = forwardRef((props, ref) => {
   }, []);
 
   const componentProps = (field) => {
-    const isSelected = !!_.get(form, field.attribute);
+    const isSelected = !!get(form, field.attribute);
     return {
       id: field.id || field.attribute,
       key: field.id,
@@ -40,7 +40,7 @@ const StandardSwitch = forwardRef((props, ref) => {
       color: "primary",
       checked: isSelected,
       onChange: (event) => handleSwitchChange(event.target.checked),
-      onBlur: (event) => validate(_.get(form, field.attribute)),
+      onBlur: (event) => validate(get(form, field.attribute)),
       ...field.props,
     };
   };

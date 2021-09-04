@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import _ from "lodash";
+import get from "lodash/get";
 import useValidation from "../../Hooks/useValidation";
 
 const getValue = (value) => {
@@ -34,13 +34,13 @@ const StandardSelect = forwardRef((props, ref) => {
       }
 
       config.key = field.optionConfig.key
-        ? _.get(option, field.optionConfig.key)
+        ? get(option, field.optionConfig.key)
         : config.key;
       config.value = field.optionConfig.value
-        ? _.get(option, field.optionConfig.value)
+        ? get(option, field.optionConfig.value)
         : config.value;
       config.label = field.optionConfig.label
-        ? String(_.get(option, field.optionConfig.label))
+        ? String(get(option, field.optionConfig.label))
         : config.label;
 
       return config;
@@ -57,9 +57,9 @@ const StandardSelect = forwardRef((props, ref) => {
         name: field.attribute,
         id: field.id || field.attribute,
       },
-      value: getValue(_.get(form, field.attribute)),
+      value: getValue(get(form, field.attribute)),
       onChange: (event) => updateForm(field.attribute, event.target.value),
-      onBlur: (event) => validate(_.get(form, field.attribute)),
+      onBlur: (event) => validate(get(form, field.attribute)),
       label: field.label,
       ...field.props,
     };

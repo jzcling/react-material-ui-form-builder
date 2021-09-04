@@ -1,7 +1,7 @@
 import React, { forwardRef, Fragment } from "react";
 import { makeStyles, TextField, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
-import _ from "lodash";
+import get from "lodash/get";
 import useValidation from "../../Hooks/useValidation";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +64,7 @@ const StandardTextField = forwardRef((props, ref) => {
       variant: "outlined",
       margin: "dense",
       label: field.label,
-      value: getValue(_.get(form, field.attribute)),
+      value: getValue(get(form, field.attribute)),
       onChange: (event) => {
         var value = event.target.value;
         if (field.props && field.props.type === "number") {
@@ -78,14 +78,14 @@ const StandardTextField = forwardRef((props, ref) => {
       },
       InputLabelProps: {
         shrink:
-          !!_.get(form, field.attribute) || _.get(form, field.attribute) === 0,
+          !!get(form, field.attribute) || get(form, field.attribute) === 0,
       },
       error: errors.length > 0,
       helperText: errors[0],
-      onBlur: (event) => validate(_.get(form, field.attribute)),
+      onBlur: (event) => validate(get(form, field.attribute)),
       onKeyUp: (event) => {
         if (event.key === "Enter") {
-          validate(_.get(form, field.attribute));
+          validate(get(form, field.attribute));
         }
       },
       ...field.props,

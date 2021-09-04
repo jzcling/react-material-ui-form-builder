@@ -8,7 +8,7 @@ import {
   FormControl,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import _ from "lodash";
+import get from "lodash/get";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
 
@@ -29,13 +29,13 @@ const StandardRadioGroup = forwardRef((props, ref) => {
       }
 
       config.key = field.optionConfig.key
-        ? _.get(option, field.optionConfig.key)
+        ? get(option, field.optionConfig.key)
         : config.key;
       config.value = field.optionConfig.value
-        ? _.get(option, field.optionConfig.value)
+        ? get(option, field.optionConfig.value)
         : config.value;
       config.label = field.optionConfig.label
-        ? String(_.get(option, field.optionConfig.label))
+        ? String(get(option, field.optionConfig.label))
         : config.label;
 
       return config;
@@ -53,10 +53,10 @@ const StandardRadioGroup = forwardRef((props, ref) => {
     var isSelected;
     if (field.multiple) {
       isSelected =
-        _.get(form, field.attribute) &&
-        _.get(form, field.attribute).includes(optionConfig(option).value);
+        get(form, field.attribute) &&
+        get(form, field.attribute).includes(optionConfig(option).value);
     } else {
-      isSelected = _.get(form, field.attribute) === optionConfig(option).value;
+      isSelected = get(form, field.attribute) === optionConfig(option).value;
     }
     return {
       id: field.id || field.attribute,
@@ -73,7 +73,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
   const containerProps = (field) => {
     return {
       error: errors.length > 0,
-      onBlur: (event) => validate(_.get(form, field.attribute)),
+      onBlur: (event) => validate(get(form, field.attribute)),
       ...field.groupContainerProps,
     };
   };

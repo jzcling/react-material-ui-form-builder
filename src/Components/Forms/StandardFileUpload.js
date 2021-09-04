@@ -1,8 +1,10 @@
 import React, { forwardRef, Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { useSnackbar } from "notistack";
 import { ButtonBase, makeStyles, Typography } from "@material-ui/core";
-import _ from "lodash";
+import isArray from "lodash/isArray";
+import isString from "lodash/isString";
+import get from "lodash/get";
+import concat from "lodash/concat";
 import useValidation from "../../Hooks/useValidation";
 
 const fileTypes = [
@@ -71,7 +73,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardFileUpload = forwardRef((props, ref) => {
-  const { enqueueSnackbar } = useSnackbar();
   const { field, form, updateForm } = props;
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
   const classes = useStyles({
@@ -82,12 +83,14 @@ const StandardFileUpload = forwardRef((props, ref) => {
 
   const [imageUrls, setImageUrls] = useState([]);
 
+  const [fileErrors, setFileErrors] = useState([]);
+
   const files = useMemo(() => {
-    if (_.get(form, field.attribute)) {
-      if (_.isArray(_.get(form, field.attribute))) {
-        return _.get(form, field.attribute);
+    if (get(form, field.attribute)) {
+      if (isArray(get(form, field.attribute))) {
+        return get(form, field.attribute);
       }
-      return [_.get(form, field.attribute)];
+      return [get(form, field.attribute)];
     }
     return [];
   }, [form, field.attribute]);
@@ -97,28 +100,29 @@ const StandardFileUpload = forwardRef((props, ref) => {
   }, [field.maxSizeMb]);
 
   const acceptTypes = useMemo(() => {
-    if (_.isString(field.acceptTypes)) {
+    if (isString(field.acceptTypes)) {
       return field.acceptTypes;
     }
-    if (_.isArray(field.acceptTypes)) {
-      return _.concat(field.acceptTypes);
+    if (isArray(field.acceptTypes)) {
+      return concat(field.acceptTypes);
     }
-    return _.concat(fileTypes);
+    return concat(fileTypes);
   }, [field.acceptTypes]);
 
   const attachFiles = (files) => {
     if (files.length < 1) {
-      enqueueSnackbar("Nothing selected", { variant: "error" });
+      setFileErrors(["Nothing selected"]);
       return;
     }
 
     var input = [];
     var imageUrls = [];
+    var errors = [];
     for (const file of files) {
       if (file.size > maxSizeMb * 1024 * 1024) {
-        enqueueSnackbar("File should be less than " + maxSizeMb + " MB", {
-          variant: "error",
-        });
+        errors.push(
+          (file.name || "File") + " should be less than " + maxSizeMb + " MB"
+        );
         continue;
       }
       input.push(file);
@@ -136,6 +140,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
       updateForm(field.attribute, input);
       setImageUrls(imageUrls);
     }
+    setFileErrors(errors);
   };
 
   const componentProps = (field) => {
@@ -158,7 +163,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
       <input
         ref={(el) => {
           if (el && ref) {
-            el.blur = () => validate(_.get(form, field.attribute));
+            el.blur = () => validate(get(form, field.attribute));
             ref(el);
           }
         }}
@@ -166,7 +171,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
       />
       <label
         htmlFor={componentProps(field).id}
-        onBlur={(event) => validate(_.get(form, field.attribute))}
+        onBlur={(event) => validate(get(form, field.attribute))}
       >
         {files.length > 0 ? (
           <ButtonBase className={classes.buttonBase} component="div">
@@ -236,6 +241,9 @@ const StandardFileUpload = forwardRef((props, ref) => {
         )}
         {errors.length > 0 && (
           <Typography className={classes.errorText}>{errors[0]}</Typography>
+        )}
+        {fileErrors.length > 0 && (
+          <Typography className={classes.errorText}>{fileErrors[0]}</Typography>
         )}
       </label>
     </Fragment>
