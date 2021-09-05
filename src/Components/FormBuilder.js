@@ -209,7 +209,7 @@ function FormBuilder(props) {
 }
 
 FormBuilder.defaultProps = {
-  updateForm: (key, value) => {},
+  updateForm: () => {},
 };
 
 FormBuilder.propTypes = {
@@ -220,6 +220,7 @@ FormBuilder.propTypes = {
   children: PropTypes.node,
   index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   idPrefix: PropTypes.string,
+  className: PropTypes.object,
 };
 
 export default FormBuilder;
