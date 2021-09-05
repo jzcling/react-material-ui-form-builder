@@ -35,12 +35,12 @@ const StandardDateTimePicker = forwardRef((props, ref) => {
       variant: "inline",
       inputVariant: "outlined",
       margin: "dense",
-      format: "DD/MM/YYYY HH:mm:ss",
+      format: "dd/MM/yyyy HH:mm:ss",
       label: field.label,
       value: get(form, field.attribute) || null,
       onChange: (value) => {
         if (value) {
-          updateForm(field.attribute, format(value, "YYYY-MM-DD HH:mm:ss"));
+          updateForm(field.attribute, format(value, "yyyy-MM-dd HH:mm:ss"));
         }
       },
       KeyboardButtonProps: {
