@@ -10,6 +10,7 @@
 
 # production
 /dist
+.size-snapshot.json
 
 # misc
 .DS_Store

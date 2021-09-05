@@ -1,10 +1,11 @@
 import React, { forwardRef, Fragment } from "react";
-import { makeStyles, TextField, Typography } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import useValidation from "../../Hooks/useValidation";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   textFieldRoot: {
     marginTop: 0,
   },
@@ -82,7 +83,7 @@ const StandardTextField = forwardRef((props, ref) => {
       },
       error: errors.length > 0,
       helperText: errors[0],
-      onBlur: (event) => validate(get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       onKeyUp: (event) => {
         if (event.key === "Enter") {
           validate(get(form, field.attribute));
@@ -101,6 +102,8 @@ const StandardTextField = forwardRef((props, ref) => {
     </Fragment>
   );
 });
+
+StandardTextField.displayName = "StandardTextField";
 
 StandardTextField.defaultProps = {
   updateForm: () => {},

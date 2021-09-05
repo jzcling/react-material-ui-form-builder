@@ -26,7 +26,8 @@ npm install --save @jeremyling/react-material-ui-form-builder
 The following packages are peer dependencies and must be install for this package to work.
 
 ```
-@date-io/moment
+@date-io/date-fns
+date-fns
 @jeremyling/react-material-ui-rich-text-editor
 @material-ui/core
 @material-ui/lab
@@ -101,7 +102,7 @@ import React, { useState } from "react";
 import FormBuilder from "@jeremyling/react-material-ui-form-builder";
 import set from "lodash/set";
 import get from "lodash/get";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   flexRow: {

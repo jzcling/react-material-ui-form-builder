@@ -95,7 +95,7 @@ const StandardCheckboxGroup = forwardRef((props, ref) => {
   const containerProps = (field) => {
     return {
       error: errors.length > 0,
-      onBlur: (event) => validate(get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       ...field.groupContainerProps,
     };
   };
@@ -122,6 +122,8 @@ const StandardCheckboxGroup = forwardRef((props, ref) => {
     </Fragment>
   );
 });
+
+StandardCheckboxGroup.displayName = "StandardCheckboxGroup";
 
 StandardCheckboxGroup.defaultProps = {
   updateForm: () => {},

@@ -1,5 +1,6 @@
 import React, { forwardRef, Fragment, useMemo } from "react";
-import { makeStyles, TextField, Typography } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
 import isArray from "lodash/isArray";
 import isObject from "lodash/isObject";
@@ -7,7 +8,7 @@ import get from "lodash/get";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   autocomplete: {
     "& .MuiFormControl-marginDense": {
       marginTop: 0,
@@ -124,7 +125,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
       onChange: (event, option) => {
         updateForm(field.attribute, optionConfig(option).value);
       },
-      onBlur: (event) => validate(get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       className: classes.autocomplete,
       ...field.props,
     };
@@ -139,6 +140,8 @@ const StandardAutocomplete = forwardRef((props, ref) => {
     </Fragment>
   );
 });
+
+StandardAutocomplete.displayName = "StandardAutocomplete";
 
 StandardAutocomplete.defaultProps = {
   updateForm: () => {},

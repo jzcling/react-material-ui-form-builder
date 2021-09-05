@@ -1,15 +1,17 @@
 import React, { forwardRef, Fragment } from "react";
-import MomentUtils from "@date-io/moment";
+import DateFnsUtils from "@date-io/date-fns";
+import { format } from "date-fns";
 import {
   KeyboardTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import PropTypes from "prop-types";
 import get from "lodash/get";
-import { makeStyles, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import useValidation from "../../Hooks/useValidation";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   picker: {
     marginTop: 0,
     marginBottom: 0,
@@ -38,7 +40,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
       value: get(form, field.attribute) || null,
       onChange: (value) => {
         if (value) {
-          updateForm(field.attribute, value.format("HH:mm:ss"));
+          updateForm(field.attribute, format(value, "HH:mm:ss"));
         }
       },
       KeyboardButtonProps: {
@@ -49,7 +51,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
       },
       error: errors.length > 0,
       helperText: errors[0],
-      onBlur: (event) => validate(get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       onKeyUp: (event) => {
         if (event.key === "Enter") {
           validate(get(form, field.attribute));
@@ -72,13 +74,15 @@ const StandardTimePicker = forwardRef((props, ref) => {
           }
         }}
       >
-        <MuiPickersUtilsProvider utils={MomentUtils}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardTimePicker {...componentProps(field)} />
         </MuiPickersUtilsProvider>
       </div>
     </Fragment>
   );
 });
+
+StandardTimePicker.displayName = "StandardTimePicker";
 
 StandardTimePicker.defaultProps = {
   updateForm: () => {},

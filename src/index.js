@@ -27,5 +27,5 @@ export {
   StandardTextField,
   StandardTimePicker,
   useValidation,
+  FormBuilder,
 };
-export default FormBuilder;

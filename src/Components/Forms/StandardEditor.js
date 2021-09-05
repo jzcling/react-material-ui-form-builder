@@ -8,8 +8,9 @@ import React, {
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import useValidation from "../../Hooks/useValidation";
-import Editor from "@jeremyling/react-material-ui-rich-text-editor";
-import { makeStyles, Typography } from "@material-ui/core";
+import { Editor } from "@jeremyling/react-material-ui-rich-text-editor";
+import { Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   errorText: {
@@ -56,7 +57,7 @@ const StandardEditor = forwardRef((props, ref) => {
           ref(el);
         }
       }}
-      onFocus={(event) => setTouched(true)}
+      onFocus={() => setTouched(true)}
     >
       <Editor
         html={value}
@@ -74,6 +75,8 @@ const StandardEditor = forwardRef((props, ref) => {
     </div>
   );
 });
+
+StandardEditor.displayName = "StandardEditor";
 
 StandardEditor.defaultProps = {
   updateForm: () => {},

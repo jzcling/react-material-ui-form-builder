@@ -73,7 +73,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
   const containerProps = (field) => {
     return {
       error: errors.length > 0,
-      onBlur: (event) => validate(get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       ...field.groupContainerProps,
     };
   };
@@ -100,6 +100,8 @@ const StandardRadioGroup = forwardRef((props, ref) => {
     </Fragment>
   );
 });
+
+StandardRadioGroup.displayName = "StandardRadioGroup";
 
 StandardRadioGroup.defaultProps = {
   updateForm: () => {},

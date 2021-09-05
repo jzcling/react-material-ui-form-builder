@@ -4,9 +4,9 @@ import {
   FormControl,
   FormGroup,
   FormHelperText,
-  makeStyles,
   Typography,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import { Fragment } from "react";
@@ -103,7 +103,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
   const containerProps = (field) => {
     return {
       error: errors.length > 0,
-      onBlur: (event) => validate(get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       ...field.groupContainerProps,
     };
   };
@@ -134,6 +134,8 @@ const StandardChipGroup = forwardRef((props, ref) => {
     </Fragment>
   );
 });
+
+StandardChipGroup.displayName = "StandardChipGroup";
 
 StandardChipGroup.defaultProps = {
   updateForm: () => {},

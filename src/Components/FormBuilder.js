@@ -1,7 +1,8 @@
 import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import StandardAutocomplete from "./Forms/StandardAutocomplete";
 import StandardCheckboxGroup from "./Forms/StandardCheckboxGroup";
 import StandardChipGroup from "./Forms/StandardChipGroup";
@@ -27,7 +28,7 @@ function sanitizeColProps(col) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   flex: {
     display: "flex",
     alignItems: "center",

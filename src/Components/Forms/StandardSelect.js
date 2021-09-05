@@ -59,7 +59,7 @@ const StandardSelect = forwardRef((props, ref) => {
       },
       value: getValue(get(form, field.attribute)),
       onChange: (event) => updateForm(field.attribute, event.target.value),
-      onBlur: (event) => validate(get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       label: field.label,
       ...field.props,
     };
@@ -90,6 +90,8 @@ const StandardSelect = forwardRef((props, ref) => {
     </Fragment>
   );
 });
+
+StandardSelect.displayName = "StandardSelect";
 
 StandardSelect.defaultProps = {
   updateForm: () => {},

@@ -1,6 +1,7 @@
 import React, { forwardRef, Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { ButtonBase, makeStyles, Typography } from "@material-ui/core";
+import { ButtonBase, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import isArray from "lodash/isArray";
 import isString from "lodash/isString";
 import get from "lodash/get";
@@ -171,7 +172,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
       />
       <label
         htmlFor={componentProps(field).id}
-        onBlur={(event) => validate(get(form, field.attribute))}
+        onBlur={() => validate(get(form, field.attribute))}
       >
         {files.length > 0 ? (
           <ButtonBase className={classes.buttonBase} component="div">
@@ -249,6 +250,8 @@ const StandardFileUpload = forwardRef((props, ref) => {
     </Fragment>
   );
 });
+
+StandardFileUpload.displayName = "StandardFileUpload";
 
 StandardFileUpload.defaultProps = {
   updateForm: () => {},

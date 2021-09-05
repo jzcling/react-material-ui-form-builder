@@ -5,14 +5,14 @@ import {
   Typography,
   FormHelperText,
   FormControl,
-  makeStyles,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   ml0: {
     marginLeft: 0,
   },
@@ -40,7 +40,7 @@ const StandardSwitch = forwardRef((props, ref) => {
       color: "primary",
       checked: isSelected,
       onChange: (event) => handleSwitchChange(event.target.checked),
-      onBlur: (event) => validate(get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       ...field.props,
     };
   };
@@ -64,6 +64,8 @@ const StandardSwitch = forwardRef((props, ref) => {
     </Fragment>
   );
 });
+
+StandardSwitch.displayName = "StandardSwitch";
 
 StandardSwitch.defaultProps = {
   updateForm: () => {},
