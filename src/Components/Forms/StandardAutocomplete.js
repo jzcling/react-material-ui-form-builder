@@ -1,5 +1,5 @@
 import React, { forwardRef, Fragment, useMemo } from "react";
-import { TextField, Typography } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
 import isArray from "lodash/isArray";
@@ -7,6 +7,7 @@ import isObject from "lodash/isObject";
 import get from "lodash/get";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
+import Title from "../Widgets/Title";
 
 const useStyles = makeStyles(() => ({
   autocomplete: {
@@ -133,9 +134,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && (
-        <Typography {...field.titleProps}>{field.title}</Typography>
-      )}
+      {field.title && <Title field={field} />}
       <Autocomplete {...componentProps(field)} />
     </Fragment>
   );

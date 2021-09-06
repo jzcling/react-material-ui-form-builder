@@ -7,9 +7,9 @@ import {
 } from "@material-ui/pickers";
 import PropTypes from "prop-types";
 import get from "lodash/get";
-import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import useValidation from "../../Hooks/useValidation";
+import Title from "../Widgets/Title";
 
 const useStyles = makeStyles(() => ({
   picker: {
@@ -63,9 +63,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && (
-        <Typography {...field.titleProps}>{field.title}</Typography>
-      )}
+      {field.title && <Title field={field} />}
       <div
         ref={(el) => {
           if (el && ref) {

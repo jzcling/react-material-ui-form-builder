@@ -7,6 +7,7 @@ import isString from "lodash/isString";
 import get from "lodash/get";
 import concat from "lodash/concat";
 import useValidation from "../../Hooks/useValidation";
+import Title from "../Widgets/Title";
 
 const fileTypes = [
   ".pdf",
@@ -158,9 +159,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && (
-        <Typography {...field.titleProps}>{field.title}</Typography>
-      )}
+      {field.title && <Title field={field} />}
       <input
         ref={(el) => {
           if (el && ref) {

@@ -2,7 +2,6 @@ import React, { forwardRef, useCallback } from "react";
 import {
   Switch,
   FormControlLabel,
-  Typography,
   FormHelperText,
   FormControl,
 } from "@material-ui/core";
@@ -11,6 +10,7 @@ import PropTypes from "prop-types";
 import get from "lodash/get";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
+import Title from "../Widgets/Title";
 
 const useStyles = makeStyles(() => ({
   ml0: {
@@ -50,9 +50,7 @@ const StandardSwitch = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && (
-        <Typography {...field.titleProps}>{field.title}</Typography>
-      )}
+      {field.title && <Title field={field} />}
       <FormControl error={errors.length > 0}>
         <FormControlLabel
           inputRef={ref}

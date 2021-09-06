@@ -4,11 +4,11 @@ import {
   FormHelperText,
   InputLabel,
   Select,
-  Typography,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import useValidation from "../../Hooks/useValidation";
+import Title from "../Widgets/Title";
 
 const getValue = (value) => {
   if (value === null || value === undefined) {
@@ -67,9 +67,7 @@ const StandardSelect = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && (
-        <Typography {...field.titleProps}>{field.title}</Typography>
-      )}
+      {field.title && <Title field={field} />}
       <FormControl variant="outlined" fullWidth error={errors.length > 0}>
         <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
           {field.label}

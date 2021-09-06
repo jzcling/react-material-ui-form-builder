@@ -1,9 +1,10 @@
 import React, { forwardRef, Fragment } from "react";
-import { TextField, Typography } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import useValidation from "../../Hooks/useValidation";
+import Title from "../Widgets/Title";
 
 const useStyles = makeStyles(() => ({
   textFieldRoot: {
@@ -95,9 +96,7 @@ const StandardTextField = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && (
-        <Typography {...field.titleProps}>{field.title}</Typography>
-      )}
+      {field.title && <Title field={field} />}
       <TextField inputRef={ref} {...componentProps(field)} />
     </Fragment>
   );

@@ -3,7 +3,6 @@ import {
   Radio,
   FormControlLabel,
   FormGroup,
-  Typography,
   FormHelperText,
   FormControl,
 } from "@material-ui/core";
@@ -11,6 +10,7 @@ import PropTypes from "prop-types";
 import get from "lodash/get";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
+import Title from "../Widgets/Title";
 
 const StandardRadioGroup = forwardRef((props, ref) => {
   const { field, form, updateForm } = props;
@@ -80,9 +80,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && (
-        <Typography {...field.titleProps}>{field.title}</Typography>
-      )}
+      {field.title && <Title field={field} />}
       <FormGroup component="fieldset">
         <FormControl {...containerProps(field)}>
           {(field.options || []).map((option, index) => (

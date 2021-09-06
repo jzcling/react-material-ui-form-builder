@@ -4,13 +4,13 @@ import {
   FormControl,
   FormGroup,
   FormHelperText,
-  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
+import Title from "../Widgets/Title";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -110,9 +110,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && (
-        <Typography {...field.titleProps}>{field.title}</Typography>
-      )}
+      {field.title && <Title field={field} />}
       <FormGroup component="fieldset">
         <FormControl {...containerProps(field)}>
           {(field.options || []).map((option, index) => (
