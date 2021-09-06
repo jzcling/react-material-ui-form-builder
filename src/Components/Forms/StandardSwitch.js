@@ -23,13 +23,16 @@ const StandardSwitch = forwardRef((props, ref) => {
   const { field, form, updateForm } = props;
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
-  const handleSwitchChange = useCallback((checked) => {
-    if (checked) {
-      updateForm(field.attribute, checked);
-    } else {
-      updateForm(field.attribute, undefined);
-    }
-  }, []);
+  const handleSwitchChange = useCallback(
+    (checked) => {
+      if (checked) {
+        updateForm(field.attribute, checked);
+      } else {
+        updateForm(field.attribute, undefined);
+      }
+    },
+    [updateForm, field.attribute]
+  );
 
   const componentProps = (field) => {
     const isSelected = !!get(form, field.attribute);
