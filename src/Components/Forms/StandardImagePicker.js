@@ -1,5 +1,5 @@
 import { ButtonBase, ImageList, Typography } from "@material-ui/core";
-import { lighten, makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     margin: "2px",
     padding: "0 !important",
+    borderRadius: "4px",
   },
   imgContainerSizer: {
     marginTop: (aspectRatio) => `${(aspectRatio[1] / aspectRatio[0]) * 100}%`,
@@ -82,7 +83,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
     }
   };
 
-  const componentProps = (field, option) => {
+  const isSelected = (field, option) => {
     var isSelected;
     if (field.multiple) {
       isSelected =
@@ -91,14 +92,18 @@ const StandardImagePicker = forwardRef((props, ref) => {
     } else {
       isSelected = get(form, field.attribute) === option.src;
     }
+    return isSelected;
+  };
+
+  const componentProps = (field, option) => {
     return {
       id: field.id || field.attribute,
       component: "div",
       className: classes.imgContainerRoot,
       style: {
         width: `calc(${100 / (field.imageCols || 2)}% - 4px)`,
-        backgroundColor: isSelected
-          ? lighten(theme.palette.secondary.main, 0.9)
+        border: isSelected(field, option)
+          ? `2px solid ${theme.palette.primary.main}`
           : null,
       },
       onClick: () => handleClick(option),
@@ -138,6 +143,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
                   title={image.alt}
                   loading="lazy"
                   className={classes.image}
+                  style={isSelected(field, image) ? { padding: "2px" } : null}
                 />
               </div>
             </ButtonBase>
