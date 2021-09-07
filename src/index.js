@@ -6,6 +6,7 @@ import StandardDatePicker from "./Components/Forms/StandardDatePicker";
 import StandardDateTimePicker from "./Components/Forms/StandardDateTimePicker";
 import StandardEditor from "./Components/Forms/StandardEditor";
 import StandardFileUpload from "./Components/Forms/StandardFileUpload";
+import StandardImagePicker from "./Components/Forms/StandardImagePicker";
 import StandardRadioGroup from "./Components/Forms/StandardRadioGroup";
 import StandardSelect from "./Components/Forms/StandardSelect";
 import StandardSwitch from "./Components/Forms/StandardSwitch";
@@ -21,6 +22,7 @@ export {
   StandardDateTimePicker,
   StandardEditor,
   StandardFileUpload,
+  StandardImagePicker,
   StandardRadioGroup,
   StandardSelect,
   StandardSwitch,
