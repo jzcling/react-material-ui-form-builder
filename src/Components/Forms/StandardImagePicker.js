@@ -1,9 +1,10 @@
 import { ButtonBase, ImageList, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { lighten, makeStyles, useTheme } from "@material-ui/core/styles";
 import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
 import { get } from "lodash-es";
+import Title from "../Widgets/Title";
 
 const useStyles = makeStyles((theme) => ({
   gridListRoot: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 !important",
   },
   imgContainerSizer: {
-    marginTop: "100%",
+    marginTop: (aspectRatio) => `${(aspectRatio[1] / aspectRatio[0]) * 100}%`,
   },
   imgContainer: {
     position: "absolute",
@@ -49,9 +50,67 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardImagePicker = forwardRef((props, ref) => {
-  const classes = useStyles();
   const { field, form, updateForm } = props;
+  const classes = useStyles(field.aspectRatio || [1, 1]);
   const { errors, validate } = useValidation("date", field, form, updateForm);
+  const theme = useTheme();
+
+  const handleClick = (option) => {
+    if (field.multiple) {
+      const index = (get(form, field.attribute) || []).findIndex(
+        (value) => value === option.src
+      );
+      if (index >= 0) {
+        var copy = [...get(form, field.attribute)];
+        copy.splice(index, 1);
+        if (copy.length === 0) {
+          copy = null;
+        }
+        updateForm(field.attribute, copy);
+        return;
+      }
+      updateForm(field.attribute, [
+        ...(get(form, field.attribute) || []),
+        option.src,
+      ]);
+    } else {
+      if (get(form, field.attribute) === option.src) {
+        updateForm(field.attribute, undefined);
+        return;
+      }
+      updateForm(field.attribute, option.src);
+    }
+  };
+
+  const componentProps = (field, option) => {
+    var isSelected;
+    if (field.multiple) {
+      isSelected =
+        get(form, field.attribute) &&
+        get(form, field.attribute).includes(option.src);
+    } else {
+      isSelected = get(form, field.attribute) === option.src;
+    }
+    return {
+      id: field.id || field.attribute,
+      component: "div",
+      className: classes.imgContainerRoot,
+      style: {
+        width: `calc(${100 / (field.imageCols || 2)}% - 4px)`,
+        backgroundColor: isSelected
+          ? lighten(theme.palette.secondary.main, 0.9)
+          : null,
+      },
+      onClick: () => handleClick(option),
+      ...field.props,
+    };
+  };
+
+  const containerProps = (field) => {
+    return {
+      ...field.groupContainerProps,
+    };
+  };
 
   return (
     <div
@@ -61,31 +120,30 @@ const StandardImagePicker = forwardRef((props, ref) => {
           ref(el);
         }
       }}
-      className={classes.gridListRoot}
     >
-      <ImageList className={classes.gridList} {...field.props} rowHeight="auto">
-        {field.images?.map((image, index) => (
-          <ButtonBase
-            key={index}
-            component="div"
-            className={classes.imgContainerRoot}
-            style={{
-              width: `calc(${100 / field.cols}% - 4px)`,
-            }}
-          >
-            <div className={classes.imgContainerSizer} />
-            <div className={classes.imgContainer}>
-              <img
-                src={image.src}
-                alt={image.alt}
-                title={image.alt}
-                loading="lazy"
-                className={classes.image}
-              />
-            </div>
-          </ButtonBase>
-        ))}
-      </ImageList>
+      {field.title && <Title field={field} />}
+      <div className={classes.gridListRoot}>
+        <ImageList
+          className={classes.gridList}
+          {...containerProps(field)}
+          rowHeight="auto"
+        >
+          {field.images?.map((image, index) => (
+            <ButtonBase key={index} {...componentProps(field, image)}>
+              <div className={classes.imgContainerSizer} />
+              <div className={classes.imgContainer}>
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  title={image.alt}
+                  loading="lazy"
+                  className={classes.image}
+                />
+              </div>
+            </ButtonBase>
+          ))}
+        </ImageList>
+      </div>
       {errors.length > 0 && (
         <Typography className={classes.errorText}>{errors[0]}</Typography>
       )}
