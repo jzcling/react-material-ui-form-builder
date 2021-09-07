@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Grid, Typography } from "@material-ui/core";
@@ -16,6 +16,7 @@ import StandardTextField from "./Forms/StandardTextField";
 import StandardTimePicker from "./Forms/StandardTimePicker";
 import ReactPlayer from "react-player";
 import StandardEditor from "./Forms/StandardEditor";
+import StandardImagePicker from "./Forms/StandardImagePicker";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -39,7 +40,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function FormBuilder(props) {
+const FormBuilder = forwardRef((props, ref) => {
   const { title, fields, form, updateForm, children, index, idPrefix } = props;
   const classes = useStyles();
 
@@ -64,6 +65,7 @@ function FormBuilder(props) {
             field={field}
             form={form}
             updateForm={updateForm}
+            ref={ref}
           />
         );
       case "date-time-picker":
@@ -72,6 +74,7 @@ function FormBuilder(props) {
             field={field}
             form={form}
             updateForm={updateForm}
+            ref={ref}
           />
         );
       case "time-picker":
@@ -80,11 +83,17 @@ function FormBuilder(props) {
             field={field}
             form={form}
             updateForm={updateForm}
+            ref={ref}
           />
         );
       case "select":
         return (
-          <StandardSelect field={field} form={form} updateForm={updateForm} />
+          <StandardSelect
+            field={field}
+            form={form}
+            updateForm={updateForm}
+            ref={ref}
+          />
         );
       case "autocomplete":
         return (
@@ -92,6 +101,7 @@ function FormBuilder(props) {
             field={field}
             form={form}
             updateForm={updateForm}
+            ref={ref}
           />
         );
       case "chip-group":
@@ -100,6 +110,7 @@ function FormBuilder(props) {
             field={field}
             form={form}
             updateForm={updateForm}
+            ref={ref}
           />
         );
       case "checkbox-group":
@@ -108,6 +119,7 @@ function FormBuilder(props) {
             field={field}
             form={form}
             updateForm={updateForm}
+            ref={ref}
           />
         );
       case "radio-group":
@@ -116,11 +128,17 @@ function FormBuilder(props) {
             field={field}
             form={form}
             updateForm={updateForm}
+            ref={ref}
           />
         );
       case "switch":
         return (
-          <StandardSwitch field={field} form={form} updateForm={updateForm} />
+          <StandardSwitch
+            field={field}
+            form={form}
+            updateForm={updateForm}
+            ref={ref}
+          />
         );
       case "file-upload":
         return (
@@ -128,13 +146,27 @@ function FormBuilder(props) {
             field={field}
             form={form}
             updateForm={updateForm}
+            ref={ref}
+          />
+        );
+      case "image-picker":
+        return (
+          <StandardImagePicker
+            field={field}
+            form={form}
+            updateForm={updateForm}
+            ref={ref}
           />
         );
       case "display-text":
-        return <Typography {...field.titleProps}>{field.title}</Typography>;
+        return (
+          <Typography ref={ref} {...field.titleProps}>
+            {field.title}
+          </Typography>
+        );
       case "display-image":
         return (
-          <div className={classes.imageContainer}>
+          <div ref={ref} className={classes.imageContainer}>
             <img
               src={field.src}
               alt={field.alt}
@@ -146,7 +178,7 @@ function FormBuilder(props) {
         );
       case "display-media":
         return (
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div ref={ref} style={{ display: "flex", justifyContent: "center" }}>
             <ReactPlayer
               url={field.src}
               controls
@@ -158,10 +190,15 @@ function FormBuilder(props) {
         );
       case "rich-text":
         return (
-          <StandardEditor field={field} form={form} updateForm={updateForm} />
+          <StandardEditor
+            ref={ref}
+            field={field}
+            form={form}
+            updateForm={updateForm}
+          />
         );
       case "custom":
-        return field.customComponent(field, form, updateForm);
+        return field.customComponent(field, form, updateForm, ref);
       case "text-field":
       default:
         return (
@@ -169,6 +206,7 @@ function FormBuilder(props) {
             field={field}
             form={form}
             updateForm={updateForm}
+            ref={ref}
           />
         );
     }
@@ -206,7 +244,9 @@ function FormBuilder(props) {
       {children}
     </div>
   );
-}
+});
+
+FormBuilder.displayName = "FormBuilder";
 
 FormBuilder.defaultProps = {
   updateForm: () => {},
