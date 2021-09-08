@@ -1,10 +1,5 @@
 import React, { forwardRef, useMemo } from "react";
-import {
-  Chip,
-  FormControl,
-  FormGroup,
-  FormHelperText,
-} from "@material-ui/core";
+import { Chip, FormControl, FormGroup, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import get from "lodash/get";
@@ -16,6 +11,11 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     marginRight: theme.spacing(1),
     marginTop: theme.spacing(1),
+  },
+  errorText: {
+    marginTop: "4px",
+    fontSize: "0.75rem",
+    color: theme.palette.error.main,
   },
 }));
 
@@ -105,6 +105,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
       error: errors.length > 0,
       onBlur: () => validate(get(form, field.attribute)),
       ...field.groupContainerProps,
+      style: { flexWrap: "wrap", ...(field.groupContainerProps || {}).style },
     };
   };
 
@@ -126,8 +127,10 @@ const StandardChipGroup = forwardRef((props, ref) => {
               <Chip {...componentProps(field, option)} />
             </div>
           ))}
-          <FormHelperText>{errors[0]}</FormHelperText>
         </FormControl>
+        {errors.length > 0 && (
+          <Typography className={classes.errorText}>{errors[0]}</Typography>
+        )}
       </FormGroup>
     </Fragment>
   );

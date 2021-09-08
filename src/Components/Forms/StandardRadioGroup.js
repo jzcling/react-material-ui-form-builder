@@ -3,17 +3,27 @@ import {
   Radio,
   FormControlLabel,
   FormGroup,
-  FormHelperText,
   FormControl,
+  Typography,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
 
+const useStyles = makeStyles((theme) => ({
+  errorText: {
+    marginTop: "4px",
+    fontSize: "0.75rem",
+    color: theme.palette.error.main,
+  },
+}));
+
 const StandardRadioGroup = forwardRef((props, ref) => {
   const { field, form, updateForm } = props;
+  const classes = useStyles();
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
   const optionConfig = useMemo(
@@ -75,6 +85,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
       error: errors.length > 0,
       onBlur: () => validate(get(form, field.attribute)),
       ...field.groupContainerProps,
+      style: { flexWrap: "wrap", ...(field.groupContainerProps || {}).style },
     };
   };
 
@@ -92,8 +103,10 @@ const StandardRadioGroup = forwardRef((props, ref) => {
               {...field.labelProps}
             />
           ))}
-          <FormHelperText>{errors[0]}</FormHelperText>
         </FormControl>
+        {errors.length > 0 && (
+          <Typography className={classes.errorText}>{errors[0]}</Typography>
+        )}
       </FormGroup>
     </Fragment>
   );
