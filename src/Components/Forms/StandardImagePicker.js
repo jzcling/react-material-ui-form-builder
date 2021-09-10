@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
 import { get } from "lodash-es";
 import Title from "../Widgets/Title";
+import useDimensions from "../../Hooks/useDimensions";
 
 const useStyles = makeStyles((theme) => ({
   gridListRoot: {
@@ -24,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
     position: "relative",
     margin: "2px",
-    padding: "0 !important",
-    borderRadius: "4px",
+    width: "100%",
   },
   imgContainerSizer: {
-    marginTop: (aspectRatio) => `${(aspectRatio[1] / aspectRatio[0]) * 100}%`,
+    marginTop: ({ aspectRatio }) =>
+      `${(aspectRatio[1] / aspectRatio[0]) * 100}%`,
   },
   imgContainer: {
     position: "absolute",
@@ -42,19 +43,55 @@ const useStyles = makeStyles((theme) => ({
     objectFit: "cover",
     width: "100%",
     height: "100%",
+    pointerEvents: "none",
   },
   errorText: {
     marginTop: "4px",
     fontSize: "0.75rem",
     color: theme.palette.error.main,
   },
+  labelContainer: {
+    margin: theme.spacing(1),
+    overflow: "hidden",
+    height: ({ labelLines, labelFontSize }) => labelLines * (labelFontSize + 4),
+  },
+  label: {
+    display: "-webkit-box",
+    boxOrient: "vertical",
+    lineClamp: ({ labelLines }) => labelLines,
+  },
 }));
+
+const getLabelFontSize = (field) =>
+  ((field.labelProps || {}).style || {}).fontSize
+    ? Number(
+        String(((field.labelProps || {}).style || {}).fontSize).replace(
+          "px",
+          ""
+        )
+      )
+    : 14;
+
+function sanitizeImageCols(col) {
+  col = col || {};
+  col.xs = col.xs || 2;
+  col.sm = col.sm || col.xs;
+  col.md = col.md || col.sm;
+  col.lg = col.lg || col.md;
+  col.xl = col.xl || col.lg;
+  return col;
+}
 
 const StandardImagePicker = forwardRef((props, ref) => {
   const { field, form, updateForm } = props;
-  const classes = useStyles(field.aspectRatio || [1, 1]);
+  const classes = useStyles({
+    aspectRatio: field.aspectRatio || [1, 1],
+    labelLines: field.labelLines || 2,
+    labelFontSize: getLabelFontSize(field),
+  });
   const { errors, validate } = useValidation("date", field, form, updateForm);
   const theme = useTheme();
+  const { widthType } = useDimensions();
 
   const handleClick = (option) => {
     if (field.multiple) {
@@ -99,12 +136,13 @@ const StandardImagePicker = forwardRef((props, ref) => {
     return {
       id: field.id || field.attribute,
       component: "div",
-      className: classes.imgContainerRoot,
       style: {
-        width: `calc(${100 / (field.imageCols || 2)}% - 4px)`,
+        width: `${100 / sanitizeImageCols(field.imageCols)[widthType]}%`,
         border: isSelected(field, option)
           ? `2px solid ${theme.palette.primary.main}`
           : null,
+        borderRadius: "4px",
+        flexDirection: "column",
       },
       onClick: () => handleClick(option),
       ...field.props,
@@ -133,19 +171,28 @@ const StandardImagePicker = forwardRef((props, ref) => {
           {...containerProps(field)}
           rowHeight="auto"
         >
-          {field.images?.map((image, index) => (
+          {(field.images || []).map((image, index) => (
             <ButtonBase key={index} {...componentProps(field, image)}>
-              <div className={classes.imgContainerSizer} />
-              <div className={classes.imgContainer}>
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  title={image.alt}
-                  loading="lazy"
-                  className={classes.image}
-                  style={isSelected(field, image) ? { padding: "2px" } : null}
-                />
+              <div className={classes.imgContainerRoot}>
+                <div className={classes.imgContainerSizer} />
+                <div className={classes.imgContainer}>
+                  <img
+                    src={image.src}
+                    alt={image.alt || image.label}
+                    title={image.label || image.alt}
+                    loading="lazy"
+                    className={classes.image}
+                    style={isSelected(field, image) ? { padding: "2px" } : null}
+                  />
+                </div>
               </div>
+              {image.label && (
+                <div className={classes.labelContainer}>
+                  <Typography className={classes.label} {...field.labelProps}>
+                    {image.label}
+                  </Typography>
+                </div>
+              )}
             </ButtonBase>
           ))}
         </ImageList>
