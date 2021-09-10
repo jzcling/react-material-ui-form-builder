@@ -1,6 +1,6 @@
 import { ButtonBase, ImageList, Typography } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
 import { get } from "lodash-es";
@@ -51,14 +51,16 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
   },
   labelContainer: {
-    margin: theme.spacing(1),
+    margin: "4px",
     overflow: "hidden",
-    height: ({ labelLines, labelFontSize }) => labelLines * (labelFontSize + 4),
+    height: ({ labelLines, labelFontSize }) => labelLines * (labelFontSize + 2),
   },
   label: {
     display: "-webkit-box",
     boxOrient: "vertical",
     lineClamp: ({ labelLines }) => labelLines,
+    lineHeight: ({ labelFontSize }) => `${labelFontSize + 2}px`,
+    textAlign: "center",
   },
 }));
 
@@ -93,10 +95,12 @@ const StandardImagePicker = forwardRef((props, ref) => {
   const theme = useTheme();
   const { widthType } = useDimensions();
 
+  const getValue = useCallback((option) => option.label || option.src, []);
+
   const handleClick = (option) => {
     if (field.multiple) {
       const index = (get(form, field.attribute) || []).findIndex(
-        (value) => value === option.src
+        (value) => value === getValue(option)
       );
       if (index >= 0) {
         var copy = [...get(form, field.attribute)];
@@ -109,14 +113,14 @@ const StandardImagePicker = forwardRef((props, ref) => {
       }
       updateForm(field.attribute, [
         ...(get(form, field.attribute) || []),
-        option.src,
+        getValue(option),
       ]);
     } else {
-      if (get(form, field.attribute) === option.src) {
+      if (get(form, field.attribute) === getValue(option)) {
         updateForm(field.attribute, undefined);
         return;
       }
-      updateForm(field.attribute, option.src);
+      updateForm(field.attribute, getValue(option));
     }
   };
 
@@ -125,9 +129,9 @@ const StandardImagePicker = forwardRef((props, ref) => {
     if (field.multiple) {
       isSelected =
         get(form, field.attribute) &&
-        get(form, field.attribute).includes(option.src);
+        get(form, field.attribute).includes(getValue(option));
     } else {
-      isSelected = get(form, field.attribute) === option.src;
+      isSelected = get(form, field.attribute) === getValue(option);
     }
     return isSelected;
   };
@@ -137,7 +141,10 @@ const StandardImagePicker = forwardRef((props, ref) => {
       id: field.id || field.attribute,
       component: "div",
       style: {
-        width: `${100 / sanitizeImageCols(field.imageCols)[widthType]}%`,
+        width: `calc(${
+          100 / sanitizeImageCols(field.imageCols)[widthType]
+        }% - 4px)`,
+        margin: "2px",
         border: isSelected(field, option)
           ? `2px solid ${theme.palette.primary.main}`
           : null,

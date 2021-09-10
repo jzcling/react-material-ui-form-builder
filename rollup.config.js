@@ -73,6 +73,7 @@ const config = [
       "lodash/unset",
       "@material-ui/core/styles",
       "clsx",
+      /@babel\/runtime/,
     ],
   },
   {
