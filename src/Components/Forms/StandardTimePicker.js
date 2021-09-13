@@ -1,6 +1,6 @@
 import React, { forwardRef, Fragment } from "react";
 import DateFnsUtils from "@date-io/date-fns";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import {
   KeyboardTimePicker,
   MuiPickersUtilsProvider,
@@ -37,7 +37,9 @@ const StandardTimePicker = forwardRef((props, ref) => {
       margin: "dense",
       format: "HH:mm:ss",
       label: field.label,
-      value: get(form, field.attribute) || null,
+      value: get(form, field.attribute)
+        ? format(new Date(), "yyyy-MM-dd") + " " + get(form, field.attribute)
+        : null,
       onChange: (value) => {
         if (value) {
           updateForm(field.attribute, format(value, "HH:mm:ss"));
