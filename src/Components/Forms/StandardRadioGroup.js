@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardRadioGroup = forwardRef((props, ref) => {
-  const { field, form, updateForm } = props;
+  const { field, form, updateForm, showTitle } = props;
   const classes = useStyles();
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
@@ -82,7 +82,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
 
   const containerProps = (field) => {
     return {
-      error: errors.length > 0,
+      error: errors?.length > 0,
       onBlur: () => validate(get(form, field.attribute)),
       ...field.groupContainerProps,
       style: { flexWrap: "wrap", ...(field.groupContainerProps || {}).style },
@@ -91,7 +91,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} />}
       <FormGroup component="fieldset">
         <FormControl {...containerProps(field)}>
           {(field.options || []).map((option, index) => (
@@ -104,7 +104,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
             />
           ))}
         </FormControl>
-        {errors.length > 0 && (
+        {errors?.length > 0 && (
           <Typography className={classes.errorText}>{errors[0]}</Typography>
         )}
       </FormGroup>
@@ -116,12 +116,14 @@ StandardRadioGroup.displayName = "StandardRadioGroup";
 
 StandardRadioGroup.defaultProps = {
   updateForm: () => {},
+  showTitle: true,
 };
 
 StandardRadioGroup.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
+  showTitle: PropTypes.bool,
 };
 
 export default StandardRadioGroup;

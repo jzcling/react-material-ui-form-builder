@@ -69,7 +69,7 @@ const StandardEditor = forwardRef((props, ref) => {
         containerProps={field.groupContainerProps}
         editableProps={field.props}
       />
-      {errors.length > 0 && (
+      {errors?.length > 0 && (
         <Typography className={classes.errorText}>{errors[0]}</Typography>
       )}
     </div>

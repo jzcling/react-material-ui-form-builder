@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
 
 const StandardSwitch = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm } = props;
+  const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
   const handleSwitchChange = useCallback(
@@ -50,8 +50,8 @@ const StandardSwitch = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && <Title field={field} />}
-      <FormControl error={errors.length > 0}>
+      {showTitle && field.title && <Title field={field} />}
+      <FormControl error={errors?.length > 0}>
         <FormControlLabel
           inputRef={ref}
           key={field.id}
@@ -70,12 +70,14 @@ StandardSwitch.displayName = "StandardSwitch";
 
 StandardSwitch.defaultProps = {
   updateForm: () => {},
+  showTitle: true,
 };
 
 StandardSwitch.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
+  showTitle: PropTypes.bool,
 };
 
 export default StandardSwitch;

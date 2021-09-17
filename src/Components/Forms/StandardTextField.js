@@ -47,7 +47,7 @@ const getValue = (value) => {
 
 const StandardTextField = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm } = props;
+  const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation(
     getType(field),
     field,
@@ -82,7 +82,7 @@ const StandardTextField = forwardRef((props, ref) => {
         shrink:
           !!get(form, field.attribute) || get(form, field.attribute) === 0,
       },
-      error: errors.length > 0,
+      error: errors?.length > 0,
       helperText: errors[0],
       onBlur: () => validate(get(form, field.attribute)),
       onKeyUp: (event) => {
@@ -96,7 +96,7 @@ const StandardTextField = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} />}
       <TextField inputRef={ref} {...componentProps(field)} />
     </Fragment>
   );
@@ -106,12 +106,14 @@ StandardTextField.displayName = "StandardTextField";
 
 StandardTextField.defaultProps = {
   updateForm: () => {},
+  showTitle: true,
 };
 
 StandardTextField.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
+  showTitle: PropTypes.bool,
 };
 
 export default StandardTextField;

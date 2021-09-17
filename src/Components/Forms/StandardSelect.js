@@ -18,7 +18,7 @@ const getValue = (value) => {
 };
 
 const StandardSelect = forwardRef((props, ref) => {
-  const { field, form, updateForm } = props;
+  const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("string", field, form, updateForm);
 
   const optionConfig = useMemo(
@@ -67,8 +67,8 @@ const StandardSelect = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && <Title field={field} />}
-      <FormControl variant="outlined" fullWidth error={errors.length > 0}>
+      {showTitle && field.title && <Title field={field} />}
+      <FormControl variant="outlined" fullWidth error={errors?.length > 0}>
         <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
           {field.label}
         </InputLabel>
@@ -93,12 +93,14 @@ StandardSelect.displayName = "StandardSelect";
 
 StandardSelect.defaultProps = {
   updateForm: () => {},
+  showTitle: true,
 };
 
 StandardSelect.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
+  showTitle: PropTypes.bool,
 };
 
 export default StandardSelect;

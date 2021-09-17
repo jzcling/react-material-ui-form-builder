@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   input: {
     textAlign: "start",
     border: ({ errors }) =>
-      `1px solid ${errors.length > 0 ? theme.palette.error.main : "#b9b9b9"}`,
+      `1px solid ${errors?.length > 0 ? theme.palette.error.main : "#b9b9b9"}`,
     borderRadius: "4px",
     width: "100%",
     padding: "7px 10px",
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardFileUpload = forwardRef((props, ref) => {
-  const { field, form, updateForm } = props;
+  const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
   const classes = useStyles({
     errors: errors,
@@ -159,7 +159,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} />}
       <input
         ref={(el) => {
           if (el && ref) {
@@ -239,10 +239,10 @@ const StandardFileUpload = forwardRef((props, ref) => {
             </div>
           </ButtonBase>
         )}
-        {errors.length > 0 && (
+        {errors?.length > 0 && (
           <Typography className={classes.errorText}>{errors[0]}</Typography>
         )}
-        {fileErrors.length > 0 && (
+        {fileErrors?.length > 0 && (
           <Typography className={classes.errorText}>{fileErrors[0]}</Typography>
         )}
       </label>
@@ -254,12 +254,14 @@ StandardFileUpload.displayName = "StandardFileUpload";
 
 StandardFileUpload.defaultProps = {
   updateForm: () => {},
+  showTitle: true,
 };
 
 StandardFileUpload.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
+  showTitle: PropTypes.bool,
 };
 
 export default StandardFileUpload;

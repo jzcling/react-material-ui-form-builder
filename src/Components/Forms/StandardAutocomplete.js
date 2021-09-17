@@ -1,13 +1,18 @@
-import React, { forwardRef, Fragment, useMemo } from "react";
-import { TextField } from "@material-ui/core";
+import React, {
+  forwardRef,
+  Fragment,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
+import { Chip, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
-import isArray from "lodash/isArray";
-import isObject from "lodash/isObject";
-import get from "lodash/get";
+import { cloneDeep, get, isArray, isObject } from "lodash-es";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles(() => ({
   autocomplete: {
@@ -17,10 +22,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const reorderTags = (list, startIndex, endIndex) => {
+  const result = cloneDeep(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
 const StandardAutocomplete = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm } = props;
+  const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
+  const [focused, setFocused] = useState(false);
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -116,25 +130,95 @@ const StandardAutocomplete = forwardRef((props, ref) => {
             autoComplete: "off", // disable autocomplete and autofill
           }}
           label={field.label}
-          error={errors.length > 0}
+          error={errors?.length > 0}
           helperText={errors[0]}
         />
       ),
+      renderTags: (value, getTagProps) => {
+        if (field.sortable && focused) {
+          return (
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="options">
+                {(provided) => (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                    {value.map((option, index) => (
+                      <Draggable
+                        key={index}
+                        draggableId={String(index)}
+                        index={index}
+                        isDragDisabled={!(field.props && field.props.multiple)}
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <Chip
+                              variant="outlined"
+                              label={optionConfig(option).label}
+                              style={{ cursor: "grab" }}
+                              {...getTagProps({ index })}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          );
+        } else {
+          return value.map((option, index) => (
+            <Chip
+              key={index}
+              variant="outlined"
+              size="small"
+              label={optionConfig(option).label}
+              {...getTagProps({ index })}
+            />
+          ));
+        }
+      },
       value:
         get(form, field.attribute) ||
         (field.props && field.props.multiple ? [] : null),
       onChange: (event, option) => {
         updateForm(field.attribute, optionConfig(option).value);
       },
-      onBlur: () => validate(get(form, field.attribute)),
+      onBlur: () => {
+        setFocused(false);
+        validate(get(form, field.attribute));
+      },
+      onFocus: () => setFocused(true),
       className: classes.autocomplete,
       ...field.props,
     };
   };
 
+  const onDragEnd = useCallback((result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    if (result.destination.index === result.source.index) {
+      return;
+    }
+
+    const reordered = reorderTags(
+      get(form, field.attribute) || [],
+      result.source.index,
+      result.destination.index
+    );
+
+    updateForm(field.attribute, reordered);
+  }, []);
+
   return (
     <Fragment>
-      {field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} />}
       <Autocomplete {...componentProps(field)} />
     </Fragment>
   );
@@ -144,12 +228,14 @@ StandardAutocomplete.displayName = "StandardAutocomplete";
 
 StandardAutocomplete.defaultProps = {
   updateForm: () => {},
+  showTitle: true,
 };
 
 StandardAutocomplete.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
+  showTitle: PropTypes.bool,
 };
 
 export default StandardAutocomplete;

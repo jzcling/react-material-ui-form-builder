@@ -85,7 +85,7 @@ function sanitizeImageCols(col) {
 }
 
 const StandardImagePicker = forwardRef((props, ref) => {
-  const { field, form, updateForm } = props;
+  const { field, form, updateForm, showTitle } = props;
   const classes = useStyles({
     aspectRatio: field.aspectRatio || [1, 1],
     labelLines: field.labelLines || 2,
@@ -171,7 +171,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
         }
       }}
     >
-      {field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} />}
       <div className={classes.gridListRoot}>
         <ImageList
           className={classes.gridList}
@@ -204,7 +204,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
           ))}
         </ImageList>
       </div>
-      {errors.length > 0 && (
+      {errors?.length > 0 && (
         <Typography className={classes.errorText}>{errors[0]}</Typography>
       )}
     </div>
@@ -215,12 +215,14 @@ StandardImagePicker.displayName = "StandardImagePicker";
 
 StandardImagePicker.defaultProps = {
   updateForm: () => {},
+  showTitle: true,
 };
 
 StandardImagePicker.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
+  showTitle: PropTypes.bool,
 };
 
 export default StandardImagePicker;

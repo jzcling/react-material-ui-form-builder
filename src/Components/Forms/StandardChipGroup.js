@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const StandardChipGroup = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm } = props;
+  const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
   const optionConfig = useMemo(
@@ -102,7 +102,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
 
   const containerProps = (field) => {
     return {
-      error: errors.length > 0,
+      error: errors?.length > 0,
       onBlur: () => validate(get(form, field.attribute)),
       ...field.groupContainerProps,
       style: { flexWrap: "wrap", ...(field.groupContainerProps || {}).style },
@@ -111,7 +111,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} />}
       <FormGroup component="fieldset">
         <FormControl {...containerProps(field)}>
           {(field.options || []).map((option, index) => (
@@ -128,7 +128,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
             </div>
           ))}
         </FormControl>
-        {errors.length > 0 && (
+        {errors?.length > 0 && (
           <Typography className={classes.errorText}>{errors[0]}</Typography>
         )}
       </FormGroup>
@@ -140,12 +140,14 @@ StandardChipGroup.displayName = "StandardChipGroup";
 
 StandardChipGroup.defaultProps = {
   updateForm: () => {},
+  showTitle: true,
 };
 
 StandardChipGroup.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
+  showTitle: PropTypes.bool,
 };
 
 export default StandardChipGroup;
