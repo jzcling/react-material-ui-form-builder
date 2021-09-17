@@ -17,6 +17,7 @@ import StandardTimePicker from "./Forms/StandardTimePicker";
 import ReactPlayer from "react-player";
 import StandardEditor from "./Forms/StandardEditor";
 import StandardImagePicker from "./Forms/StandardImagePicker";
+import Title from "./Widgets/Title";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -159,11 +160,7 @@ const FormBuilder = forwardRef((props, ref) => {
           />
         );
       case "display-text":
-        return (
-          <Typography ref={ref} {...field.titleProps}>
-            {field.title}
-          </Typography>
-        );
+        return <Title field={field} />;
       case "display-image":
         return (
           <div ref={ref} className={classes.imageContainer}>
