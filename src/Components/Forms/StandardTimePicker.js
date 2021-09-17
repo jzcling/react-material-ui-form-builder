@@ -1,6 +1,6 @@
 import React, { forwardRef, Fragment } from "react";
 import DateFnsUtils from "@date-io/date-fns";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import {
   KeyboardTimePicker,
   MuiPickersUtilsProvider,
