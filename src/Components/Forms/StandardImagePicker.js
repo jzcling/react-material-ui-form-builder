@@ -1,6 +1,6 @@
 import { ButtonBase, ImageList, Typography } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import React, { forwardRef, useCallback } from "react";
+import React, { forwardRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
 import { get } from "lodash-es";
@@ -95,7 +95,12 @@ const StandardImagePicker = forwardRef((props, ref) => {
   const theme = useTheme();
   const { widthType } = useDimensions();
 
-  const getValue = useCallback((option) => option.label || option.src, []);
+  const getValue = useMemo(() => {
+    if (field.getValue) {
+      return field.getValue;
+    }
+    return (option) => option.label || option.src;
+  }, [field.getValue]);
 
   const handleClick = (option) => {
     if (field.multiple) {
@@ -137,7 +142,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
   };
 
   const componentProps = (field, option) => {
-    return {
+    var props = {
       id: field.id || field.attribute,
       component: "div",
       style: {
@@ -152,8 +157,14 @@ const StandardImagePicker = forwardRef((props, ref) => {
         flexDirection: "column",
       },
       onClick: () => handleClick(option),
-      ...field.props,
     };
+    if (field.props) {
+      props = {
+        ...props,
+        ...field.props(option),
+      };
+    }
+    return props;
   };
 
   const containerProps = (field) => {
@@ -183,14 +194,30 @@ const StandardImagePicker = forwardRef((props, ref) => {
               <div className={classes.imgContainerRoot}>
                 <div className={classes.imgContainerSizer} />
                 <div className={classes.imgContainer}>
-                  <img
-                    src={image.src}
-                    alt={image.alt || image.label}
-                    title={image.label || image.alt}
-                    loading="lazy"
-                    className={classes.image}
-                    style={isSelected(field, image) ? { padding: "2px" } : null}
-                  />
+                  {image.customComponent ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    >
+                      {image.customComponent}
+                    </div>
+                  ) : (
+                    <img
+                      src={image.src}
+                      alt={image.alt || image.label}
+                      title={image.label || image.alt}
+                      loading="lazy"
+                      className={classes.image}
+                      style={
+                        isSelected(field, image) ? { padding: "2px" } : null
+                      }
+                    />
+                  )}
                 </div>
               </div>
               {image.label && (
