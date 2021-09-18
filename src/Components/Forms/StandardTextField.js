@@ -1,16 +1,9 @@
 import React, { forwardRef, Fragment } from "react";
 import { TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { get } from "lodash-es";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
-
-const useStyles = makeStyles(() => ({
-  textFieldRoot: {
-    marginTop: 0,
-  },
-}));
 
 const getType = (field) => {
   if (field.validationType) {
@@ -46,7 +39,6 @@ const getValue = (value) => {
 };
 
 const StandardTextField = forwardRef((props, ref) => {
-  const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation(
     getType(field),
@@ -59,9 +51,6 @@ const StandardTextField = forwardRef((props, ref) => {
   const componentProps = (field) => {
     return {
       id: field.id || field.attribute,
-      classes: {
-        root: classes.textFieldRoot,
-      },
       fullWidth: true,
       variant: "outlined",
       margin: "dense",
