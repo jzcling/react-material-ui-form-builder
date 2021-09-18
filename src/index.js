@@ -8,6 +8,7 @@ import StandardEditor from "./Components/Forms/StandardEditor";
 import StandardFileUpload from "./Components/Forms/StandardFileUpload";
 import StandardImagePicker from "./Components/Forms/StandardImagePicker";
 import StandardRadioGroup from "./Components/Forms/StandardRadioGroup";
+import StandardRating from "./Components/Forms/StandardRating";
 import StandardSelect from "./Components/Forms/StandardSelect";
 import StandardSwitch from "./Components/Forms/StandardSwitch";
 import StandardTextField from "./Components/Forms/StandardTextField";
@@ -24,6 +25,7 @@ export {
   StandardFileUpload,
   StandardImagePicker,
   StandardRadioGroup,
+  StandardRating,
   StandardSelect,
   StandardSwitch,
   StandardTextField,

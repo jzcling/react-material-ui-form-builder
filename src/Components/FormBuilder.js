@@ -18,6 +18,7 @@ import ReactPlayer from "react-player";
 import StandardEditor from "./Forms/StandardEditor";
 import StandardImagePicker from "./Forms/StandardImagePicker";
 import Title from "./Widgets/Title";
+import StandardRating from "./Forms/StandardRating";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -153,6 +154,15 @@ const FormBuilder = forwardRef((props, ref) => {
       case "image-picker":
         return (
           <StandardImagePicker
+            field={field}
+            form={form}
+            updateForm={updateForm}
+            ref={ref}
+          />
+        );
+      case "rating":
+        return (
+          <StandardRating
             field={field}
             form={form}
             updateForm={updateForm}
