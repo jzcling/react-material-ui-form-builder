@@ -14,11 +14,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "0.75rem",
     color: theme.palette.error.main,
   },
+  iconColor: (field) => ({
+    color: field.iconColor,
+  }),
 }));
 
 const StandardRating = forwardRef((props, ref) => {
-  const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
+  const classes = useStyles(field);
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
 
   const componentProps = (field) => {
@@ -29,6 +32,9 @@ const StandardRating = forwardRef((props, ref) => {
       icon: <Star style={{ margin: "0 8px", fontSize: "32px" }} />,
       emptyIcon: <StarBorder style={{ margin: "0 8px", fontSize: "32px" }} />,
       onChange: (event, value) => updateForm(field.attribute, value),
+      classes: {
+        iconFilled: classes.iconColor,
+      },
       ...field.props,
     };
   };
