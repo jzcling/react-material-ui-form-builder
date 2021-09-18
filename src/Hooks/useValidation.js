@@ -1,7 +1,4 @@
-import isArray from "lodash/isArray";
-import cloneDeep from "lodash/cloneDeep";
-import set from "lodash/set";
-import unset from "lodash/unset";
+import { cloneDeep, isArray, set, unset } from "lodash-es";
 import React from "react";
 import * as yup from "yup";
 

@@ -6,7 +6,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import PropTypes from "prop-types";
-import get from "lodash/get";
+import { get } from "lodash-es";
 import { makeStyles } from "@material-ui/core/styles";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";

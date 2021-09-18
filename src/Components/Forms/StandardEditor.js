@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import PropTypes from "prop-types";
-import get from "lodash/get";
+import { get } from "lodash-es";
 import useValidation from "../../Hooks/useValidation";
 import { Editor } from "@jeremyling/react-material-ui-rich-text-editor";
 import { Typography } from "@material-ui/core";

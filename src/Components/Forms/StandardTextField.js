@@ -2,7 +2,7 @@ import React, { forwardRef, Fragment } from "react";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import get from "lodash/get";
+import { get } from "lodash-es";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
 

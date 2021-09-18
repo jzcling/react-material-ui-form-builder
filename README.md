@@ -101,8 +101,7 @@ With the predefined data above, the following functional component illustrates h
 ```jsx
 import React, { useState } from "react";
 import FormBuilder from "@jeremyling/react-material-ui-form-builder";
-import set from "lodash/set";
-import get from "lodash/get";
+import { get, set } from "lodash-es";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({

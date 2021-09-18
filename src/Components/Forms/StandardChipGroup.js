@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from "react";
 import { Chip, FormControl, FormGroup, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import get from "lodash/get";
+import { get } from "lodash-es";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";

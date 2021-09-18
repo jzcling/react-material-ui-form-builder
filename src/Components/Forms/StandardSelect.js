@@ -6,7 +6,7 @@ import {
   Select,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import get from "lodash/get";
+import { get } from "lodash-es";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
 

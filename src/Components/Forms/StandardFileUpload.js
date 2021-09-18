@@ -2,10 +2,7 @@ import React, { forwardRef, Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { ButtonBase, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import isArray from "lodash/isArray";
-import isString from "lodash/isString";
-import get from "lodash/get";
-import concat from "lodash/concat";
+import { concat, get, isArray, isString } from "lodash-es";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
 
