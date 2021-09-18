@@ -26,8 +26,8 @@ const StandardRating = forwardRef((props, ref) => {
       id: field.id || field.attribute,
       value: get(form, field.attribute) || 0,
       precision: 0.5,
-      icon: <Star style={{ margin: "0 8px", fontSize: "40px" }} />,
-      emptyIcon: <StarBorder style={{ margin: "0 8px", fontSize: "40px" }} />,
+      icon: <Star style={{ margin: "0 8px", fontSize: "32px" }} />,
+      emptyIcon: <StarBorder style={{ margin: "0 8px", fontSize: "32px" }} />,
       onChange: (event, value) => updateForm(field.attribute, value),
       ...field.props,
     };
