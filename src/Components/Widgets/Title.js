@@ -8,9 +8,13 @@ const Title = forwardRef((props, ref) => {
     <div ref={ref} style={{ display: "flex", alignItems: "baseline" }}>
       <Typography {...field.titleProps}>{field.title}</Typography>
       <div style={{ width: "2px" }} />
-      {field.titleSuffix && (
-        <Typography {...field.titleSuffixProps}>{field.titleSuffix}</Typography>
-      )}
+      {field.titleSuffixComponent
+        ? field.titleSuffixComponent
+        : field.titleSuffix && (
+            <Typography {...field.titleSuffixProps}>
+              {field.titleSuffix}
+            </Typography>
+          )}
     </div>
   );
 });
