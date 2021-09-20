@@ -2,7 +2,8 @@ import React, { forwardRef, Fragment, useMemo } from "react";
 import { Chip, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
-import _ from "lodash";
+import get from "lodash/get";
+import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
@@ -36,15 +37,15 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         if (field.props && field.props.multiple && Array.isArray(option)) {
           const value = [];
           for (const item of option) {
-            if (_.isObject(item)) {
-              value.push(_.get(item, field.optionConfig.value));
+            if (isObject(item)) {
+              value.push(get(item, field.optionConfig.value));
             } else {
               value.push(item);
             }
           }
           config.value = value;
         } else {
-          config.value = _.get(option, field.optionConfig.value);
+          config.value = get(option, field.optionConfig.value);
         }
       }
 
@@ -53,15 +54,15 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         if (field.props && field.props.multiple && Array.isArray(option)) {
           const label = [];
           for (const item of option) {
-            if (_.isObject(item)) {
+            if (isObject(item)) {
               label.push(item);
             } else {
-              label.push(_.get(item, field.optionConfig.label));
+              label.push(get(item, field.optionConfig.label));
             }
           }
           config.label = label;
         } else {
-          config.label = _.get(option, field.optionConfig.label);
+          config.label = get(option, field.optionConfig.label);
         }
       }
 
@@ -76,7 +77,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
   and returns the option value upon selection 
   */
   function getLabel(option) {
-    if (_.isObject(option)) {
+    if (isObject(option)) {
       return String(optionConfig(option).label);
     }
     if ((field.optionConfig || {}).value) {
@@ -98,7 +99,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         Required to handle the quirky behaviour of Autocomplete component
         where it returns the value object sometimes and value value sometimes
         */
-        return _.isObject(value)
+        return isObject(value)
           ? optionConfig(option).value === optionConfig(value).value
           : optionConfig(option).value === value;
       },
@@ -129,12 +130,12 @@ const StandardAutocomplete = forwardRef((props, ref) => {
           />
         )),
       value:
-        _.get(form, field.attribute) ||
+        get(form, field.attribute) ||
         (field.props && field.props.multiple ? [] : null),
       onChange: (event, option) => {
         updateForm(field.attribute, optionConfig(option).value);
       },
-      onBlur: () => validate(_.get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       className: classes.autocomplete,
       ...field.props,
     };

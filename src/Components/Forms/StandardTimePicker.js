@@ -6,7 +6,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import PropTypes from "prop-types";
-import _ from "lodash";
+import get from "lodash/get";
 import { makeStyles } from "@material-ui/core/styles";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
@@ -37,8 +37,8 @@ const StandardTimePicker = forwardRef((props, ref) => {
       margin: "dense",
       format: "HH:mm:ss",
       label: field.label,
-      value: _.get(form, field.attribute)
-        ? format(new Date(), "yyyy-MM-dd") + " " + _.get(form, field.attribute)
+      value: get(form, field.attribute)
+        ? format(new Date(), "yyyy-MM-dd") + " " + get(form, field.attribute)
         : null,
       onChange: (value) => {
         if (value) {
@@ -53,10 +53,10 @@ const StandardTimePicker = forwardRef((props, ref) => {
       },
       error: errors?.length > 0,
       helperText: errors[0],
-      onBlur: () => validate(_.get(form, field.attribute)),
+      onBlur: () => validate(get(form, field.attribute)),
       onKeyUp: (event) => {
         if (event.key === "Enter") {
-          validate(_.get(form, field.attribute));
+          validate(get(form, field.attribute));
         }
       },
       ...field.props,
@@ -69,7 +69,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
       <div
         ref={(el) => {
           if (el && ref) {
-            el.blur = () => validate(_.get(form, field.attribute));
+            el.blur = () => validate(get(form, field.attribute));
             ref(el);
           }
         }}

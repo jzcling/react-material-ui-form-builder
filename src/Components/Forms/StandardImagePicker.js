@@ -3,7 +3,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import React, { forwardRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
-import _ from "lodash";
+import get from "lodash/get";
 import Title from "../Widgets/Title";
 import useDimensions from "../../Hooks/useDimensions";
 
@@ -104,11 +104,11 @@ const StandardImagePicker = forwardRef((props, ref) => {
 
   const handleClick = (option) => {
     if (field.multiple) {
-      const index = (_.get(form, field.attribute) || []).findIndex(
+      const index = (get(form, field.attribute) || []).findIndex(
         (value) => value === getValue(option)
       );
       if (index >= 0) {
-        var copy = [..._.get(form, field.attribute)];
+        var copy = [...get(form, field.attribute)];
         copy.splice(index, 1);
         if (copy.length === 0) {
           copy = null;
@@ -117,11 +117,11 @@ const StandardImagePicker = forwardRef((props, ref) => {
         return;
       }
       updateForm(field.attribute, [
-        ...(_.get(form, field.attribute) || []),
+        ...(get(form, field.attribute) || []),
         getValue(option),
       ]);
     } else {
-      if (_.get(form, field.attribute) === getValue(option)) {
+      if (get(form, field.attribute) === getValue(option)) {
         updateForm(field.attribute, undefined);
         return;
       }
@@ -133,10 +133,10 @@ const StandardImagePicker = forwardRef((props, ref) => {
     var isSelected;
     if (field.multiple) {
       isSelected =
-        _.get(form, field.attribute) &&
-        _.get(form, field.attribute).includes(getValue(option));
+        get(form, field.attribute) &&
+        get(form, field.attribute).includes(getValue(option));
     } else {
-      isSelected = _.get(form, field.attribute) === getValue(option);
+      isSelected = get(form, field.attribute) === getValue(option);
     }
     return isSelected;
   };
@@ -177,7 +177,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
     <div
       ref={(el) => {
         if (el && ref) {
-          el.blur = () => validate(_.get(form, field.attribute));
+          el.blur = () => validate(get(form, field.attribute));
           ref(el);
         }
       }}

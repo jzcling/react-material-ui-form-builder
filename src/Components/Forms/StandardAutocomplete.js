@@ -8,7 +8,9 @@ import React, {
 import { Chip, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import get from "lodash/get";
+import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
@@ -23,7 +25,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const reorderTags = (list, startIndex, endIndex) => {
-  const result = _.cloneDeep(list);
+  const result = cloneDeep(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
 
@@ -52,15 +54,15 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         if (field.props && field.props.multiple && Array.isArray(option)) {
           const value = [];
           for (const item of option) {
-            if (_.isObject(item)) {
-              value.push(_.get(item, field.optionConfig.value));
+            if (isObject(item)) {
+              value.push(get(item, field.optionConfig.value));
             } else {
               value.push(item);
             }
           }
           config.value = value;
         } else {
-          config.value = _.get(option, field.optionConfig.value);
+          config.value = get(option, field.optionConfig.value);
         }
       }
 
@@ -69,15 +71,15 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         if (field.props && field.props.multiple && Array.isArray(option)) {
           const label = [];
           for (const item of option) {
-            if (_.isObject(item)) {
+            if (isObject(item)) {
               label.push(item);
             } else {
-              label.push(_.get(item, field.optionConfig.label));
+              label.push(get(item, field.optionConfig.label));
             }
           }
           config.label = label;
         } else {
-          config.label = _.get(option, field.optionConfig.label);
+          config.label = get(option, field.optionConfig.label);
         }
       }
 
@@ -92,7 +94,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
   and returns the option value upon selection 
   */
   function getLabel(option) {
-    if (_.isObject(option)) {
+    if (isObject(option)) {
       return String(optionConfig(option).label);
     }
     if ((field.optionConfig || {}).value) {
@@ -114,7 +116,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         Required to handle the quirky behaviour of Autocomplete component
         where it returns the value object sometimes and value value sometimes
         */
-        return _.isObject(value)
+        return isObject(value)
           ? optionConfig(option).value === optionConfig(value).value
           : optionConfig(option).value === value;
       },
@@ -183,14 +185,14 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         }
       },
       value:
-        _.get(form, field.attribute) ||
+        get(form, field.attribute) ||
         (field.props && field.props.multiple ? [] : null),
       onChange: (event, option) => {
         updateForm(field.attribute, optionConfig(option).value);
       },
       onBlur: () => {
         setFocused(false);
-        validate(_.get(form, field.attribute));
+        validate(get(form, field.attribute));
       },
       onFocus: () => setFocused(true),
       className: classes.autocomplete,
@@ -208,7 +210,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
     }
 
     const reordered = reorderTags(
-      _.get(form, field.attribute) || [],
+      get(form, field.attribute) || [],
       result.source.index,
       result.destination.index
     );
