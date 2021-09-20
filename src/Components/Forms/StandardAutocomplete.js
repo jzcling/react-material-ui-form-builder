@@ -12,8 +12,8 @@ import cloneDeep from "lodash/cloneDeep";
 import get from "lodash/get";
 import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
-import useValidation from "../../Hooks/useValidation";
-import Title from "../Widgets/Title";
+import { useValidation } from "../../Hooks/useValidation";
+import { Title } from "../Widgets/Title";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles(() => ({
@@ -240,4 +240,4 @@ StandardAutocomplete.propTypes = {
   showTitle: PropTypes.bool,
 };
 
-export default StandardAutocomplete;
+export { StandardAutocomplete };

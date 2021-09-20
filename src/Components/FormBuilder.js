@@ -3,22 +3,22 @@ import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import StandardAutocomplete from "./Forms/StandardAutocomplete";
-import StandardCheckboxGroup from "./Forms/StandardCheckboxGroup";
-import StandardChipGroup from "./Forms/StandardChipGroup";
-import StandardDatePicker from "./Forms/StandardDatePicker";
-import StandardDateTimePicker from "./Forms/StandardDateTimePicker";
-import StandardFileUpload from "./Forms/StandardFileUpload";
-import StandardRadioGroup from "./Forms/StandardRadioGroup";
-import StandardSelect from "./Forms/StandardSelect";
-import StandardSwitch from "./Forms/StandardSwitch";
-import StandardTextField from "./Forms/StandardTextField";
-import StandardTimePicker from "./Forms/StandardTimePicker";
+import { StandardAutocomplete } from "./Forms/StandardAutocomplete";
+import { StandardCheckboxGroup } from "./Forms/StandardCheckboxGroup";
+import { StandardChipGroup } from "./Forms/StandardChipGroup";
+import { StandardDatePicker } from "./Forms/StandardDatePicker";
+import { StandardDateTimePicker } from "./Forms/StandardDateTimePicker";
+import { StandardFileUpload } from "./Forms/StandardFileUpload";
+import { StandardRadioGroup } from "./Forms/StandardRadioGroup";
+import { StandardRating } from "./Forms/StandardRating";
+import { StandardSelect } from "./Forms/StandardSelect";
+import { StandardSwitch } from "./Forms/StandardSwitch";
+import { StandardTextField } from "./Forms/StandardTextField";
+import { StandardTimePicker } from "./Forms/StandardTimePicker";
+import { StandardEditor } from "./Forms/StandardEditor";
+import { StandardImagePicker } from "./Forms/StandardImagePicker";
+import { Title } from "./Widgets/Title";
 import ReactPlayer from "react-player";
-import StandardEditor from "./Forms/StandardEditor";
-import StandardImagePicker from "./Forms/StandardImagePicker";
-import Title from "./Widgets/Title";
-import StandardRating from "./Forms/StandardRating";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -270,4 +270,4 @@ FormBuilder.propTypes = {
   className: PropTypes.object,
 };
 
-export default FormBuilder;
+export { FormBuilder };

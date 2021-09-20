@@ -4,13 +4,7 @@ import unset from "lodash/unset";
 import React from "react";
 import * as yup from "yup";
 
-export default function useValidation(
-  type,
-  field,
-  form,
-  updateForm,
-  validations = null
-) {
+function useValidation(type, field, form, updateForm, validations = null) {
   const [errors, setErrors] = React.useState([]);
 
   if (!validations) {
@@ -82,3 +76,5 @@ function getValidations(field) {
   validations = { ...validations, ...field.validations };
   return validations;
 }
+
+export { useValidation };

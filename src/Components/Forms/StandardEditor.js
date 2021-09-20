@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import get from "lodash/get";
-import useValidation from "../../Hooks/useValidation";
+import { useValidation } from "../../Hooks/useValidation";
 import { Editor } from "@jeremyling/react-material-ui-rich-text-editor";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -88,4 +88,4 @@ StandardEditor.propTypes = {
   updateForm: PropTypes.func,
 };
 
-export default StandardEditor;
+export { StandardEditor };

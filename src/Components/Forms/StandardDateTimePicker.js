@@ -8,8 +8,8 @@ import {
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import { makeStyles } from "@material-ui/core/styles";
-import useValidation from "../../Hooks/useValidation";
-import Title from "../Widgets/Title";
+import { useValidation } from "../../Hooks/useValidation";
+import { Title } from "../Widgets/Title";
 
 const useStyles = makeStyles(() => ({
   picker: {
@@ -94,4 +94,4 @@ StandardDateTimePicker.propTypes = {
   showTitle: PropTypes.bool,
 };
 
-export default StandardDateTimePicker;
+export { StandardDateTimePicker };

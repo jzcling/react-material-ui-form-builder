@@ -4,8 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Star, StarBorder } from "@material-ui/icons";
 import PropTypes from "prop-types";
 import get from "lodash/get";
-import useValidation from "../../Hooks/useValidation";
-import Title from "../Widgets/Title";
+import { useValidation } from "../../Hooks/useValidation";
+import { Title } from "../Widgets/Title";
 import { Rating } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
@@ -72,4 +72,4 @@ StandardRating.propTypes = {
   showTitle: PropTypes.bool,
 };
 
-export default StandardRating;
+export { StandardRating };

@@ -10,8 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import { Fragment } from "react";
-import useValidation from "../../Hooks/useValidation";
-import Title from "../Widgets/Title";
+import { useValidation } from "../../Hooks/useValidation";
+import { Title } from "../Widgets/Title";
 
 const useStyles = makeStyles((theme) => ({
   errorText: {
@@ -126,4 +126,4 @@ StandardRadioGroup.propTypes = {
   showTitle: PropTypes.bool,
 };
 
-export default StandardRadioGroup;
+export { StandardRadioGroup };

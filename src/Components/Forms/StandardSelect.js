@@ -7,8 +7,8 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import get from "lodash/get";
-import useValidation from "../../Hooks/useValidation";
-import Title from "../Widgets/Title";
+import { useValidation } from "../../Hooks/useValidation";
+import { Title } from "../Widgets/Title";
 
 const getValue = (value) => {
   if (value === null || value === undefined) {
@@ -103,4 +103,4 @@ StandardSelect.propTypes = {
   showTitle: PropTypes.bool,
 };
 
-export default StandardSelect;
+export { StandardSelect };

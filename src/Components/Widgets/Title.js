@@ -25,4 +25,4 @@ Title.propTypes = {
   field: PropTypes.object,
 };
 
-export default Title;
+export { Title };

@@ -5,8 +5,8 @@ import { Autocomplete } from "@material-ui/lab";
 import get from "lodash/get";
 import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
-import useValidation from "../../Hooks/useValidation";
-import Title from "../Widgets/Title";
+import { useValidation } from "../../Hooks/useValidation";
+import { Title } from "../Widgets/Title";
 
 const useStyles = makeStyles(() => ({
   autocomplete: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const StandardAutocomplete = forwardRef((props, ref) => {
+const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("mixed", field, form, updateForm);
@@ -149,18 +149,18 @@ const StandardAutocomplete = forwardRef((props, ref) => {
   );
 });
 
-StandardAutocomplete.displayName = "StandardAutocomplete";
+StandardAutocompleteNoDrag.displayName = "StandardAutocompleteNoDrag";
 
-StandardAutocomplete.defaultProps = {
+StandardAutocompleteNoDrag.defaultProps = {
   updateForm: () => {},
   showTitle: true,
 };
 
-StandardAutocomplete.propTypes = {
+StandardAutocompleteNoDrag.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };
 
-export default StandardAutocomplete;
+export { StandardAutocompleteNoDrag };

@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { ButtonBase, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import get from "lodash/get";
-import useValidation from "../../Hooks/useValidation";
-import Title from "../Widgets/Title";
+import { useValidation } from "../../Hooks/useValidation";
+import { Title } from "../Widgets/Title";
 
 const fileTypes = [
   ".pdf",
@@ -273,4 +273,4 @@ StandardFileUpload.propTypes = {
   showTitle: PropTypes.bool,
 };
 
-export default StandardFileUpload;
+export { StandardFileUpload };

@@ -3,8 +3,8 @@ import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import get from "lodash/get";
-import useValidation from "../../Hooks/useValidation";
-import Title from "../Widgets/Title";
+import { useValidation } from "../../Hooks/useValidation";
+import { Title } from "../Widgets/Title";
 
 const useStyles = makeStyles(() => ({
   textFieldRoot: {
@@ -116,4 +116,4 @@ StandardTextField.propTypes = {
   showTitle: PropTypes.bool,
 };
 
-export default StandardTextField;
+export { StandardTextField };

@@ -2,10 +2,10 @@ import { ButtonBase, ImageList, Typography } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import React, { forwardRef, useMemo } from "react";
 import PropTypes from "prop-types";
-import useValidation from "../../Hooks/useValidation";
+import { useValidation } from "../../Hooks/useValidation";
 import get from "lodash/get";
-import Title from "../Widgets/Title";
-import useDimensions from "../../Hooks/useDimensions";
+import { Title } from "../Widgets/Title";
+import { useDimensions } from "../../Hooks/useDimensions";
 
 const useStyles = makeStyles((theme) => ({
   gridListRoot: {
@@ -252,4 +252,4 @@ StandardImagePicker.propTypes = {
   showTitle: PropTypes.bool,
 };
 
-export default StandardImagePicker;
+export { StandardImagePicker };

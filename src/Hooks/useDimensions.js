@@ -2,7 +2,7 @@ import { useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import { useEffect, useState } from "react";
 
-export default function useDimensions() {
+function useDimensions() {
   const theme = useTheme();
   const keys = [...theme.breakpoints.keys].reverse();
   const [windowDimensions, setWindowDimensions] = useState(
@@ -41,3 +41,5 @@ function getWindowDimensions() {
     height,
   };
 }
+
+export { useDimensions };
