@@ -32,9 +32,12 @@ The following packages are peer dependencies and must be install for this packag
 date-fns
 @jeremyling/react-material-ui-rich-text-editor
 @material-ui/core
+@material-ui/icons
 @material-ui/lab
 @material-ui/pickers
 lodash
+react-beautiful-dnd
+react-player
 ```
 
 ## Usage Example

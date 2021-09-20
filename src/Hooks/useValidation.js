@@ -23,7 +23,7 @@ export default function useValidation(
         if (key === "matches") {
           schema = handleMatches(key, value, schema);
         } else {
-          if (_.isArray(value) && !["oneOf", "notOneOf"].includes(key)) {
+          if (Array.isArray(value) && !["oneOf", "notOneOf"].includes(key)) {
             schema = schema[key](...value);
           } else {
             schema = schema[key](value);
@@ -52,7 +52,7 @@ export default function useValidation(
 
 function handleMatches(key, value, schema) {
   var re, message;
-  if (_.isArray(value)) {
+  if (Array.isArray(value)) {
     [re, message] = value;
   } else {
     re = value;

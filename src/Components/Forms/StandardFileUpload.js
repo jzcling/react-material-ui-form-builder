@@ -21,6 +21,18 @@ const fileTypes = [
   "video/*",
 ];
 
+function isString(str) {
+  if (str && typeof str.valueOf() === "string") {
+    return true;
+  }
+  return false;
+}
+
+const flattenDeep = (arr) =>
+  arr.flatMap((subArray, index) =>
+    Array.isArray(subArray) ? flattenDeep(subArray) : subArray
+  );
+
 const useStyles = makeStyles((theme) => ({
   inputRoot: {
     textAlign: "center",
@@ -86,7 +98,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
 
   const files = useMemo(() => {
     if (_.get(form, field.attribute)) {
-      if (_.isArray(_.get(form, field.attribute))) {
+      if (Array.isArray(_.get(form, field.attribute))) {
         return _.get(form, field.attribute);
       }
       return [_.get(form, field.attribute)];
@@ -99,13 +111,13 @@ const StandardFileUpload = forwardRef((props, ref) => {
   }, [field.maxSizeMb]);
 
   const acceptTypes = useMemo(() => {
-    if (_.isString(field.acceptTypes)) {
+    if (isString(field.acceptTypes)) {
       return field.acceptTypes;
     }
-    if (_.isArray(field.acceptTypes)) {
-      return _.concat(field.acceptTypes);
+    if (Array.isArray(field.acceptTypes)) {
+      return flattenDeep(field.acceptTypes).join(" ");
     }
-    return _.concat(fileTypes);
+    return fileTypes.join(" ");
   }, [field.acceptTypes]);
 
   const attachFiles = (files) => {

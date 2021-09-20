@@ -49,7 +49,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
 
       if (field.optionConfig.value) {
         // This is to account for the quirky behaviour of onChange returning an array
-        if (field.props && field.props.multiple && _.isArray(option)) {
+        if (field.props && field.props.multiple && Array.isArray(option)) {
           const value = [];
           for (const item of option) {
             if (_.isObject(item)) {
@@ -66,7 +66,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
 
       if (field.optionConfig.label) {
         // This is to account for the quirky behaviour of onChange returning an array
-        if (field.props && field.props.multiple && _.isArray(option)) {
+        if (field.props && field.props.multiple && Array.isArray(option)) {
           const label = [];
           for (const item of option) {
             if (_.isObject(item)) {
