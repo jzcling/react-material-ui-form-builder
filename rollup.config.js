@@ -10,16 +10,36 @@ import autoExternal from "rollup-plugin-auto-external";
 
 const config = [
   {
-    input: "src/index.js",
+    input: {
+      index: "src/index.js",
+      StandardAutocomplete: "src/Components/Forms/StandardAutocomplete.js",
+      StandardAutocompleteNoDrag:
+        "src/Components/Forms/StandardAutocompleteNoDrag.js",
+      StandardCheckboxGroup: "src/Components/Forms/StandardCheckboxGroup.js",
+      StandardChipGroup: "src/Components/Forms/StandardChipGroup.js",
+      StandardDatePicker: "src/Components/Forms/StandardDatePicker.js",
+      StandardDateTimePicker: "src/Components/Forms/StandardDateTimePicker.js",
+      StandardEditor: "src/Components/Forms/StandardEditor.js",
+      StandardFileUpload: "src/Components/Forms/StandardFileUpload.js",
+      StandardImagePicker: "src/Components/Forms/StandardImagePicker.js",
+      StandardRadioGroup: "src/Components/Forms/StandardRadioGroup.js",
+      StandardRating: "src/Components/Forms/StandardRating.js",
+      StandardSelect: "src/Components/Forms/StandardSelect.js",
+      StandardSwitch: "src/Components/Forms/StandardSwitch.js",
+      StandardTextField: "src/Components/Forms/StandardTextField.js",
+      StandardTimePicker: "src/Components/Forms/StandardTimePicker.js",
+      useValidation: "src/Hooks/useValidation.js",
+      FormBuilder: "src/Components/FormBuilder.js",
+    },
     output: [
       {
-        file: pkg.main,
+        dir: "dist/cjs",
         format: "cjs",
         exports: "named",
         sourcemap: true,
       },
       {
-        file: pkg.module,
+        dir: "dist/es",
         format: "es",
         exports: "named",
         sourcemap: true,

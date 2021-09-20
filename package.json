@@ -1,12 +1,15 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "0.5.23",
+  "version": "0.5.24",
   "scripts": {
     "build": "NODE_ENV=production rollup -c"
   },
   "description": "An easy-to-use and quick form builder using the following React Material UI input components:",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "files": [
+    "dist/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jzcling/react-material-ui-form-builder.git"
