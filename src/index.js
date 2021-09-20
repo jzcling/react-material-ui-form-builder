@@ -1,5 +1,6 @@
 import FormBuilder from "./Components/FormBuilder";
 import StandardAutocomplete from "./Components/Forms/StandardAutocomplete";
+import StandardAutocompleteNoDrag from "./Components/Forms/StandardAutocompleteNoDrag";
 import StandardCheckboxGroup from "./Components/Forms/StandardCheckboxGroup";
 import StandardChipGroup from "./Components/Forms/StandardChipGroup";
 import StandardDatePicker from "./Components/Forms/StandardDatePicker";
@@ -17,6 +18,7 @@ import useValidation from "./Hooks/useValidation";
 
 export {
   StandardAutocomplete,
+  StandardAutocompleteNoDrag,
   StandardCheckboxGroup,
   StandardChipGroup,
   StandardDatePicker,
