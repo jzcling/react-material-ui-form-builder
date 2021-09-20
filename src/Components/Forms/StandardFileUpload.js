@@ -2,7 +2,7 @@ import React, { forwardRef, Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { ButtonBase, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { concat, get, isArray, isString } from "lodash-es";
+import _ from "lodash";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
 
@@ -85,11 +85,11 @@ const StandardFileUpload = forwardRef((props, ref) => {
   const [fileErrors, setFileErrors] = useState([]);
 
   const files = useMemo(() => {
-    if (get(form, field.attribute)) {
-      if (isArray(get(form, field.attribute))) {
-        return get(form, field.attribute);
+    if (_.get(form, field.attribute)) {
+      if (_.isArray(_.get(form, field.attribute))) {
+        return _.get(form, field.attribute);
       }
-      return [get(form, field.attribute)];
+      return [_.get(form, field.attribute)];
     }
     return [];
   }, [form, field.attribute]);
@@ -99,13 +99,13 @@ const StandardFileUpload = forwardRef((props, ref) => {
   }, [field.maxSizeMb]);
 
   const acceptTypes = useMemo(() => {
-    if (isString(field.acceptTypes)) {
+    if (_.isString(field.acceptTypes)) {
       return field.acceptTypes;
     }
-    if (isArray(field.acceptTypes)) {
-      return concat(field.acceptTypes);
+    if (_.isArray(field.acceptTypes)) {
+      return _.concat(field.acceptTypes);
     }
-    return concat(fileTypes);
+    return _.concat(fileTypes);
   }, [field.acceptTypes]);
 
   const attachFiles = (files) => {
@@ -160,7 +160,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
       <input
         ref={(el) => {
           if (el && ref) {
-            el.blur = () => validate(get(form, field.attribute));
+            el.blur = () => validate(_.get(form, field.attribute));
             ref(el);
           }
         }}
@@ -168,7 +168,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
       />
       <label
         htmlFor={componentProps(field).id}
-        onBlur={() => validate(get(form, field.attribute))}
+        onBlur={() => validate(_.get(form, field.attribute))}
       >
         {files.length > 0 ? (
           <ButtonBase className={classes.buttonBase} component="div">

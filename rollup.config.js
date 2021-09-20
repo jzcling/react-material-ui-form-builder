@@ -62,7 +62,7 @@ const config = [
       terser(),
       autoExternal(),
     ],
-    external: ["lodash-es", /@material-ui\/core/, "clsx", /@babel\/runtime/],
+    external: ["lodash", /@material-ui\/core/, "clsx", /@babel\/runtime/],
   },
   {
     input: "src/index.js",

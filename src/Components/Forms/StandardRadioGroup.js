@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import { get } from "lodash-es";
+import _ from "lodash";
 import { Fragment } from "react";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
@@ -39,13 +39,13 @@ const StandardRadioGroup = forwardRef((props, ref) => {
       }
 
       config.key = field.optionConfig.key
-        ? get(option, field.optionConfig.key)
+        ? _.get(option, field.optionConfig.key)
         : config.key;
       config.value = field.optionConfig.value
-        ? get(option, field.optionConfig.value)
+        ? _.get(option, field.optionConfig.value)
         : config.value;
       config.label = field.optionConfig.label
-        ? String(get(option, field.optionConfig.label))
+        ? String(_.get(option, field.optionConfig.label))
         : config.label;
 
       return config;
@@ -63,10 +63,10 @@ const StandardRadioGroup = forwardRef((props, ref) => {
     var isSelected;
     if (field.multiple) {
       isSelected =
-        get(form, field.attribute) &&
-        get(form, field.attribute).includes(optionConfig(option).value);
+        _.get(form, field.attribute) &&
+        _.get(form, field.attribute).includes(optionConfig(option).value);
     } else {
-      isSelected = get(form, field.attribute) === optionConfig(option).value;
+      isSelected = _.get(form, field.attribute) === optionConfig(option).value;
     }
     return {
       id: field.id || field.attribute,
@@ -83,7 +83,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
   const containerProps = (field) => {
     return {
       error: errors?.length > 0,
-      onBlur: () => validate(get(form, field.attribute)),
+      onBlur: () => validate(_.get(form, field.attribute)),
       ...field.groupContainerProps,
       style: { flexWrap: "wrap", ...(field.groupContainerProps || {}).style },
     };

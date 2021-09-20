@@ -1,9 +1,16 @@
 import React, { forwardRef, Fragment } from "react";
 import { TextField } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import { get } from "lodash-es";
+import _ from "lodash";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
+
+const useStyles = makeStyles(() => ({
+  textFieldRoot: {
+    marginTop: 0,
+  },
+}));
 
 const getType = (field) => {
   if (field.validationType) {
@@ -39,6 +46,7 @@ const getValue = (value) => {
 };
 
 const StandardTextField = forwardRef((props, ref) => {
+  const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation(
     getType(field),
@@ -51,11 +59,14 @@ const StandardTextField = forwardRef((props, ref) => {
   const componentProps = (field) => {
     return {
       id: field.id || field.attribute,
+      classes: {
+        root: classes.textFieldRoot,
+      },
       fullWidth: true,
       variant: "outlined",
       margin: "dense",
       label: field.label,
-      value: getValue(get(form, field.attribute)),
+      value: getValue(_.get(form, field.attribute)),
       onChange: (event) => {
         var value = event.target.value;
         if (field.props && field.props.type === "number") {
@@ -69,14 +80,14 @@ const StandardTextField = forwardRef((props, ref) => {
       },
       InputLabelProps: {
         shrink:
-          !!get(form, field.attribute) || get(form, field.attribute) === 0,
+          !!_.get(form, field.attribute) || _.get(form, field.attribute) === 0,
       },
       error: errors?.length > 0,
       helperText: errors[0],
-      onBlur: () => validate(get(form, field.attribute)),
+      onBlur: () => validate(_.get(form, field.attribute)),
       onKeyUp: (event) => {
         if (event.key === "Enter") {
-          validate(get(form, field.attribute));
+          validate(_.get(form, field.attribute));
         }
       },
       ...field.props,

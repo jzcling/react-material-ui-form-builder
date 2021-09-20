@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import PropTypes from "prop-types";
-import { get } from "lodash-es";
+import _ from "lodash";
 import useValidation from "../../Hooks/useValidation";
 import { Editor } from "@jeremyling/react-material-ui-rich-text-editor";
 import { Typography } from "@material-ui/core";
@@ -28,7 +28,7 @@ const StandardEditor = forwardRef((props, ref) => {
   const [touched, setTouched] = useState(false);
 
   const value = useMemo(
-    () => get(form, field.attribute) || "",
+    () => _.get(form, field.attribute) || "",
     [form, field.attribute]
   );
 

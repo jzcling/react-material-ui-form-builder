@@ -1,4 +1,4 @@
-import { cloneDeep, isArray, set, unset } from "lodash-es";
+import _ from "lodash";
 import React from "react";
 import * as yup from "yup";
 
@@ -23,7 +23,7 @@ export default function useValidation(
         if (key === "matches") {
           schema = handleMatches(key, value, schema);
         } else {
-          if (isArray(value) && !["oneOf", "notOneOf"].includes(key)) {
+          if (_.isArray(value) && !["oneOf", "notOneOf"].includes(key)) {
             schema = schema[key](...value);
           } else {
             schema = schema[key](value);
@@ -34,15 +34,15 @@ export default function useValidation(
   }
 
   async function validate(value) {
-    const formErrors = cloneDeep(form.errors || {});
+    const formErrors = _.cloneDeep(form.errors || {});
     try {
       await schema.validate(value);
       setErrors([]);
-      unset(formErrors, field.attribute);
+      _.unset(formErrors, field.attribute);
       updateForm("errors", formErrors);
     } catch (error) {
       setErrors(error.errors);
-      set(formErrors, field.attribute, error.errors);
+      _.set(formErrors, field.attribute, error.errors);
       updateForm("errors", formErrors);
     }
   }
@@ -52,7 +52,7 @@ export default function useValidation(
 
 function handleMatches(key, value, schema) {
   var re, message;
-  if (isArray(value)) {
+  if (_.isArray(value)) {
     [re, message] = value;
   } else {
     re = value;

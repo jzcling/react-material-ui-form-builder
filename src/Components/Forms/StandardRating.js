@@ -3,7 +3,7 @@ import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Star, StarBorder } from "@material-ui/icons";
 import PropTypes from "prop-types";
-import { get } from "lodash-es";
+import _ from "lodash";
 import useValidation from "../../Hooks/useValidation";
 import Title from "../Widgets/Title";
 import { Rating } from "@material-ui/lab";
@@ -27,7 +27,8 @@ const StandardRating = forwardRef((props, ref) => {
   const componentProps = (field) => {
     return {
       id: field.id || field.attribute,
-      value: get(form, field.attribute) || 0,
+      name: field.id || field.attribute,
+      value: _.get(form, field.attribute) || 0,
       precision: 0.5,
       icon: <Star style={{ margin: "0 8px", fontSize: "32px" }} />,
       emptyIcon: <StarBorder style={{ margin: "0 8px", fontSize: "32px" }} />,
@@ -43,7 +44,7 @@ const StandardRating = forwardRef((props, ref) => {
     <div
       ref={(el) => {
         if (el && ref) {
-          el.blur = () => validate(get(form, field.attribute));
+          el.blur = () => validate(_.get(form, field.attribute));
           ref(el);
         }
       }}
