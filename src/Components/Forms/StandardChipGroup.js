@@ -6,7 +6,7 @@ import get from "lodash/get";
 import { Fragment } from "react";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
-import { shuffleArray } from "../Utils/helpers";
+import { getValidationType, shuffleArray } from "../Utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -23,7 +23,12 @@ const useStyles = makeStyles((theme) => ({
 const StandardChipGroup = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("mixed", field, form, updateForm);
+  const { errors, validate } = useValidation(
+    getValidationType(field),
+    field,
+    form,
+    updateForm
+  );
 
   const optionConfig = useMemo(
     () => (option) => {

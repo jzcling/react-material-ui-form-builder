@@ -7,7 +7,7 @@ import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
-import { shuffleArray } from "../Utils/helpers";
+import { getValidationType, shuffleArray } from "../Utils/helpers";
 
 const useStyles = makeStyles(() => ({
   autocomplete: {
