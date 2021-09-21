@@ -8,3 +8,21 @@ export function shuffleArray(array) {
   }
   return copy;
 }
+
+export const getValidationType = (field) => {
+  if (!field.component || field.component === "text-field") {
+    if (field.props?.type === "number") {
+      return "number";
+    }
+  }
+  if (field.multiple || field.props?.multiple) {
+    return "array";
+  }
+  if (field.validationType) {
+    return field.validationType;
+  }
+  if (!field.component || field.component === "text-field") {
+    return "string";
+  }
+  return "mixed";
+};

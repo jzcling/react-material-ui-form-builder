@@ -20,7 +20,12 @@ const useStyles = makeStyles(() => ({
 const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("mixed", field, form, updateForm);
+  const { errors, validate } = useValidation(
+    getValidationType(field),
+    field,
+    form,
+    updateForm
+  );
 
   const optionConfig = useMemo(
     () => (option) => {

@@ -5,22 +5,13 @@ import PropTypes from "prop-types";
 import get from "lodash/get";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
+import { getValidationType } from "../Utils/helpers";
 
 const useStyles = makeStyles(() => ({
   textFieldRoot: {
     marginTop: 0,
   },
 }));
-
-const getType = (field) => {
-  if (field.validationType) {
-    return field.validationType;
-  }
-  if (!(field.props && field.props.type) || field.props.type !== "number") {
-    return "string";
-  }
-  return "number";
-};
 
 const getValidations = (field) => {
   var validations = {};
@@ -49,7 +40,7 @@ const StandardTextField = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation(
-    getType(field),
+    getValidationType(field),
     field,
     form,
     updateForm,

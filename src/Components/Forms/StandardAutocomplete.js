@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { shuffleArray } from "../Utils/helpers";
+import { getValidationType, shuffleArray } from "../Utils/helpers";
 
 const useStyles = makeStyles(() => ({
   autocomplete: {
@@ -36,7 +36,12 @@ const reorderTags = (list, startIndex, endIndex) => {
 const StandardAutocomplete = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("mixed", field, form, updateForm);
+  const { errors, validate } = useValidation(
+    getValidationType(field),
+    field,
+    form,
+    updateForm
+  );
   const [focused, setFocused] = useState(false);
 
   const optionConfig = useMemo(

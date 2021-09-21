@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const StandardRating = forwardRef((props, ref) => {
   const { field, form, updateForm, showTitle } = props;
   const classes = useStyles(field);
-  const { errors, validate } = useValidation("mixed", field, form, updateForm);
+  const { errors, validate } = useValidation("number", field, form, updateForm);
 
   const componentProps = (field) => {
     return {

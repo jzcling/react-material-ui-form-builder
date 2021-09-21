@@ -6,6 +6,7 @@ import { useValidation } from "../../Hooks/useValidation";
 import get from "lodash/get";
 import { Title } from "../Widgets/Title";
 import { useDimensions } from "../../Hooks/useDimensions";
+import { getValidationType } from "../Utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   gridListRoot: {
@@ -91,7 +92,12 @@ const StandardImagePicker = forwardRef((props, ref) => {
     labelLines: field.labelLines || 2,
     labelFontSize: getLabelFontSize(field),
   });
-  const { errors, validate } = useValidation("date", field, form, updateForm);
+  const { errors, validate } = useValidation(
+    getValidationType(field),
+    field,
+    form,
+    updateForm
+  );
   const theme = useTheme();
   const { widthType } = useDimensions();
 
