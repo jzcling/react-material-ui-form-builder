@@ -37,6 +37,7 @@ date-fns
 @material-ui/pickers
 lodash
 react-beautiful-dnd
+react-color
 react-player
 ```
 
