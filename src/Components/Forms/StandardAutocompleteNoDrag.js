@@ -7,6 +7,7 @@ import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
+import { shuffleArray } from "../Utils/helpers";
 
 const useStyles = makeStyles(() => ({
   autocomplete: {
@@ -88,12 +89,19 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
     return String(option);
   }
 
+  const options = useMemo(() => {
+    if (field.randomizeOptions) {
+      return shuffleArray(field.options || []);
+    }
+    return field.options || [];
+  }, [field.options]);
+
   const componentProps = (field) => {
     return {
       id: field.id || field.attribute,
       size: "small",
       fullWidth: true,
-      options: field.options,
+      options: options,
       getOptionSelected: (option, value) => {
         /* 
         Required to handle the quirky behaviour of Autocomplete component

@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import get from "lodash/get";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
+import { shuffleArray } from "../Utils/helpers";
 
 const getValue = (value) => {
   if (value === null || value === undefined) {
@@ -65,6 +66,13 @@ const StandardSelect = forwardRef((props, ref) => {
     };
   };
 
+  const options = useMemo(() => {
+    if (field.randomizeOptions) {
+      return shuffleArray(field.options || []);
+    }
+    return field.options || [];
+  }, [field.options]);
+
   return (
     <Fragment>
       {showTitle && field.title && <Title field={field} />}
@@ -74,7 +82,7 @@ const StandardSelect = forwardRef((props, ref) => {
         </InputLabel>
         <Select inputRef={ref} {...componentProps(field)}>
           <option aria-label="None" value="" />
-          {(field.options || []).map((option) => (
+          {options.map((option) => (
             <option
               key={optionConfig(option).key}
               value={optionConfig(option).value}

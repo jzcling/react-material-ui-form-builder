@@ -6,6 +6,7 @@ import get from "lodash/get";
 import { Fragment } from "react";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
+import { shuffleArray } from "../Utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -108,12 +109,19 @@ const StandardChipGroup = forwardRef((props, ref) => {
     };
   };
 
+  const options = useMemo(() => {
+    if (field.randomizeOptions) {
+      return shuffleArray(field.options || []);
+    }
+    return field.options || [];
+  }, [field.options]);
+
   return (
     <Fragment>
       {showTitle && field.title && <Title field={field} />}
       <FormGroup component="fieldset">
         <FormControl {...containerProps(field)}>
-          {(field.options || []).map((option, index) => (
+          {options.map((option, index) => (
             <div
               ref={(el) => {
                 if (el && ref) {
