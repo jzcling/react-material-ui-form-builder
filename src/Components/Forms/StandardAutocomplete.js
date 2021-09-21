@@ -213,23 +213,26 @@ const StandardAutocomplete = forwardRef((props, ref) => {
     };
   };
 
-  const onDragEnd = useCallback((result) => {
-    if (!result.destination) {
-      return;
-    }
+  const onDragEnd = useCallback(
+    (result) => {
+      if (!result.destination) {
+        return;
+      }
 
-    if (result.destination.index === result.source.index) {
-      return;
-    }
+      if (result.destination.index === result.source.index) {
+        return;
+      }
 
-    const reordered = reorderTags(
-      get(form, field.attribute) || [],
-      result.source.index,
-      result.destination.index
-    );
+      const reordered = reorderTags(
+        get(form, field.attribute) || [],
+        result.source.index,
+        result.destination.index
+      );
 
-    updateForm(field.attribute, reordered);
-  }, []);
+      updateForm(field.attribute, reordered);
+    },
+    [form, field.attribute]
+  );
 
   return (
     <Fragment>
