@@ -38,10 +38,11 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     left: 0,
     right: 0,
+    padding: "8px",
   },
   image: {
     borderRadius: "4px",
-    objectFit: "cover",
+    objectFit: "contain",
     width: "100%",
     height: "100%",
     pointerEvents: "none",
