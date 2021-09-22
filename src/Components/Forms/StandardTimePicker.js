@@ -65,7 +65,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} form={form} />}
       <div
         ref={(el) => {
           if (el && ref) {

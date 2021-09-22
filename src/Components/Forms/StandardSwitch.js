@@ -55,7 +55,7 @@ const StandardSwitch = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} form={form} />}
       <FormControl error={errors?.length > 0}>
         <FormControlLabel
           inputRef={ref}

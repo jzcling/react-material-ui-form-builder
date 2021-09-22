@@ -49,7 +49,7 @@ const StandardRating = forwardRef((props, ref) => {
         }
       }}
     >
-      {showTitle && field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} form={form} />}
       <Rating ref={ref} {...componentProps(field)} />
       {errors?.length > 0 && (
         <Typography className={classes.errorText}>{errors[0]}</Typography>

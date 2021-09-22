@@ -188,7 +188,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
         }
       }}
     >
-      {showTitle && field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} form={form} />}
       <div className={classes.gridListRoot}>
         <ImageList
           className={classes.gridList}

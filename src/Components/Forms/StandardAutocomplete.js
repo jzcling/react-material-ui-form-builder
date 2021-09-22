@@ -236,7 +236,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} form={form} />}
       <Autocomplete {...componentProps(field)} />
     </Fragment>
   );

@@ -75,7 +75,7 @@ const StandardSelect = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} form={form} />}
       <FormControl variant="outlined" fullWidth error={errors?.length > 0}>
         <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
           {field.label}

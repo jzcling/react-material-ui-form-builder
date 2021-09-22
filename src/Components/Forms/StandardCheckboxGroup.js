@@ -126,7 +126,7 @@ const StandardCheckboxGroup = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} form={form} />}
       <FormGroup component="fieldset">
         <FormControl {...containerProps(field)}>
           {options.map((option, index) => (

@@ -87,7 +87,7 @@ const StandardTextField = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} />}
+      {showTitle && field.title && <Title field={field} form={form} />}
       <TextField inputRef={ref} {...componentProps(field)} />
     </Fragment>
   );
