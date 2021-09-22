@@ -170,7 +170,7 @@ const FormBuilder = forwardRef((props, ref) => {
           />
         );
       case "display-text":
-        return <Title field={field} />;
+        return <Title field={field} form={form} />;
       case "display-image":
         return (
           <div ref={ref} className={classes.imageContainer}>
