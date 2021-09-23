@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     left: 0,
     right: 0,
-    padding: "8px",
   },
   image: {
     borderRadius: "4px",
@@ -197,7 +196,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
           rowHeight="auto"
         >
           {(field.images || []).map((image, index) => (
-            <ButtonBase key={index} {...componentProps(field, image)}>
+            <ButtonBase key={index} {...componentProps(field)}>
               <div className={classes.imgContainerRoot}>
                 <div className={classes.imgContainerSizer} />
                 <div className={classes.imgContainer}>
