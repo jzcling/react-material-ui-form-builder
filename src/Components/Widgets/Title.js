@@ -28,16 +28,23 @@ const Title = forwardRef((props, ref) => {
   }, [field.formula, field.title, form]);
 
   return (
-    <div ref={ref} style={{ display: "flex", alignItems: "baseline" }}>
-      <Typography {...field.titleProps}>{title}</Typography>
-      <div style={{ width: "2px" }} />
-      {field.titleSuffixComponent
-        ? field.titleSuffixComponent
-        : field.titleSuffix && (
-            <Typography {...field.titleSuffixProps}>
-              {field.titleSuffix}
-            </Typography>
-          )}
+    <div
+      ref={ref}
+      {...field.titleContainerProps}
+      style={{
+        display: "flex",
+        alignItems: "baseline",
+        ...field.titleContainerProps?.style,
+      }}
+    >
+      <Typography {...field.titleProps}>
+        {title}{" "}
+        {field.titleSuffixComponent
+          ? field.titleSuffixComponent
+          : field.titleSuffix && (
+              <span {...field.titleSuffixProps}>{field.titleSuffix}</span>
+            )}
+      </Typography>
     </div>
   );
 });
