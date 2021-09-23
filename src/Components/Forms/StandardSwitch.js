@@ -12,9 +12,9 @@ import { Fragment } from "react";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 
-const useStyles = makeStyles(() => ({
-  ml0: {
-    marginLeft: 0,
+const useStyles = makeStyles((theme) => ({
+  label: {
+    margin: theme.spacing(1, 0),
   },
 }));
 
@@ -62,7 +62,7 @@ const StandardSwitch = forwardRef((props, ref) => {
           key={field.id}
           control={<Switch {...componentProps(field)} />}
           label={field.label}
-          className={classes.ml0}
+          className={classes.label}
           {...field.labelProps}
         />
         <FormHelperText>{errors[0]}</FormHelperText>
