@@ -196,7 +196,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
           rowHeight="auto"
         >
           {(field.images || []).map((image, index) => (
-            <ButtonBase key={index} {...componentProps(field)}>
+            <ButtonBase key={index} {...componentProps(field, image)}>
               <div className={classes.imgContainerRoot}>
                 <div className={classes.imgContainerSizer} />
                 <div className={classes.imgContainer}>
