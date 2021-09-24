@@ -12,7 +12,12 @@ const Title = forwardRef((props, ref) => {
         parseFloat(get(form, match.replace("@", "")))
       );
       try {
-        return Function(`"use strict"; return ${sub}`)() || "";
+        var value = Function(`"use strict"; return ${sub}`)() || "";
+        if (field.decimalPlaces >= 0) {
+          const mod = 10 ** field.decimalPlaces;
+          value = Math.round(value * mod) / mod;
+        }
+        return value;
       } catch (error) {
         return "";
       }
@@ -25,7 +30,7 @@ const Title = forwardRef((props, ref) => {
     } catch (error) {
       return field.title || "";
     }
-  }, [field.formula, field.title, form]);
+  }, [field.formula, field.decimalPlaces, field.title, form]);
 
   return (
     <div
