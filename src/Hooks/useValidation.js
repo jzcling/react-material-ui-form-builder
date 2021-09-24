@@ -10,7 +10,7 @@ function useValidation(type, field, form, updateForm, validations = null) {
   if (!validations) {
     validations = getValidations(field);
   }
-  var schema = yup[type]();
+  var schema = yup[type]().nullable();
   for (var [key, value] of Object.entries(validations)) {
     if (value === true) {
       schema = schema[key]();
@@ -21,9 +21,6 @@ function useValidation(type, field, form, updateForm, validations = null) {
         } else {
           if (Array.isArray(value) && !["oneOf", "notOneOf"].includes(key)) {
             schema = schema[key](...value);
-          }
-          if (key === "required") {
-            schema = schema.nullable()[key](value);
           } else {
             schema = schema[key](value);
           }
