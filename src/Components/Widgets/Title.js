@@ -12,7 +12,7 @@ const Title = forwardRef((props, ref) => {
         parseFloat(get(form, match.replace("@", "")))
       );
       try {
-        return eval(sub) || "";
+        return Function(`"use strict"; return ${sub}`)() || "";
       } catch (error) {
         return "";
       }
