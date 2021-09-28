@@ -56,8 +56,8 @@ const StandardDatePicker = forwardRef((props, ref) => {
       error: errors?.length > 0,
       helperText: errors[0],
       onBlur: () => validate(get(form, field.attribute)),
-      onKeyUp: (event) => {
-        if (event.key === "Enter") {
+      onKeyDown: (event) => {
+        if (event.which === 13) {
           validate(get(form, field.attribute));
         }
       },
