@@ -42,7 +42,12 @@ const StandardTimePicker = forwardRef((props, ref) => {
         : null,
       onChange: (value) => {
         if (value) {
-          updateForm(field.attribute, format(value, "HH:mm:ss"));
+          try {
+            const formatted = format(value, "HH:mm:ss");
+            updateForm(field.attribute, formatted);
+          } catch (error) {
+            console.log(error);
+          }
         }
       },
       KeyboardButtonProps: {

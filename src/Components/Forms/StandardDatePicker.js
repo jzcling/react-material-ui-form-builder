@@ -39,7 +39,12 @@ const StandardDatePicker = forwardRef((props, ref) => {
       value: get(form, field.attribute) || null,
       onChange: (value) => {
         if (value) {
-          updateForm(field.attribute, format(value, "yyyy-MM-dd"));
+          try {
+            const formatted = format(value, "yyyy-MM-dd");
+            updateForm(field.attribute, formatted);
+          } catch (error) {
+            console.log(error);
+          }
         }
       },
       KeyboardButtonProps: {
