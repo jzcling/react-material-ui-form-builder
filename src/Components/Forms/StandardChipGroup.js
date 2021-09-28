@@ -130,7 +130,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
             <div
               ref={(el) => {
                 if (el && ref) {
-                  el.blur = () => validate(get(form, field.attribute));
+                  el.validate = (value) => validate(value);
                   ref(el);
                 }
               }}

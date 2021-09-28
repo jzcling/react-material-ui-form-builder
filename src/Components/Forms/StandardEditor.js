@@ -51,9 +51,7 @@ const StandardEditor = forwardRef((props, ref) => {
     <div
       ref={(el) => {
         if (el && ref) {
-          el.blur = () => {
-            validateHtml(value);
-          };
+          el.validate = (value) => validateHtml(value);
           ref(el);
         }
       }}
