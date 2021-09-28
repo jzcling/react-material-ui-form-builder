@@ -63,12 +63,35 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: ({ labelFontSize }) => `${labelFontSize + 2}px`,
     textAlign: "center",
   },
+  subLabelContainer: {
+    margin: "4px",
+    overflow: "hidden",
+    height: ({ subLabelLines, subLabelFontSize }) =>
+      subLabelLines * (subLabelFontSize + 2),
+  },
+  subLabel: {
+    display: "-webkit-box",
+    boxOrient: "vertical",
+    lineClamp: ({ subLabelLines }) => subLabelLines,
+    lineHeight: ({ subLabelFontSize }) => `${subLabelFontSize + 2}px`,
+    textAlign: "center",
+  },
 }));
 
 const getLabelFontSize = (field) =>
   ((field.labelProps || {}).style || {}).fontSize
     ? Number(
         String(((field.labelProps || {}).style || {}).fontSize).replace(
+          "px",
+          ""
+        )
+      )
+    : 14;
+
+const getSubLabelFontSize = (field) =>
+  ((field.subLabelProps || {}).style || {}).fontSize
+    ? Number(
+        String(((field.subLabelProps || {}).style || {}).fontSize).replace(
           "px",
           ""
         )
@@ -91,6 +114,8 @@ const StandardImagePicker = forwardRef((props, ref) => {
     aspectRatio: field.aspectRatio || [1, 1],
     labelLines: field.labelLines || 2,
     labelFontSize: getLabelFontSize(field),
+    subLabelLines: field.subLabelLines || 2,
+    subLabelFontSize: getSubLabelFontSize(field),
   });
   const { errors, validate } = useValidation(
     getValidationType(field),
@@ -101,19 +126,27 @@ const StandardImagePicker = forwardRef((props, ref) => {
   const theme = useTheme();
   const { widthType } = useDimensions();
 
-  const getValue = useMemo(() => {
-    if (field.getValue) {
-      return field.getValue;
+  const getValueKey = useMemo(() => {
+    if (field.getValueKey) {
+      return field.getValueKey;
     }
-    return (option) => option.label || option.src;
-  }, [field.getValue]);
+    return (value) => value?.label || value?.src;
+  }, [field.getValueKey]);
+
+  const getOptionKey = useMemo(() => {
+    if (field.getOptionKey) {
+      return field.getOptionKey;
+    }
+    return (option) => option?.label || option?.src;
+  }, [field.getOptionKey]);
 
   const handleClick = (option) => {
     if (field.multiple) {
       const index = (get(form, field.attribute) || []).findIndex(
-        (value) => value === getValue(option)
+        (value) => getValueKey(value) === getOptionKey(option)
       );
       if (index >= 0) {
+        // option is currently selected, so remove it
         var copy = [...get(form, field.attribute)];
         copy.splice(index, 1);
         if (copy.length === 0) {
@@ -124,14 +157,15 @@ const StandardImagePicker = forwardRef((props, ref) => {
       }
       updateForm(field.attribute, [
         ...(get(form, field.attribute) || []),
-        getValue(option),
+        option,
       ]);
     } else {
-      if (get(form, field.attribute) === getValue(option)) {
+      if (getValueKey(get(form, field.attribute)) === getOptionKey(option)) {
+        // option currently selected, so remove it
         updateForm(field.attribute, undefined);
         return;
       }
-      updateForm(field.attribute, getValue(option));
+      updateForm(field.attribute, option);
     }
   };
 
@@ -139,10 +173,12 @@ const StandardImagePicker = forwardRef((props, ref) => {
     var isSelected;
     if (field.multiple) {
       isSelected =
-        get(form, field.attribute) &&
-        get(form, field.attribute).includes(getValue(option));
+        (get(form, field.attribute) || []).findIndex(
+          (value) => getValueKey(value) === getOptionKey(option)
+        ) > 0;
     } else {
-      isSelected = get(form, field.attribute) === getValue(option);
+      isSelected =
+        getValueKey(get(form, field.attribute)) === getOptionKey(option);
     }
     return isSelected;
   };
@@ -230,6 +266,16 @@ const StandardImagePicker = forwardRef((props, ref) => {
                 <div className={classes.labelContainer}>
                   <Typography className={classes.label} {...field.labelProps}>
                     {image.label}
+                  </Typography>
+                </div>
+              )}
+              {image.subLabel && (
+                <div className={classes.subLabelContainer}>
+                  <Typography
+                    className={classes.subLabel}
+                    {...field.subLabelProps}
+                  >
+                    {image.subLabel}
                   </Typography>
                 </div>
               )}
