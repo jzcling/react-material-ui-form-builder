@@ -93,7 +93,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
     } else {
       isSelected = get(form, field.attribute) === optionConfig(option).value;
     }
-    return {
+    var props = {
       id: field.id || field.attribute,
       className: classes.chip,
       key: optionConfig(option).key,
@@ -101,8 +101,14 @@ const StandardChipGroup = forwardRef((props, ref) => {
       color: isSelected ? "primary" : "default",
       variant: isSelected ? "default" : "outlined",
       onClick: () => handleChipClick(option),
-      ...field.props,
     };
+    if (field.props) {
+      props = {
+        ...props,
+        ...field.props(option),
+      };
+    }
+    return props;
   };
 
   const containerProps = (field) => {
