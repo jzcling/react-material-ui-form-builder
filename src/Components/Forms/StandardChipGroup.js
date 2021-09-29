@@ -100,14 +100,11 @@ const StandardChipGroup = forwardRef((props, ref) => {
       label: optionConfig(option).label,
       color: isSelected ? "primary" : "default",
       variant: isSelected ? "default" : "outlined",
-      onClick: () => handleChipClick(option),
+      ...field.props,
+      onClick: field.props?.onClick
+        ? field.props.onClick(option)
+        : () => handleChipClick(option),
     };
-    if (field.props) {
-      props = {
-        ...props,
-        ...field.props(option),
-      };
-    }
     return props;
   };
 

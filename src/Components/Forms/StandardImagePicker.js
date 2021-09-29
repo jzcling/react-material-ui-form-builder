@@ -198,14 +198,11 @@ const StandardImagePicker = forwardRef((props, ref) => {
         borderRadius: "4px",
         flexDirection: "column",
       },
-      onClick: () => handleClick(option),
+      ...field.props,
+      onClick: field.props?.onClick
+        ? field.props.onClick(option)
+        : () => handleClick(option),
     };
-    if (field.props) {
-      props = {
-        ...props,
-        ...field.props(option),
-      };
-    }
     return props;
   };
 
