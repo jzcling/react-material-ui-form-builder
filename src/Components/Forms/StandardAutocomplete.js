@@ -36,12 +36,7 @@ const reorderTags = (list, startIndex, endIndex) => {
 const StandardAutocomplete = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation(
-    getValidationType(field),
-    field,
-    form,
-    updateForm
-  );
+  const { errors, validate } = useValidation(getValidationType(field), field);
   const [focused, setFocused] = useState(false);
 
   const optionConfig = useMemo(

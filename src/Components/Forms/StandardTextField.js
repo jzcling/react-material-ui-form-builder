@@ -52,8 +52,6 @@ const StandardTextField = forwardRef((props, ref) => {
   const { errors, validate } = useValidation(
     getValidationType(field),
     field,
-    form,
-    updateForm,
     getValidations(field)
   );
 

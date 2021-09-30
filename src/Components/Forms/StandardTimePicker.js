@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
 const StandardTimePicker = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("date", field, form, updateForm);
+  const { errors, validate } = useValidation("date", field);
 
   const componentProps = (field) => {
     return {

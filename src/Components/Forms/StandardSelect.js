@@ -20,7 +20,7 @@ const getValue = (value) => {
 
 const StandardSelect = forwardRef((props, ref) => {
   const { field, form, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("string", field, form, updateForm);
+  const { errors, validate } = useValidation("string", field);
 
   const optionConfig = useMemo(
     () => (option) => {

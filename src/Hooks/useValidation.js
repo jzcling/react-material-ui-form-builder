@@ -1,10 +1,7 @@
-import cloneDeep from "lodash/cloneDeep";
-import set from "lodash/set";
-import unset from "lodash/unset";
 import React from "react";
 import * as yup from "yup";
 
-function useValidation(type, field, form, updateForm, validations = null) {
+function useValidation(type, field, validations = null) {
   const [errors, setErrors] = React.useState([]);
 
   if (!validations) {
@@ -30,17 +27,14 @@ function useValidation(type, field, form, updateForm, validations = null) {
   }
 
   async function validate(value) {
-    const formErrors = cloneDeep(form.errors || {});
     try {
       await schema.validate(value);
       setErrors([]);
-      unset(formErrors, field.attribute);
-      updateForm("errors", formErrors);
     } catch (error) {
       setErrors(error.errors);
-      set(formErrors, field.attribute, error.errors);
-      updateForm("errors", formErrors);
+      return error.errors;
     }
+    return [];
   }
 
   return { errors: errors, validate: validate };

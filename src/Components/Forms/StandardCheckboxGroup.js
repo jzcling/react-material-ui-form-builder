@@ -25,12 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const StandardCheckboxGroup = forwardRef((props, ref) => {
   const { field, form, updateForm, showTitle } = props;
   const classes = useStyles();
-  const { errors, validate } = useValidation(
-    getValidationType(field),
-    field,
-    form,
-    updateForm
-  );
+  const { errors, validate } = useValidation(getValidationType(field), field);
 
   const optionConfig = useMemo(
     () => (option) => {

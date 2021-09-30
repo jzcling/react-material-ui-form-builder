@@ -24,7 +24,7 @@ const StandardEditor = forwardRef((props, ref) => {
   const { field, form, updateForm } = props;
   const classes = useStyles();
   const [preview, setPreview] = useState();
-  const { errors, validate } = useValidation("string", field, form, updateForm);
+  const { errors, validate } = useValidation("string", field);
   const [touched, setTouched] = useState(false);
 
   const value = useMemo(
@@ -38,7 +38,7 @@ const StandardEditor = forwardRef((props, ref) => {
       const stripped = dom.body.textContent;
       validate(stripped);
     },
-    [value]
+    [form, value]
   );
 
   useEffect(() => {

@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
 
 const StandardFileUpload = forwardRef((props, ref) => {
   const { field, form, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("mixed", field, form, updateForm);
+  const { errors, validate } = useValidation("mixed", field);
   const classes = useStyles({
     errors: errors,
     aspectRatio: field.aspectRatio || [],

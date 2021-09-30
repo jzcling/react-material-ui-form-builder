@@ -117,12 +117,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
     subLabelLines: field.subLabelLines || 2,
     subLabelFontSize: getSubLabelFontSize(field),
   });
-  const { errors, validate } = useValidation(
-    getValidationType(field),
-    field,
-    form,
-    updateForm
-  );
+  const { errors, validate } = useValidation(getValidationType(field), field);
   const theme = useTheme();
   const { widthType } = useDimensions();
 
