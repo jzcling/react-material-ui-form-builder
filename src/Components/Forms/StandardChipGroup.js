@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardChipGroup = forwardRef((props, ref) => {
-  const classes = useStyles(field);
   const { field, form, updateForm, showTitle } = props;
+  const classes = useStyles(field);
   const { errors, validate } = useValidation(getValidationType(field), field);
 
   const optionConfig = useMemo(
