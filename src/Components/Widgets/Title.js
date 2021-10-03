@@ -22,8 +22,9 @@ const Title = forwardRef((props, ref) => {
         return "";
       }
     }
-    sub = field.title?.replace(/@[\w.]*/g, (match) =>
-      get(form, match.replace("@", ""))
+    sub = field.title?.replace(
+      /@[\w.]*/g,
+      (match) => get(form, match.replace("@", "")) || ""
     );
     try {
       return sub || "";
