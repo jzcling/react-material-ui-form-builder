@@ -53,7 +53,12 @@ const StandardSwitch = forwardRef((props, ref) => {
       {showTitle && field.title && <Title field={field} form={form} />}
       <FormControl error={errors?.length > 0}>
         <FormControlLabel
-          inputRef={ref}
+          inputRef={(el) => {
+            if (el && ref) {
+              el.validate = (value) => validate(value);
+              ref(el);
+            }
+          }}
           key={field.id}
           control={<Switch {...componentProps(field)} />}
           label={field.label}

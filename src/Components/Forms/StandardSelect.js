@@ -80,7 +80,15 @@ const StandardSelect = forwardRef((props, ref) => {
         <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
           {field.label}
         </InputLabel>
-        <Select inputRef={ref} {...componentProps(field)}>
+        <Select
+          inputRef={(el) => {
+            if (el && ref) {
+              el.validate = (value) => validate(value);
+              ref(el);
+            }
+          }}
+          {...componentProps(field)}
+        >
           <option aria-label="None" value="" />
           {options.map((option) => (
             <option

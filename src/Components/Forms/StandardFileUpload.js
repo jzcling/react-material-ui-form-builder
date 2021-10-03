@@ -29,7 +29,7 @@ function isString(str) {
 }
 
 const flattenDeep = (arr) =>
-  arr.flatMap((subArray, index) =>
+  arr.flatMap((subArray) =>
     Array.isArray(subArray) ? flattenDeep(subArray) : subArray
   );
 

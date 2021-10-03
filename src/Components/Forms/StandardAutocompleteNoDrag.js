@@ -115,7 +115,12 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
       renderInput: (params) => (
         <TextField
           {...params}
-          inputRef={ref}
+          inputRef={(el) => {
+            if (el && ref) {
+              el.validate = (value) => validate(value);
+              ref(el);
+            }
+          }}
           variant="outlined"
           margin="dense"
           inputProps={{

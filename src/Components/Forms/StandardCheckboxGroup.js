@@ -126,7 +126,12 @@ const StandardCheckboxGroup = forwardRef((props, ref) => {
         <FormControl {...containerProps(field)}>
           {options.map((option, index) => (
             <FormControlLabel
-              inputRef={ref}
+              inputRef={(el) => {
+                if (el && ref) {
+                  el.validate = (value) => validate(value);
+                  ref(el);
+                }
+              }}
               key={field.id + "-" + index}
               control={<Checkbox {...componentProps(field, option)} />}
               label={optionConfig(option).label}

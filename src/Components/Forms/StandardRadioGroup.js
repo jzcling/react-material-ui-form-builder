@@ -104,7 +104,12 @@ const StandardRadioGroup = forwardRef((props, ref) => {
         <FormControl {...containerProps(field)}>
           {options.map((option, index) => (
             <FormControlLabel
-              inputRef={ref}
+              inputRef={(el) => {
+                if (el && ref) {
+                  el.validate = (value) => validate(value);
+                  ref(el);
+                }
+              }}
               key={field.id + "-" + index}
               control={<Radio {...componentProps(field, option)} />}
               label={optionConfig(option).label}

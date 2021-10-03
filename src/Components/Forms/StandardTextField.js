@@ -119,8 +119,9 @@ const StandardTextField = forwardRef((props, ref) => {
       {showTitle && field.title && <Title field={field} form={form} />}
       <TextField
         inputRef={(el) => {
-          if (ref) {
-            ref.current = el;
+          if (el && ref) {
+            el.validate = (value) => validate(value);
+            ref(el);
           }
           inputRef.current = el;
         }}

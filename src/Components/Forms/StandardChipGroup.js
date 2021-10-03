@@ -10,9 +10,14 @@ import { getValidationType, shuffleArray } from "../Utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
+    height: "auto",
     marginRight: theme.spacing(1),
     marginTop: theme.spacing(1),
   },
+  label: (field) => ({
+    padding: "8px",
+    ...field?.labelProps?.style,
+  }),
   errorText: {
     marginTop: "4px",
     fontSize: "0.75rem",
@@ -21,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardChipGroup = forwardRef((props, ref) => {
-  const classes = useStyles();
+  const classes = useStyles(field);
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation(getValidationType(field), field);
 
@@ -99,6 +104,9 @@ const StandardChipGroup = forwardRef((props, ref) => {
       onClick: field.props?.onClick
         ? field.props.onClick(option)
         : () => handleChipClick(option),
+      classes: {
+        label: classes.label,
+      },
     };
     return props;
   };
