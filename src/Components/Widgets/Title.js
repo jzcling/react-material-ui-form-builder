@@ -8,7 +8,7 @@ const Title = forwardRef((props, ref) => {
 
   const title = useMemo(() => {
     if (field.formula) {
-      var sub = field.formula?.replace(/@[\w.]*/g, (match) =>
+      var sub = field.formula?.replace(/@[\w.[\]0-9]*/g, (match) =>
         parseFloat(get(form, match.replace("@", "")))
       );
       try {
@@ -23,7 +23,7 @@ const Title = forwardRef((props, ref) => {
       }
     }
     sub = field.title?.replace(
-      /@[\w.]*/g,
+      /@[\w.[\]0-9]*/g,
       (match) => get(form, match.replace("@", "")) || ""
     );
     try {
