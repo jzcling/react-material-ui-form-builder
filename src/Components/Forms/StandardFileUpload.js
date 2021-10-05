@@ -92,19 +92,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
     imageSize: field.imageSize || [],
   });
 
-  const [imageUrls, setImageUrls] = useState([]);
-
   const [fileErrors, setFileErrors] = useState([]);
-
-  const files = useMemo(() => {
-    if (get(form, field.attribute)) {
-      if (Array.isArray(get(form, field.attribute))) {
-        return get(form, field.attribute);
-      }
-      return [get(form, field.attribute)];
-    }
-    return [];
-  }, [form, field.attribute]);
 
   const maxSizeMb = useMemo(() => {
     return field.maxSizeMb || 2;
@@ -126,8 +114,10 @@ const StandardFileUpload = forwardRef((props, ref) => {
       return;
     }
 
-    var input = [];
-    var imageUrls = [];
+    var input = {
+      files: [],
+      imageUrls: [],
+    };
     var errors = [];
     for (const file of files) {
       if (file.size > maxSizeMb * 1024 * 1024) {
@@ -136,21 +126,25 @@ const StandardFileUpload = forwardRef((props, ref) => {
         );
         continue;
       }
-      input.push(file);
+      input.files.push(file);
 
-      const url = URL.createObjectURL(file);
-      imageUrls.push(url);
+      if (field.fileType === "image") {
+        const url = URL.createObjectURL(file);
+        input.imageUrls.push(url);
+      }
     }
 
     // If not multiple, there should be only 1 file
     if (!(field.props || {}).multiple) {
-      input = input[0];
+      input = {
+        files: [input.files[0]],
+        imageUrls: [input.imageUrls[0]],
+      };
     }
 
-    if (field.fileType === "image") {
-      setImageUrls(imageUrls);
-    }
-    updateForm(field.attribute, input);
+    updateForm({
+      [field.attribute]: input,
+    });
     setFileErrors(errors);
   };
 
@@ -182,13 +176,12 @@ const StandardFileUpload = forwardRef((props, ref) => {
         htmlFor={componentProps(field).id}
         onBlur={() => validate(get(form, field.attribute))}
       >
-        {files.length > 0 ? (
+        {get(form, field.attribute)?.files?.length > 0 ? (
           <ButtonBase className={classes.buttonBase} component="div">
-            {files.map((file, index) => (
+            {get(form, field.attribute).files.map((file, index) => (
               <div className={classes.inputRoot} key={index}>
-                {(field.imageUrl || imageUrls.length > 0) && (
+                {get(form, field.attribute).imageUrls?.length > 0 && (
                   <div
-                    item
                     className={classes.imageContainerRoot}
                     style={{
                       width: (field.imageSize || [])[0],
@@ -198,10 +191,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
                     <div className={classes.imageSizer} />
                     <div className={classes.imageContainer}>
                       <img
-                        src={
-                          (imageUrls || [])[index] ||
-                          (field.imageUrl || [])[index]
-                        }
+                        src={get(form, field.attribute).imageUrls?.[index]}
                         alt={file.name}
                         loading="lazy"
                         className={classes.image}
@@ -210,9 +200,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
                   </div>
                 )}
                 <Typography className={classes.input}>
-                  {imageUrls[index] ||
-                    (field.imageUrl || [])[index] ||
-                    file.name}
+                  {file.name || file}
                 </Typography>
               </div>
             ))}
@@ -220,7 +208,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
         ) : (
           <ButtonBase className={classes.buttonBase} component="div">
             <div className={classes.inputRoot}>
-              {field.imageUrl && (
+              {field.imageUrls?.[0] && (
                 <div
                   className={classes.imageContainerRoot}
                   style={{
@@ -231,7 +219,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
                   <div className={classes.imageSizer} />
                   <div className={classes.imageContainer}>
                     <img
-                      src={field.imageUrl}
+                      src={field.imageUrls[0]}
                       alt={field.label}
                       loading="lazy"
                       className={classes.image}
@@ -243,7 +231,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
                 style={{ color: "#777777" }}
                 className={classes.input}
               >
-                {field.imageUrl || field.label}
+                {field.imageUrls?.[0] || field.label}
               </Typography>
             </div>
           </ButtonBase>
