@@ -56,7 +56,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
 
   const handleRadioChange = (value, checked) => {
     if (checked) {
-      updateForm(field.attribute, value);
+      updateForm({ [field.attribute]: value });
     }
   };
 

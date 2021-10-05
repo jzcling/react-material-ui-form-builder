@@ -147,20 +147,19 @@ const StandardImagePicker = forwardRef((props, ref) => {
         if (copy.length === 0) {
           copy = null;
         }
-        updateForm(field.attribute, copy);
+        updateForm({ [field.attribute]: copy });
         return;
       }
-      updateForm(field.attribute, [
-        ...(get(form, field.attribute) || []),
-        option,
-      ]);
+      updateForm({
+        [field.attribute]: [...(get(form, field.attribute) || []), option],
+      });
     } else {
       if (getValueKey(get(form, field.attribute)) === getOptionKey(option)) {
         // option currently selected, so remove it
-        updateForm(field.attribute, undefined);
+        updateForm({ [field.attribute]: undefined });
         return;
       }
-      updateForm(field.attribute, option);
+      updateForm({ [field.attribute]: option });
     }
   };
 

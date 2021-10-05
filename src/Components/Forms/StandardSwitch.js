@@ -26,9 +26,9 @@ const StandardSwitch = forwardRef((props, ref) => {
   const handleSwitchChange = useCallback(
     (checked) => {
       if (checked) {
-        updateForm(field.attribute, checked);
+        updateForm({ [field.attribute]: checked });
       } else {
-        updateForm(field.attribute, undefined);
+        updateForm({ [field.attribute]: undefined });
       }
     },
     [updateForm, field.attribute]

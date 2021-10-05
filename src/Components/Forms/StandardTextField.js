@@ -67,7 +67,7 @@ const StandardTextField = forwardRef((props, ref) => {
           value = Number(value);
         }
       }
-      updateForm(field.attribute, value);
+      updateForm({ [field.attribute]: value });
     }, debounceTimeout),
     [updateForm]
   );

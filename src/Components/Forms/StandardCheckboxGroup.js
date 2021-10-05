@@ -57,10 +57,12 @@ const StandardCheckboxGroup = forwardRef((props, ref) => {
   const handleCheckboxChange = (option, value) => {
     if (field.multiple) {
       if (value) {
-        updateForm(field.attribute, [
-          ...(get(form, field.attribute) || []),
-          optionConfig(option).value,
-        ]);
+        updateForm({
+          [field.attribute]: [
+            ...(get(form, field.attribute) || []),
+            optionConfig(option).value,
+          ],
+        });
       } else {
         const index = (get(form, field.attribute) || []).findIndex(
           (value) => value === optionConfig(option).value
@@ -71,15 +73,17 @@ const StandardCheckboxGroup = forwardRef((props, ref) => {
           if (copy.length === 0) {
             copy = null;
           }
-          updateForm(field.attribute, copy);
+          updateForm({
+            [field.attribute]: copy,
+          });
           return;
         }
       }
     } else {
       if (value) {
-        updateForm(field.attribute, optionConfig(option).value);
+        updateForm({ [field.attribute]: optionConfig(option).value });
       } else {
-        updateForm(field.attribute, undefined);
+        updateForm({ [field.attribute]: undefined });
       }
     }
   };

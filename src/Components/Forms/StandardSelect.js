@@ -59,7 +59,8 @@ const StandardSelect = forwardRef((props, ref) => {
         id: field.id || field.attribute,
       },
       value: getValue(get(form, field.attribute)),
-      onChange: (event) => updateForm(field.attribute, event.target.value),
+      onChange: (event) =>
+        updateForm({ [field.attribute]: event.target.value }),
       onBlur: () => validate(get(form, field.attribute)),
       label: field.label,
       ...field.props,

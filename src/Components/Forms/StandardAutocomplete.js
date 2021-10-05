@@ -202,7 +202,9 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         get(form, field.attribute) ||
         (field.props && field.props.multiple ? [] : null),
       onChange: (event, option) => {
-        updateForm(field.attribute, optionConfig(option).value);
+        updateForm({
+          [field.attribute]: optionConfig(option).value,
+        });
       },
       onBlur: () => {
         setFocused(false);
@@ -230,7 +232,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         result.destination.index
       );
 
-      updateForm(field.attribute, reordered);
+      updateForm({ [field.attribute]: reordered });
     },
     [form, field.attribute]
   );

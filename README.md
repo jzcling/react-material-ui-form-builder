@@ -118,9 +118,11 @@ const useStyles = makeStyles((theme) => ({
 export default function EmployeeForm(props) {
   const [form, setForm] = useState({});
 
-  const updateForm = (key, value) => {
+  const updateForm = (updates) => {
     const copy = JSON.parse(JSON.stringify(form));
-    _.set(copy, key, value);
+    for (const [key, value] of Object.entries(updates)) {
+      _.set(copy, key, value);
+    }
     setForm(copy);
   };
 
@@ -333,7 +335,7 @@ export default function EmployeeForm(props) {
     <FormBuilder
       fields={fields}
       form={form}
-      updateForm={(key, value) => updateForm(key, value)}
+      updateForm={(updates) => updateForm(updates)}
     />
   );
 }
@@ -341,15 +343,15 @@ export default function EmployeeForm(props) {
 
 ## Props
 
-| Prop       | Type                 | Default              | Description                                                           |
-| ---------- | -------------------- | -------------------- | --------------------------------------------------------------------- |
-| title      | `string`             | `undefined`          | Form title                                                            |
-| fields     | `array`              | required             | Array of form fields along with props (details below)                 |
-| form       | `object`             | required             | Form object to be filled                                              |
-| updateForm | `func`               | `(key, value) => {}` | Method to update `form[key]` to `value`                               |
-| children   | `node`               | `undefined`          | Additional content to the right of the form                           |
-| index      | `string` or `number` | `undefined`          | To uniquely identify fields if FormBuilder is used in a loop          |
-| idPrefix   | `string`             | `undefined`          | To uniquely identify fields if multiple fields use the same attribute |
+| Prop       | Type                 | Default           | Description                                                                                                             |
+| ---------- | -------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| title      | `string`             | `undefined`       | Form title                                                                                                              |
+| fields     | `array`              | required          | Array of form fields along with props (details below)                                                                   |
+| form       | `object`             | required          | Form object to be filled                                                                                                |
+| updateForm | `func`               | `(updates) => {}` | Method to update form. `updates` is an object of the form `{ [key]: value }` and will update all `form[key]` to `value` |
+| children   | `node`               | `undefined`       | Additional content to the right of the form                                                                             |
+| index      | `string` or `number` | `undefined`       | To uniquely identify fields if FormBuilder is used in a loop                                                            |
+| idPrefix   | `string`             | `undefined`       | To uniquely identify fields if multiple fields use the same attribute                                                   |
 
 ## Field Props
 

@@ -67,19 +67,21 @@ const StandardChipGroup = forwardRef((props, ref) => {
         if (copy.length === 0) {
           copy = null;
         }
-        updateForm(field.attribute, copy);
+        updateForm({ [field.attribute]: copy });
         return;
       }
-      updateForm(field.attribute, [
-        ...(get(form, field.attribute) || []),
-        optionConfig(option).value,
-      ]);
+      updateForm({
+        [field.attribute]: [
+          ...(get(form, field.attribute) || []),
+          optionConfig(option).value,
+        ],
+      });
     } else {
       if (get(form, field.attribute) === optionConfig(option).value) {
-        updateForm(field.attribute, undefined);
+        updateForm({ [field.attribute]: undefined });
         return;
       }
-      updateForm(field.attribute, optionConfig(option).value);
+      updateForm({ [field.attribute]: optionConfig(option).value });
     }
   };
 

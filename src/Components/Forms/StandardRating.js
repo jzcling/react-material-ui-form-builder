@@ -32,7 +32,7 @@ const StandardRating = forwardRef((props, ref) => {
       precision: 0.5,
       icon: <Star style={{ margin: "0 8px", fontSize: "32px" }} />,
       emptyIcon: <StarBorder style={{ margin: "0 8px", fontSize: "32px" }} />,
-      onChange: (event, value) => updateForm(field.attribute, value),
+      onChange: (event, value) => updateForm({ [field.attribute]: value }),
       classes: {
         iconFilled: classes.iconColor,
       },

@@ -147,7 +147,9 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
         get(form, field.attribute) ||
         (field.props && field.props.multiple ? [] : null),
       onChange: (event, option) => {
-        updateForm(field.attribute, optionConfig(option).value);
+        updateForm({
+          [field.attribute]: optionConfig(option).value,
+        });
       },
       onBlur: () => validate(get(form, field.attribute)),
       className: classes.autocomplete,

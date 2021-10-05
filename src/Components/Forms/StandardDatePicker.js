@@ -41,7 +41,7 @@ const StandardDatePicker = forwardRef((props, ref) => {
         if (value) {
           try {
             const formatted = format(value, "yyyy-MM-dd");
-            updateForm(field.attribute, formatted);
+            updateForm({ [field.attribute]: formatted });
           } catch (error) {
             console.log(error);
           }

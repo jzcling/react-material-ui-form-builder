@@ -62,7 +62,7 @@ const StandardEditor = forwardRef((props, ref) => {
         document={preview}
         onChange={(document) => setPreview(document)}
         onBlur={(html) => {
-          updateForm(field.attribute, html);
+          updateForm({ [field.attribute]: html });
         }}
         containerProps={field.groupContainerProps}
         editableProps={field.props}
