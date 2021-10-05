@@ -172,7 +172,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
                           >
                             <Chip
                               variant="outlined"
-                              label={optionConfig(option).label}
+                              label={getLabel(option)}
                               style={{ cursor: "grab" }}
                               {...getTagProps({ index })}
                             />
@@ -192,7 +192,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
               key={index}
               variant="outlined"
               size="small"
-              label={optionConfig(option).label}
+              label={getLabel(option)}
               {...getTagProps({ index })}
             />
           ));

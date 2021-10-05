@@ -139,7 +139,7 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
             key={index}
             variant="outlined"
             size="small"
-            label={optionConfig(option).label}
+            label={getLabel(option)}
             {...getTagProps({ index })}
           />
         )),
