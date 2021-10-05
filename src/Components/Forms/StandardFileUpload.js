@@ -148,9 +148,9 @@ const StandardFileUpload = forwardRef((props, ref) => {
     }
 
     if (field.fileType === "image") {
-      updateForm(field.attribute, input);
       setImageUrls(imageUrls);
     }
+    updateForm(field.attribute, input);
     setFileErrors(errors);
   };
 
