@@ -18,10 +18,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getValidationType, shuffleArray } from "../Utils/helpers";
 
 const useStyles = makeStyles(() => ({
-  autocomplete: {
-    "& .MuiFormControl-marginDense": {
-      marginTop: 0,
-    },
+  textFieldRoot: {
+    marginTop: 0,
   },
 }));
 
@@ -147,6 +145,9 @@ const StandardAutocomplete = forwardRef((props, ref) => {
           label={field.label}
           error={errors?.length > 0}
           helperText={errors[0]}
+          classes={{
+            root: classes.textFieldRoot,
+          }}
         />
       ),
       renderTags: (value, getTagProps) => {
