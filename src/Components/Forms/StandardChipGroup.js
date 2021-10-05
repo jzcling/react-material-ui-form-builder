@@ -11,8 +11,7 @@ import { getValidationType, shuffleArray } from "../Utils/helpers";
 const useStyles = makeStyles((theme) => ({
   chip: {
     height: "auto",
-    marginRight: theme.spacing(1),
-    marginTop: theme.spacing(1),
+    margin: "4px 8px 4px 0",
   },
   label: (field) => ({
     padding: "8px",
