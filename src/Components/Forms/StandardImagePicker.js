@@ -196,6 +196,12 @@ const StandardImagePicker = forwardRef((props, ref) => {
       onClick: field.props?.onClick
         ? field.props.onClick(option)
         : () => handleClick(option),
+      onMouseEnter: field.props?.onMouseEnter
+        ? field.props.onMouseEnter(option)
+        : undefined,
+      onMouseLeave: field.props?.onMouseLeave
+        ? field.props.onMouseLeave(option)
+        : undefined,
     };
     return props;
   };
