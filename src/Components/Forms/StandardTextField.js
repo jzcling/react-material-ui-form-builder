@@ -1,8 +1,8 @@
 import React, {
   forwardRef,
   Fragment,
-  useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -58,17 +58,18 @@ const StandardTextField = forwardRef((props, ref) => {
   const inputRef = useRef();
   const [focus, setFocus] = useState();
 
-  const debouncedUpdateForm = useCallback(
-    debounce((field, value) => {
-      if (field.props && field.props.type === "number") {
-        if (value === "" || value === null || value === undefined) {
-          value = undefined;
-        } else {
-          value = Number(value);
+  const debouncedUpdateForm = useMemo(
+    () =>
+      debounce((field, value) => {
+        if (field.props && field.props.type === "number") {
+          if (value === "" || value === null || value === undefined) {
+            value = undefined;
+          } else {
+            value = Number(value);
+          }
         }
-      }
-      updateForm({ [field.attribute]: value });
-    }, debounceTimeout),
+        updateForm({ [field.attribute]: value });
+      }, debounceTimeout),
     [updateForm]
   );
 
