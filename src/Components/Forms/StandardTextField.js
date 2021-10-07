@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState,
+  // useState,
 } from "react";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -56,7 +56,7 @@ const StandardTextField = forwardRef((props, ref) => {
   );
 
   const inputRef = useRef();
-  const [focus, setFocus] = useState();
+  // const [focus, setFocus] = useState();
 
   const debouncedUpdateForm = useMemo(
     () =>
@@ -74,10 +74,19 @@ const StandardTextField = forwardRef((props, ref) => {
   );
 
   useEffect(() => {
-    if (inputRef.current && !focus) {
+    if (
+      inputRef.current &&
+      inputRef.current.value !== getValue(get(form, field.attribute))
+    ) {
       inputRef.current.value = getValue(get(form, field.attribute));
     }
-  }, [form, field.attribute, focus]);
+  }, [form, field.attribute]);
+
+  // useEffect(() => {
+  //   if (inputRef.current && !focus) {
+  //     inputRef.current.value = getValue(get(form, field.attribute));
+  //   }
+  // }, [form, field.attribute, focus]);
 
   const componentProps = (field) => {
     return {
@@ -91,9 +100,9 @@ const StandardTextField = forwardRef((props, ref) => {
       label: field.label,
       defaultValue: getValue(get(form, field.attribute)),
       onChange: (event) => {
-        if (focus) {
-          debouncedUpdateForm(field, event.target.value);
-        }
+        // if (focus) {
+        debouncedUpdateForm(field, event.target.value);
+        // }
       },
       InputLabelProps: {
         shrink:
@@ -101,9 +110,9 @@ const StandardTextField = forwardRef((props, ref) => {
       },
       error: errors?.length > 0,
       helperText: errors[0],
-      onFocus: () => setFocus(true),
+      // onFocus: () => setFocus(true),
       onBlur: () => {
-        setFocus(false);
+        // setFocus(false);
         validate(get(form, field.attribute));
       },
       onKeyDown: (event) => {
