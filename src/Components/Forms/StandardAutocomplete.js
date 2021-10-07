@@ -212,6 +212,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
       },
       onFocus: () => setFocused(true),
       className: classes.autocomplete,
+      disablePortal: true,
       ...field.props,
     };
   };
@@ -240,7 +241,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
   return (
     <Fragment>
       {showTitle && field.title && <Title field={field} form={form} />}
-      <Autocomplete {...componentProps(field)} disablePortal />
+      <Autocomplete {...componentProps(field)} />
     </Fragment>
   );
 });

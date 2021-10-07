@@ -153,6 +153,7 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
       },
       onBlur: () => validate(get(form, field.attribute)),
       className: classes.autocomplete,
+      disablePortal: true,
       ...field.props,
     };
   };
@@ -160,7 +161,7 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
   return (
     <Fragment>
       {showTitle && field.title && <Title field={field} form={form} />}
-      <Autocomplete {...componentProps(field)} disablePortal />
+      <Autocomplete {...componentProps(field)} />
     </Fragment>
   );
 });
