@@ -10,6 +10,7 @@ import get from "lodash/get";
 import { makeStyles } from "@material-ui/core/styles";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
+import { useDimensions } from "../../Hooks/useDimensions";
 
 const useStyles = makeStyles(() => ({
   picker: {
@@ -25,6 +26,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("date", field);
+  const { widthType } = useDimensions();
 
   const componentProps = (field) => {
     return {
@@ -32,11 +34,12 @@ const StandardTimePicker = forwardRef((props, ref) => {
       className: classes.picker,
       ampm: false,
       fullWidth: true,
-      variant: "inline",
+      variant: widthType === "xs" ? "dialog" : "inline",
       inputVariant: "outlined",
       margin: "dense",
       format: "HH:mm:ss",
       label: field.label,
+      disableToolbar: widthType === "xs",
       value: get(form, field.attribute)
         ? format(new Date(), "yyyy-MM-dd") + " " + get(form, field.attribute)
         : null,
