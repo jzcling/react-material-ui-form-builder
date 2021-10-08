@@ -212,7 +212,6 @@ const StandardAutocomplete = forwardRef((props, ref) => {
       },
       onFocus: () => setFocused(true),
       className: classes.autocomplete,
-      disablePortal: true,
       ...field.props,
     };
   };
