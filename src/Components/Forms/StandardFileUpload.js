@@ -66,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
     border: ({ errors }) =>
       `1px solid ${errors?.length > 0 ? theme.palette.error.main : "#b9b9b9"}`,
     borderRadius: "4px",
-    width: "100%",
     padding: "7px 10px",
     color: "rgba(0, 0, 0, 0.87)",
     overflow: "hidden",

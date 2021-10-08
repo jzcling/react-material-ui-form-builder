@@ -184,7 +184,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
       style: {
         width: `calc(${
           100 / sanitizeImageCols(field.imageCols)[widthType]
-        }% - 4px)`,
+        }% - ${isSelected(field, option) ? "12px" : "8px"})`,
         margin: "2px",
         border: isSelected(field, option)
           ? `2px solid ${theme.palette.primary.main}`
@@ -252,9 +252,6 @@ const StandardImagePicker = forwardRef((props, ref) => {
                       title={image.label || image.alt}
                       loading="lazy"
                       className={classes.image}
-                      style={
-                        isSelected(field, image) ? { padding: "2px" } : null
-                      }
                     />
                   )}
                 </div>
