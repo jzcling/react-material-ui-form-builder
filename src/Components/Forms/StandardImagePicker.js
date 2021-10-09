@@ -169,7 +169,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
       isSelected =
         (get(form, field.attribute) || []).findIndex(
           (value) => getValueKey(value) === getOptionKey(option)
-        ) > 0;
+        ) >= 0;
     } else {
       isSelected =
         getValueKey(get(form, field.attribute)) === getOptionKey(option);
