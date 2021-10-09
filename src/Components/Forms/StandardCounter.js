@@ -74,7 +74,7 @@ const StandardCounter = forwardRef((props, ref) => {
         </span>
       </Tooltip>
       <div className={classes.counter}>
-        <Typography style={{ fontSize: field.fontSize || "24px" }}>
+        <Typography style={{ fontSize: field.fontSize }}>
           {Number(get(form, field.attribute) || field.defaultValue || 0)}
         </Typography>
       </div>
