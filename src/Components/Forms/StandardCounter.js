@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { IconButton, makeStyles, Tooltip, Typography } from "@material-ui/core";
 import { Add, Remove } from "@material-ui/icons";
@@ -37,12 +37,6 @@ const StandardCounter = forwardRef((props, ref) => {
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("number", field);
 
-  useEffect(() => {
-    if (!get(form, field.attribute) && get(form, field.attribute) !== 0) {
-      updateForm({ [field.attribute]: Number(field.defaultValue || 0) });
-    }
-  }, [field.defaultValue]);
-
   return (
     <div
       ref={(el) => {
@@ -73,9 +67,9 @@ const StandardCounter = forwardRef((props, ref) => {
           </IconButton>
         </span>
       </Tooltip>
-      <div className={classes.counter}>
+      <div className={classes.counter} {...field.props}>
         <Typography style={{ fontSize: field.fontSize }}>
-          {Number(get(form, field.attribute) || field.defaultValue || 0)}
+          {Number(get(form, field.attribute) || 0)}
         </Typography>
       </div>
       <Tooltip title="Add">
