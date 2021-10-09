@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { StandardAutocomplete } from "./Forms/StandardAutocomplete";
 import { StandardCheckboxGroup } from "./Forms/StandardCheckboxGroup";
 import { StandardChipGroup } from "./Forms/StandardChipGroup";
+import { StandardCounter } from "./Forms/StandardCounter";
 import { StandardDatePicker } from "./Forms/StandardDatePicker";
 import { StandardDateTimePicker } from "./Forms/StandardDateTimePicker";
 import { StandardFileUpload } from "./Forms/StandardFileUpload";
@@ -163,6 +164,15 @@ const FormBuilder = forwardRef((props, ref) => {
       case "rating":
         return (
           <StandardRating
+            field={field}
+            form={form}
+            updateForm={updateForm}
+            ref={ref}
+          />
+        );
+      case "counter":
+        return (
+          <StandardCounter
             field={field}
             form={form}
             updateForm={updateForm}

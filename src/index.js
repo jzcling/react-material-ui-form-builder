@@ -3,6 +3,7 @@ import { StandardAutocomplete } from "./Components/Forms/StandardAutocomplete";
 import { StandardAutocompleteNoDrag } from "./Components/Forms/StandardAutocompleteNoDrag";
 import { StandardCheckboxGroup } from "./Components/Forms/StandardCheckboxGroup";
 import { StandardChipGroup } from "./Components/Forms/StandardChipGroup";
+import { StandardCounter } from "./Components/Forms/StandardCounter";
 import { StandardDatePicker } from "./Components/Forms/StandardDatePicker";
 import { StandardDateTimePicker } from "./Components/Forms/StandardDateTimePicker";
 import { StandardEditor } from "./Components/Forms/StandardEditor";
@@ -21,6 +22,7 @@ export {
   StandardAutocompleteNoDrag,
   StandardCheckboxGroup,
   StandardChipGroup,
+  StandardCounter,
   StandardDatePicker,
   StandardDateTimePicker,
   StandardEditor,
