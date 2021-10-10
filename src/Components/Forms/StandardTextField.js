@@ -115,6 +115,13 @@ const StandardTextField = forwardRef((props, ref) => {
           validate(get(form, field.attribute));
         }
       },
+      InputLabelProps: {
+        shrink:
+          !!value ||
+          value === 0 ||
+          !!get(form, field.attribute) ||
+          get(form, field.attribute) === 0,
+      },
       ...field.props,
     };
   };
