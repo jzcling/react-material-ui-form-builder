@@ -102,14 +102,14 @@ const StandardTextField = forwardRef((props, ref) => {
       label: field.label,
       value: value,
       onChange: (event) => {
-        setValue(event.target.value);
+        setValue(getValue(event.target.value));
       },
       error: errors?.length > 0,
       helperText: errors[0],
       onFocus: () => {
         setFocus(true);
-        if (value !== get(form, field.attribute)) {
-          setValue(get(form, field.attribute));
+        if (value !== getValue(get(form, field.attribute))) {
+          setValue(getValue(get(form, field.attribute)));
         }
       },
       onBlur: () => {
