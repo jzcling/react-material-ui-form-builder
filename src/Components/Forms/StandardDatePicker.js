@@ -38,7 +38,6 @@ const StandardDatePicker = forwardRef((props, ref) => {
       margin: "dense",
       format: "dd/MM/yyyy",
       label: field.label,
-      disableToolbar: widthType === "xs",
       value: get(form, field.attribute) || null,
       onChange: (value) => {
         if (value) {

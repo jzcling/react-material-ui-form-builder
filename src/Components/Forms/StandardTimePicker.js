@@ -39,7 +39,6 @@ const StandardTimePicker = forwardRef((props, ref) => {
       margin: "dense",
       format: "HH:mm:ss",
       label: field.label,
-      disableToolbar: widthType === "xs",
       value: get(form, field.attribute)
         ? format(new Date(), "yyyy-MM-dd") + " " + get(form, field.attribute)
         : null,
