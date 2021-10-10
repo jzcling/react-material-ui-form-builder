@@ -59,6 +59,7 @@ const StandardTextField = forwardRef((props, ref) => {
   const inputRef = useRef();
 
   const [value, setValue] = useState(get(form, field.attribute));
+  const [focus, setFocus] = useState();
 
   useEffect(() => {
     debouncedUpdateForm(field, value);
@@ -81,6 +82,7 @@ const StandardTextField = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (
+      !focus &&
       inputRef.current &&
       inputRef.current.value !== getValue(get(form, field.attribute))
     ) {
@@ -105,11 +107,15 @@ const StandardTextField = forwardRef((props, ref) => {
       error: errors?.length > 0,
       helperText: errors[0],
       onFocus: () => {
+        setFocus(true);
         if (value !== get(form, field.attribute)) {
           setValue(get(form, field.attribute));
         }
       },
-      onBlur: () => validate(get(form, field.attribute)),
+      onBlur: () => {
+        setFocus();
+        validate(get(form, field.attribute));
+      },
       onKeyDown: (event) => {
         if (event.which === 13) {
           validate(get(form, field.attribute));
