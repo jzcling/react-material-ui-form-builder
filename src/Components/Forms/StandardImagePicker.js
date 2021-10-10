@@ -99,13 +99,13 @@ const getSubLabelFontSize = (field) =>
     : 14;
 
 function sanitizeImageCols(col) {
-  col = col || {};
-  col.xs = col.xs || 2;
-  col.sm = col.sm || col.xs;
-  col.md = col.md || col.sm;
-  col.lg = col.lg || col.md;
-  col.xl = col.xl || col.lg;
-  return col;
+  const copy = col || {};
+  copy.xs = col.xs || 2;
+  copy.sm = col.sm || copy.xs;
+  copy.md = col.md || copy.sm;
+  copy.lg = col.lg || copy.md;
+  copy.xl = col.xl || copy.lg;
+  return copy;
 }
 
 const StandardImagePicker = forwardRef((props, ref) => {
