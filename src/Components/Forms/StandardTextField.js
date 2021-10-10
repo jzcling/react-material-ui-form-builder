@@ -58,7 +58,7 @@ const StandardTextField = forwardRef((props, ref) => {
 
   const inputRef = useRef();
 
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(get(form, field.attribute));
 
   useEffect(() => {
     debouncedUpdateForm(field, value);
