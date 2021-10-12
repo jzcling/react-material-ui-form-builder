@@ -81,14 +81,10 @@ const StandardTextField = forwardRef((props, ref) => {
   );
 
   useEffect(() => {
-    if (
-      !focus &&
-      inputRef.current &&
-      inputRef.current.value !== getValue(get(form, field.attribute))
-    ) {
-      inputRef.current.value = getValue(get(form, field.attribute));
+    if (!focus) {
+      setValue(getValue(get(form, field.attribute)));
     }
-  }, [form, field.attribute, focus, inputRef.current]);
+  }, [form, field.attribute]);
 
   const componentProps = (field) => {
     return {
@@ -108,9 +104,6 @@ const StandardTextField = forwardRef((props, ref) => {
       helperText: errors[0],
       onFocus: () => {
         setFocus(true);
-        if (value !== getValue(get(form, field.attribute))) {
-          setValue(getValue(get(form, field.attribute)));
-        }
       },
       onBlur: () => {
         setFocus();
