@@ -179,25 +179,26 @@ const StandardFileUpload = forwardRef((props, ref) => {
           <ButtonBase className={classes.buttonBase} component="div">
             {get(form, field.attribute).files.map((file, index) => (
               <div className={classes.inputRoot} key={index}>
-                {get(form, field.attribute).imageUrls?.length > 0 && (
-                  <div
-                    className={classes.imageContainerRoot}
-                    style={{
-                      width: (field.imageSize || [])[0],
-                      height: (field.imageSize || [])[1],
-                    }}
-                  >
-                    <div className={classes.imageSizer} />
-                    <div className={classes.imageContainer}>
-                      <img
-                        src={get(form, field.attribute).imageUrls?.[index]}
-                        alt={file.name}
-                        loading="lazy"
-                        className={classes.image}
-                      />
+                {field.fileType === "image" &&
+                  get(form, field.attribute).imageUrls?.length > 0 && (
+                    <div
+                      className={classes.imageContainerRoot}
+                      style={{
+                        width: (field.imageSize || [])[0],
+                        height: (field.imageSize || [])[1],
+                      }}
+                    >
+                      <div className={classes.imageSizer} />
+                      <div className={classes.imageContainer}>
+                        <img
+                          src={get(form, field.attribute).imageUrls?.[index]}
+                          alt={file.name}
+                          loading="lazy"
+                          className={classes.image}
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
                 <Typography className={classes.input}>
                   {file.name || file}
                 </Typography>
@@ -207,7 +208,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
         ) : (
           <ButtonBase className={classes.buttonBase} component="div">
             <div className={classes.inputRoot}>
-              {field.imageUrls?.[0] && (
+              {field.fileType === "image" && field.imageUrls?.[0] && (
                 <div
                   className={classes.imageContainerRoot}
                   style={{
