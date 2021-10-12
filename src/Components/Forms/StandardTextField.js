@@ -88,7 +88,7 @@ const StandardTextField = forwardRef((props, ref) => {
     ) {
       inputRef.current.value = getValue(get(form, field.attribute));
     }
-  }, [form, field.attribute]);
+  }, [form, field.attribute, focus, inputRef.current]);
 
   const componentProps = (field) => {
     return {
