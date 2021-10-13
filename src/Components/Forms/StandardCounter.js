@@ -60,7 +60,8 @@ const StandardCounter = forwardRef((props, ref) => {
             }
             disabled={
               field.props?.disabled ||
-              Number(get(form, field.attribute) || 0) <= Number(field.inputMin)
+              Number(get(form, field.attribute) || 0) <=
+                Number(field.inputMin || 0)
             }
           >
             <Remove />
@@ -84,7 +85,8 @@ const StandardCounter = forwardRef((props, ref) => {
             }
             disabled={
               field.props?.disabled ||
-              Number(get(form, field.attribute) || 0) >= Number(field.inputMax)
+              Number(get(form, field.attribute) || 0) >=
+                Number(field.inputMax || 1000000)
             }
           >
             <Add />
