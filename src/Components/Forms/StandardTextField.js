@@ -5,7 +5,6 @@ import React, {
   useMemo,
   useRef,
   useState,
-  // useState,
 } from "react";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -62,7 +61,9 @@ const StandardTextField = forwardRef((props, ref) => {
   const [focus, setFocus] = useState();
 
   useEffect(() => {
-    debouncedUpdateForm(field, value);
+    if (getValue(get(form, field.attribute)) !== getValue(value)) {
+      debouncedUpdateForm(field, value);
+    }
   }, [value]);
 
   const debouncedUpdateForm = useMemo(
@@ -81,7 +82,7 @@ const StandardTextField = forwardRef((props, ref) => {
   );
 
   useEffect(() => {
-    if (!focus) {
+    if (!focus && getValue(value) !== getValue(get(form, field.attribute))) {
       setValue(getValue(get(form, field.attribute)));
     }
   }, [form, field.attribute]);
