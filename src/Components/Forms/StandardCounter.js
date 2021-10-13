@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
-import { IconButton, makeStyles, Tooltip, Typography } from "@material-ui/core";
+import { IconButton, Tooltip, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { Add, Remove } from "@material-ui/icons";
 import { Title } from "../Widgets/Title";
 import get from "lodash/get";
