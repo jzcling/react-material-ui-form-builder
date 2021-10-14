@@ -1,9 +1,10 @@
-import React, { forwardRef, Fragment } from "react";
+import React, { forwardRef, Fragment, useCallback } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
 import {
   KeyboardTimePicker,
   MuiPickersUtilsProvider,
+  TimePicker,
 } from "@material-ui/pickers";
 import PropTypes from "prop-types";
 import get from "lodash/get";
@@ -11,6 +12,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 import { useDimensions } from "../../Hooks/useDimensions";
+import { IconButton, InputAdornment } from "@material-ui/core";
+import { Schedule } from "@material-ui/icons";
 
 const useStyles = makeStyles(() => ({
   picker: {
@@ -27,6 +30,16 @@ const StandardTimePicker = forwardRef((props, ref) => {
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("date", field);
   const { widthType } = useDimensions();
+
+  const component = useCallback(
+    (props) => {
+      if (field.keyboard) {
+        return <KeyboardTimePicker {...props} />;
+      }
+      return <TimePicker {...props} />;
+    },
+    [field.keyboard]
+  );
 
   const componentProps = (field) => {
     return {
@@ -56,8 +69,18 @@ const StandardTimePicker = forwardRef((props, ref) => {
         "aria-label": field.label,
       },
       InputProps: {
-        className: classes.pickerInput,
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton aria-label="open time picker">
+              <Schedule />
+            </IconButton>
+          </InputAdornment>
+        ),
+        classes: {
+          adornedEnd: classes.pickerInput,
+        },
       },
+      keyboardIcon: <Schedule />,
       error: errors?.length > 0,
       helperText: errors[0],
       onBlur: () => validate(get(form, field.attribute)),
@@ -82,7 +105,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
         }}
       >
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardTimePicker {...componentProps(field)} />
+          {component(componentProps(field))}
         </MuiPickersUtilsProvider>
       </div>
     </Fragment>
