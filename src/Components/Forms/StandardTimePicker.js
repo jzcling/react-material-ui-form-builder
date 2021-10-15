@@ -29,7 +29,6 @@ const StandardTimePicker = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("date", field);
-  const { widthType } = useDimensions();
 
   const component = useCallback(
     (props) => {
@@ -47,7 +46,6 @@ const StandardTimePicker = forwardRef((props, ref) => {
       className: classes.picker,
       ampm: false,
       fullWidth: true,
-      variant: widthType === "xs" ? "dialog" : "inline",
       inputVariant: "outlined",
       margin: "dense",
       format: "HH:mm:ss",
@@ -63,6 +61,8 @@ const StandardTimePicker = forwardRef((props, ref) => {
           } catch (error) {
             console.log(error);
           }
+        } else {
+          updateForm({ [field.attribute]: undefined });
         }
       },
       KeyboardButtonProps: {

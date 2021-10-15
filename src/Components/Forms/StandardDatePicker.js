@@ -29,7 +29,6 @@ const StandardDatePicker = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, form, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("date", field);
-  const { widthType } = useDimensions();
 
   const component = useCallback(
     (props) => {
@@ -46,7 +45,6 @@ const StandardDatePicker = forwardRef((props, ref) => {
       id: field.id || field.attribute,
       className: classes.picker,
       fullWidth: true,
-      variant: widthType === "xs" ? "dialog" : "inline",
       inputVariant: "outlined",
       margin: "dense",
       format: "dd/MM/yyyy",
@@ -60,6 +58,8 @@ const StandardDatePicker = forwardRef((props, ref) => {
           } catch (error) {
             console.log(error);
           }
+        } else {
+          updateForm({ [field.attribute]: undefined });
         }
       },
       KeyboardButtonProps: {
