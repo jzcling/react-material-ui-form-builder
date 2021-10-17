@@ -1,37 +1,9 @@
 import { Typography } from "@material-ui/core";
-import React, { forwardRef, useMemo } from "react";
+import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
-import get from "lodash/get";
 
 const Title = forwardRef((props, ref) => {
-  const { field, form } = props;
-
-  const title = useMemo(() => {
-    if (field.formula) {
-      var sub = field.formula?.replace(/@[\w.[\]0-9]*/g, (match) =>
-        parseFloat(get(form, match.replace("@", "")))
-      );
-      try {
-        var value = Function(`"use strict"; return ${sub}`)() || "";
-        if (field.decimalPlaces >= 0) {
-          const mod = 10 ** field.decimalPlaces;
-          value = Math.round(value * mod) / mod;
-        }
-        return value;
-      } catch (error) {
-        return "";
-      }
-    }
-    sub = field.title?.replace(
-      /@[\w.[\]0-9]*/g,
-      (match) => get(form, match.replace("@", "")) || ""
-    );
-    try {
-      return sub || "";
-    } catch (error) {
-      return field.title || "";
-    }
-  }, [field.formula, field.decimalPlaces, field.title, form]);
+  const { field } = props;
 
   return (
     <div
@@ -44,7 +16,7 @@ const Title = forwardRef((props, ref) => {
       }}
     >
       <Typography {...field.titleProps}>
-        {title}{" "}
+        {field.title}{" "}
         {field.titleSuffixComponent
           ? field.titleSuffixComponent
           : field.titleSuffix && (
