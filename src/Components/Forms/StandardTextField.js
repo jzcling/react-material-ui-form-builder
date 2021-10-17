@@ -1,6 +1,7 @@
 import React, {
   forwardRef,
   Fragment,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -36,13 +37,6 @@ const getValidations = (field) => {
   return validations;
 };
 
-const getValue = (value) => {
-  if (value === null || value === undefined) {
-    return "";
-  }
-  return value;
-};
-
 const debounceTimeout = 200;
 
 const StandardTextField = forwardRef((props, ref) => {
@@ -58,6 +52,19 @@ const StandardTextField = forwardRef((props, ref) => {
 
   const [thisValue, setThisValue] = useState(value);
   const [focus, setFocus] = useState();
+
+  const getValue = useCallback(
+    (value) => {
+      if (value === null || value === undefined) {
+        return "";
+      }
+      if (field.manipulator) {
+        return field.manipulator(value);
+      }
+      return value;
+    },
+    [field.manipulator]
+  );
 
   useEffect(() => {
     if (getValue(value) !== getValue(thisValue)) {
