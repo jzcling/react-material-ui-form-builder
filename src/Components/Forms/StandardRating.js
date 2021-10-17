@@ -3,7 +3,6 @@ import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Star, StarBorder } from "@material-ui/icons";
 import PropTypes from "prop-types";
-import get from "lodash/get";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 import { Rating } from "@material-ui/lab";
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardRating = forwardRef((props, ref) => {
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const classes = useStyles(field);
   const { errors, validate } = useValidation("number", field);
 
@@ -28,7 +27,7 @@ const StandardRating = forwardRef((props, ref) => {
     return {
       id: field.id || field.attribute,
       name: field.id || field.attribute,
-      value: get(form, field.attribute) || 0,
+      value: value || 0,
       precision: 0.5,
       icon: <Star style={{ margin: "0 8px", fontSize: "32px" }} />,
       emptyIcon: <StarBorder style={{ margin: "0 8px", fontSize: "32px" }} />,
@@ -49,7 +48,7 @@ const StandardRating = forwardRef((props, ref) => {
         }
       }}
     >
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <Rating ref={ref} {...componentProps(field)} />
       {errors?.length > 0 && (
         <Typography className={classes.errorText}>{errors[0]}</Typography>
@@ -67,7 +66,7 @@ StandardRating.defaultProps = {
 
 StandardRating.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.number,
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

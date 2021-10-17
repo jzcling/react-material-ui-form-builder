@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
 
 const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation(getValidationType(field), field);
 
   const optionConfig = useMemo(
@@ -143,15 +143,13 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
             {...getTagProps({ index })}
           />
         )),
-      value:
-        get(form, field.attribute) ||
-        (field.props && field.props.multiple ? [] : null),
+      value: value || (field.props && field.props.multiple ? [] : null),
       onChange: (event, option) => {
         updateForm({
           [field.attribute]: optionConfig(option).value,
         });
       },
-      onBlur: () => validate(get(form, field.attribute)),
+      onBlur: () => validate(value),
       className: classes.autocomplete,
       ...field.props,
     };
@@ -159,7 +157,7 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <Autocomplete {...componentProps(field)} />
     </Fragment>
   );
@@ -174,7 +172,11 @@ StandardAutocompleteNoDrag.defaultProps = {
 
 StandardAutocompleteNoDrag.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.array,
+  ]),
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardRadioGroup = forwardRef((props, ref) => {
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const classes = useStyles();
   const { errors, validate } = useValidation(getValidationType(field), field);
 
@@ -63,11 +63,9 @@ const StandardRadioGroup = forwardRef((props, ref) => {
   const componentProps = (field, option) => {
     var isSelected;
     if (field.multiple) {
-      isSelected =
-        get(form, field.attribute) &&
-        get(form, field.attribute).includes(optionConfig(option).value);
+      isSelected = value && value.includes(optionConfig(option).value);
     } else {
-      isSelected = get(form, field.attribute) === optionConfig(option).value;
+      isSelected = value === optionConfig(option).value;
     }
     return {
       id: field.id || field.attribute,
@@ -84,7 +82,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
   const containerProps = (field) => {
     return {
       error: errors?.length > 0,
-      onBlur: () => validate(get(form, field.attribute)),
+      onBlur: () => validate(value),
       ...field.groupContainerProps,
       style: { flexWrap: "wrap", ...(field.groupContainerProps || {}).style },
     };
@@ -99,7 +97,7 @@ const StandardRadioGroup = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <FormGroup component="fieldset">
         <FormControl {...containerProps(field)}>
           {options.map((option, index) => (
@@ -134,7 +132,7 @@ StandardRadioGroup.defaultProps = {
 
 StandardRadioGroup.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

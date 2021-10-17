@@ -20,6 +20,7 @@ import { StandardEditor } from "./Forms/StandardEditor";
 import { StandardImagePicker } from "./Forms/StandardImagePicker";
 import { Title } from "./Widgets/Title";
 import ReactPlayer from "react-player";
+import get from "lodash/get";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -66,7 +67,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardDatePicker
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -75,7 +76,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardDateTimePicker
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -84,7 +85,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardTimePicker
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -93,7 +94,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardSelect
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -102,7 +103,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardAutocomplete
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -111,7 +112,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardChipGroup
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -120,7 +121,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardCheckboxGroup
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -129,7 +130,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardRadioGroup
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -138,7 +139,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardSwitch
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -147,7 +148,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardFileUpload
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -156,7 +157,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardImagePicker
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -165,7 +166,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardRating
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
@@ -174,13 +175,13 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardCounter
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />
         );
       case "display-text":
-        return <Title field={field} form={form} />;
+        return <Title field={field} value={get(form, field.attribute)} />;
       case "display-image":
         return (
           <div ref={ref} className={classes.imageContainer}>
@@ -210,7 +211,7 @@ const FormBuilder = forwardRef((props, ref) => {
           <StandardEditor
             ref={ref}
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
           />
         );
@@ -221,7 +222,7 @@ const FormBuilder = forwardRef((props, ref) => {
         return (
           <StandardTextField
             field={field}
-            form={form}
+            value={get(form, field.attribute)}
             updateForm={updateForm}
             ref={ref}
           />

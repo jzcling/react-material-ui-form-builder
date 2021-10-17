@@ -3,7 +3,6 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import React, { forwardRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
-import get from "lodash/get";
 import { Title } from "../Widgets/Title";
 import { useDimensions } from "../../Hooks/useDimensions";
 import { getValidationType } from "../Utils/helpers";
@@ -109,7 +108,7 @@ function sanitizeImageCols(col) {
 }
 
 const StandardImagePicker = forwardRef((props, ref) => {
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const classes = useStyles({
     aspectRatio: field.aspectRatio || [1, 1],
     labelLines: field.labelLines || 2,
@@ -137,12 +136,12 @@ const StandardImagePicker = forwardRef((props, ref) => {
 
   const handleClick = (option) => {
     if (field.multiple) {
-      const index = (get(form, field.attribute) || []).findIndex(
+      const index = (value || []).findIndex(
         (value) => getValueKey(value) === getOptionKey(option)
       );
       if (index >= 0) {
         // option is currently selected, so remove it
-        var copy = [...get(form, field.attribute)];
+        var copy = [...value];
         copy.splice(index, 1);
         if (copy.length === 0) {
           copy = null;
@@ -151,10 +150,10 @@ const StandardImagePicker = forwardRef((props, ref) => {
         return;
       }
       updateForm({
-        [field.attribute]: [...(get(form, field.attribute) || []), option],
+        [field.attribute]: [...(value || []), option],
       });
     } else {
-      if (getValueKey(get(form, field.attribute)) === getOptionKey(option)) {
+      if (getValueKey(value) === getOptionKey(option)) {
         // option currently selected, so remove it
         updateForm({ [field.attribute]: undefined });
         return;
@@ -167,12 +166,11 @@ const StandardImagePicker = forwardRef((props, ref) => {
     var isSelected;
     if (field.multiple) {
       isSelected =
-        (get(form, field.attribute) || []).findIndex(
+        (value || []).findIndex(
           (value) => getValueKey(value) === getOptionKey(option)
         ) >= 0;
     } else {
-      isSelected =
-        getValueKey(get(form, field.attribute)) === getOptionKey(option);
+      isSelected = getValueKey(value) === getOptionKey(option);
     }
     return isSelected;
   };
@@ -221,7 +219,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
         }
       }}
     >
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <div className={classes.gridListRoot}>
         <ImageList
           className={classes.gridList}
@@ -293,7 +291,7 @@ StandardImagePicker.defaultProps = {
 
 StandardImagePicker.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.any,
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

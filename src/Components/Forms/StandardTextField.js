@@ -10,7 +10,6 @@ import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { debounce } from "@material-ui/core/utils";
 import PropTypes from "prop-types";
-import get from "lodash/get";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 import { getValidationType } from "../Utils/helpers";
@@ -48,7 +47,7 @@ const debounceTimeout = 200;
 
 const StandardTextField = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation(
     getValidationType(field),
     field,
@@ -57,14 +56,14 @@ const StandardTextField = forwardRef((props, ref) => {
 
   const inputRef = useRef();
 
-  const [value, setValue] = useState(get(form, field.attribute));
+  const [thisValue, setThisValue] = useState(value);
   const [focus, setFocus] = useState();
 
   useEffect(() => {
-    if (getValue(get(form, field.attribute)) !== getValue(value)) {
-      debouncedUpdateForm(field, value);
+    if (getValue(value) !== getValue(thisValue)) {
+      debouncedUpdateForm(field, thisValue);
     }
-  }, [value]);
+  }, [thisValue]);
 
   const debouncedUpdateForm = useMemo(
     () =>
@@ -82,10 +81,10 @@ const StandardTextField = forwardRef((props, ref) => {
   );
 
   useEffect(() => {
-    if (!focus && getValue(value) !== getValue(get(form, field.attribute))) {
-      setValue(getValue(get(form, field.attribute)));
+    if (!focus && getValue(thisValue) !== getValue(value)) {
+      setThisValue(getValue(value));
     }
-  }, [form, field.attribute]);
+  }, [value]);
 
   const componentProps = (field) => {
     return {
@@ -97,9 +96,9 @@ const StandardTextField = forwardRef((props, ref) => {
       variant: "outlined",
       margin: "dense",
       label: field.label,
-      value: value,
+      value: thisValue,
       onChange: (event) => {
-        setValue(getValue(event.target.value));
+        setThisValue(getValue(event.target.value));
       },
       error: errors?.length > 0,
       helperText: errors[0],
@@ -108,19 +107,15 @@ const StandardTextField = forwardRef((props, ref) => {
       },
       onBlur: () => {
         setFocus();
-        validate(get(form, field.attribute));
+        validate(value);
       },
       onKeyDown: (event) => {
         if (event.which === 13) {
-          validate(get(form, field.attribute));
+          validate(value);
         }
       },
       InputLabelProps: {
-        shrink:
-          !!value ||
-          value === 0 ||
-          !!get(form, field.attribute) ||
-          get(form, field.attribute) === 0,
+        shrink: !!thisValue || thisValue === 0 || !!value || value === 0,
       },
       ...field.props,
     };
@@ -128,7 +123,7 @@ const StandardTextField = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <TextField
         inputRef={(el) => {
           if (el && ref) {
@@ -152,7 +147,7 @@ StandardTextField.defaultProps = {
 
 StandardTextField.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

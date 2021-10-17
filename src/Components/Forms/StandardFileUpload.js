@@ -2,7 +2,6 @@ import React, { forwardRef, Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { ButtonBase, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import get from "lodash/get";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 
@@ -83,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardFileUpload = forwardRef((props, ref) => {
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("mixed", field);
   const classes = useStyles({
     errors: errors,
@@ -161,7 +160,7 @@ const StandardFileUpload = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <input
         ref={(el) => {
           if (el && ref) {
@@ -171,34 +170,30 @@ const StandardFileUpload = forwardRef((props, ref) => {
         }}
         {...componentProps(field)}
       />
-      <label
-        htmlFor={componentProps(field).id}
-        onBlur={() => validate(get(form, field.attribute))}
-      >
-        {get(form, field.attribute)?.files?.length > 0 ? (
+      <label htmlFor={componentProps(field).id} onBlur={() => validate(value)}>
+        {value?.files?.length > 0 ? (
           <ButtonBase className={classes.buttonBase} component="div">
-            {get(form, field.attribute).files.map((file, index) => (
+            {value.files.map((file, index) => (
               <div className={classes.inputRoot} key={index}>
-                {field.fileType === "image" &&
-                  get(form, field.attribute).imageUrls?.length > 0 && (
-                    <div
-                      className={classes.imageContainerRoot}
-                      style={{
-                        width: (field.imageSize || [])[0],
-                        height: (field.imageSize || [])[1],
-                      }}
-                    >
-                      <div className={classes.imageSizer} />
-                      <div className={classes.imageContainer}>
-                        <img
-                          src={get(form, field.attribute).imageUrls?.[index]}
-                          alt={file.name}
-                          loading="lazy"
-                          className={classes.image}
-                        />
-                      </div>
+                {field.fileType === "image" && value.imageUrls?.length > 0 && (
+                  <div
+                    className={classes.imageContainerRoot}
+                    style={{
+                      width: (field.imageSize || [])[0],
+                      height: (field.imageSize || [])[1],
+                    }}
+                  >
+                    <div className={classes.imageSizer} />
+                    <div className={classes.imageContainer}>
+                      <img
+                        src={value.imageUrls?.[index]}
+                        alt={file.name}
+                        loading="lazy"
+                        className={classes.image}
+                      />
                     </div>
-                  )}
+                  </div>
+                )}
                 <Typography className={classes.input}>
                   {file.name || file}
                 </Typography>
@@ -256,7 +251,7 @@ StandardFileUpload.defaultProps = {
 
 StandardFileUpload.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.any,
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

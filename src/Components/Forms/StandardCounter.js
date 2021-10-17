@@ -4,7 +4,6 @@ import { IconButton, Tooltip, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Add, Remove } from "@material-ui/icons";
 import { Title } from "../Widgets/Title";
-import get from "lodash/get";
 import { useValidation } from "../../Hooks/useValidation";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const StandardCounter = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("number", field);
 
   return (
@@ -48,7 +47,7 @@ const StandardCounter = forwardRef((props, ref) => {
       }}
       className={classes.flex}
     >
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <Tooltip title="Reduce">
         <span>
           <IconButton
@@ -56,13 +55,12 @@ const StandardCounter = forwardRef((props, ref) => {
             className={classes.counterReduceButton}
             onClick={() =>
               updateForm({
-                [field.attribute]: Number(get(form, field.attribute) || 0) - 1,
+                [field.attribute]: Number(value || 0) - 1,
               })
             }
             disabled={
               field.props?.disabled ||
-              Number(get(form, field.attribute) || 0) <=
-                Number(field.inputMin || 0)
+              Number(value || 0) <= Number(field.inputMin || 0)
             }
           >
             <Remove />
@@ -71,7 +69,7 @@ const StandardCounter = forwardRef((props, ref) => {
       </Tooltip>
       <div className={classes.counter} {...field.props}>
         <Typography style={{ fontSize: field.fontSize }}>
-          {Number(get(form, field.attribute) || 0)}
+          {Number(value || 0)}
         </Typography>
       </div>
       <Tooltip title="Add">
@@ -79,15 +77,16 @@ const StandardCounter = forwardRef((props, ref) => {
           <IconButton
             aria-label="add"
             className={classes.counterAddButton}
-            onClick={() =>
+            onClick={() => {
+              console.log(field.attribute);
+              console.log(value);
               updateForm({
-                [field.attribute]: Number(get(form, field.attribute) || 0) + 1,
-              })
-            }
+                [field.attribute]: Number(value || 0) + 1,
+              });
+            }}
             disabled={
               field.props?.disabled ||
-              Number(get(form, field.attribute) || 0) >=
-                Number(field.inputMax || 1000000)
+              Number(value || 0) >= Number(field.inputMax || 1000000)
             }
           >
             <Add />
@@ -106,12 +105,13 @@ StandardCounter.displayName = "StandardCounter";
 
 StandardCounter.defaultProps = {
   updateForm: () => {},
+  value: 1,
   showTitle: true,
 };
 
 StandardCounter.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.number,
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

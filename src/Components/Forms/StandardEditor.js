@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import PropTypes from "prop-types";
-import get from "lodash/get";
 import { useValidation } from "../../Hooks/useValidation";
 import { Editor } from "@jeremyling/react-material-ui-rich-text-editor";
 import { Typography } from "@material-ui/core";
@@ -21,16 +20,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardEditor = forwardRef((props, ref) => {
-  const { field, form, updateForm } = props;
+  const { field, value, updateForm } = props;
   const classes = useStyles();
   const [preview, setPreview] = useState();
   const { errors, validate } = useValidation("string", field);
   const [touched, setTouched] = useState(false);
 
-  const value = useMemo(
-    () => get(form, field.attribute) || "",
-    [form, field.attribute]
-  );
+  const thisValue = useMemo(() => value || "", [value]);
 
   const validateHtml = useCallback(
     (html) => {
@@ -38,14 +34,14 @@ const StandardEditor = forwardRef((props, ref) => {
       const stripped = dom.body.textContent;
       validate(stripped);
     },
-    [form, value]
+    [thisValue]
   );
 
   useEffect(() => {
     if (touched) {
-      validateHtml(value);
+      validateHtml(thisValue);
     }
-  }, [value]);
+  }, [thisValue]);
 
   return (
     <div
@@ -58,7 +54,7 @@ const StandardEditor = forwardRef((props, ref) => {
       onFocus={() => setTouched(true)}
     >
       <Editor
-        html={value}
+        html={thisValue}
         document={preview}
         onChange={(document) => setPreview(document)}
         onBlur={(html) => {
@@ -82,7 +78,7 @@ StandardEditor.defaultProps = {
 
 StandardEditor.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.string,
   updateForm: PropTypes.func,
 };
 

@@ -7,7 +7,6 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import get from "lodash/get";
 import { Fragment } from "react";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 const StandardSwitch = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("boolean", field);
 
   const handleSwitchChange = useCallback(
@@ -35,7 +34,7 @@ const StandardSwitch = forwardRef((props, ref) => {
   );
 
   const componentProps = (field) => {
-    const isSelected = !!get(form, field.attribute);
+    const isSelected = !!value;
     return {
       id: field.id || field.attribute,
       key: field.id,
@@ -43,14 +42,14 @@ const StandardSwitch = forwardRef((props, ref) => {
       color: "primary",
       checked: isSelected,
       onChange: (event) => handleSwitchChange(event.target.checked),
-      onBlur: () => validate(get(form, field.attribute)),
+      onBlur: () => validate(value),
       ...field.props,
     };
   };
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <FormControl error={errors?.length > 0}>
         <FormControlLabel
           inputRef={(el) => {
@@ -80,7 +79,7 @@ StandardSwitch.defaultProps = {
 
 StandardSwitch.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.bool,
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

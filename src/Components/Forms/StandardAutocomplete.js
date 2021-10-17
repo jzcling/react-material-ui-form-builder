@@ -33,7 +33,7 @@ const reorderTags = (list, startIndex, endIndex) => {
 
 const StandardAutocomplete = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation(getValidationType(field), field);
   const [focused, setFocused] = useState(false);
 
@@ -198,9 +198,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
           ));
         }
       },
-      value:
-        get(form, field.attribute) ||
-        (field.props && field.props.multiple ? [] : null),
+      value: value || (field.props && field.props.multiple ? [] : null),
       onChange: (event, option) => {
         updateForm({
           [field.attribute]: optionConfig(option).value,
@@ -208,7 +206,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
       },
       onBlur: () => {
         setFocused(false);
-        validate(get(form, field.attribute));
+        validate(value);
       },
       onFocus: () => setFocused(true),
       className: classes.autocomplete,
@@ -227,19 +225,19 @@ const StandardAutocomplete = forwardRef((props, ref) => {
       }
 
       const reordered = reorderTags(
-        get(form, field.attribute) || [],
+        value || [],
         result.source.index,
         result.destination.index
       );
 
       updateForm({ [field.attribute]: reordered });
     },
-    [form, field.attribute]
+    [value]
   );
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <Autocomplete {...componentProps(field)} />
     </Fragment>
   );
@@ -254,7 +252,11 @@ StandardAutocomplete.defaultProps = {
 
 StandardAutocomplete.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.array,
+  ]),
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

@@ -7,11 +7,9 @@ import {
   TimePicker,
 } from "@material-ui/pickers";
 import PropTypes from "prop-types";
-import get from "lodash/get";
 import { makeStyles } from "@material-ui/core/styles";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
-import { useDimensions } from "../../Hooks/useDimensions";
 import { IconButton, InputAdornment } from "@material-ui/core";
 import { Schedule } from "@material-ui/icons";
 
@@ -27,7 +25,7 @@ const useStyles = makeStyles(() => ({
 
 const StandardTimePicker = forwardRef((props, ref) => {
   const classes = useStyles();
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("date", field);
 
   const component = useCallback(
@@ -50,9 +48,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
       margin: "dense",
       format: "HH:mm:ss",
       label: field.label,
-      value: get(form, field.attribute)
-        ? format(new Date(), "yyyy-MM-dd") + " " + get(form, field.attribute)
-        : null,
+      value: value ? format(new Date(), "yyyy-MM-dd") + " " + value : null,
       onChange: (value) => {
         if (value) {
           try {
@@ -83,10 +79,10 @@ const StandardTimePicker = forwardRef((props, ref) => {
       keyboardIcon: <Schedule />,
       error: errors?.length > 0,
       helperText: errors[0],
-      onBlur: () => validate(get(form, field.attribute)),
+      onBlur: () => validate(value),
       onKeyDown: (event) => {
         if (event.which === 13) {
-          validate(get(form, field.attribute));
+          validate(value);
         }
       },
       ...field.props,
@@ -95,7 +91,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <div
         ref={(el) => {
           if (el && ref) {
@@ -121,7 +117,7 @@ StandardTimePicker.defaultProps = {
 
 StandardTimePicker.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.any,
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };

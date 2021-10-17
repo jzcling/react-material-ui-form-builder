@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StandardChipGroup = forwardRef((props, ref) => {
-  const { field, form, updateForm, showTitle } = props;
+  const { field, value, updateForm, showTitle } = props;
   const classes = useStyles(field);
   const { errors, validate } = useValidation(getValidationType(field), field);
 
@@ -58,11 +58,11 @@ const StandardChipGroup = forwardRef((props, ref) => {
 
   const handleChipClick = (option) => {
     if (field.multiple) {
-      const index = (get(form, field.attribute) || []).findIndex(
+      const index = (value || []).findIndex(
         (value) => value === optionConfig(option).value
       );
       if (index >= 0) {
-        var copy = [...get(form, field.attribute)];
+        var copy = [...value];
         copy.splice(index, 1);
         if (copy.length === 0) {
           copy = null;
@@ -71,13 +71,10 @@ const StandardChipGroup = forwardRef((props, ref) => {
         return;
       }
       updateForm({
-        [field.attribute]: [
-          ...(get(form, field.attribute) || []),
-          optionConfig(option).value,
-        ],
+        [field.attribute]: [...(value || []), optionConfig(option).value],
       });
     } else {
-      if (get(form, field.attribute) === optionConfig(option).value) {
+      if (value === optionConfig(option).value) {
         updateForm({ [field.attribute]: undefined });
         return;
       }
@@ -88,11 +85,9 @@ const StandardChipGroup = forwardRef((props, ref) => {
   const componentProps = (field, option) => {
     var isSelected;
     if (field.multiple) {
-      isSelected =
-        get(form, field.attribute) &&
-        get(form, field.attribute).includes(optionConfig(option).value);
+      isSelected = value && value.includes(optionConfig(option).value);
     } else {
-      isSelected = get(form, field.attribute) === optionConfig(option).value;
+      isSelected = value === optionConfig(option).value;
     }
     var props = {
       id: field.id || field.attribute,
@@ -115,7 +110,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
   const containerProps = (field) => {
     return {
       error: errors?.length > 0,
-      onBlur: () => validate(get(form, field.attribute)),
+      onBlur: () => validate(value),
       ...field.groupContainerProps,
       style: { flexWrap: "wrap", ...(field.groupContainerProps || {}).style },
     };
@@ -130,7 +125,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
 
   return (
     <Fragment>
-      {showTitle && field.title && <Title field={field} form={form} />}
+      {showTitle && field.title && <Title field={field} />}
       <FormGroup component="fieldset">
         <FormControl {...containerProps(field)}>
           {options.map((option, index) => (
@@ -164,7 +159,11 @@ StandardChipGroup.defaultProps = {
 
 StandardChipGroup.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.array,
+  ]),
   updateForm: PropTypes.func,
   showTitle: PropTypes.bool,
 };
