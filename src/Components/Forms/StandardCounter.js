@@ -78,8 +78,6 @@ const StandardCounter = forwardRef((props, ref) => {
             aria-label="add"
             className={classes.counterAddButton}
             onClick={() => {
-              console.log(field.attribute);
-              console.log(value);
               updateForm({
                 [field.attribute]: Number(value || 0) + 1,
               });
