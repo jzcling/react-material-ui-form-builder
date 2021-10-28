@@ -98,8 +98,8 @@ const StandardAutocomplete = forwardRef((props, ref) => {
     }
     if ((field.optionConfig || {}).value) {
       const o =
-        field.options.find((o) => optionConfig(o).value === option) || {};
-      return String(optionConfig(o).label);
+        field.options?.find((o) => optionConfig(o).value === option) || {};
+      return String(optionConfig(o)?.label);
     }
     return String(option);
   }
