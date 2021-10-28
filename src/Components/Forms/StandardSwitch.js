@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 const StandardSwitch = forwardRef((props, ref) => {
   const classes = useStyles();
   const { field, value, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("boolean", field);
+  const { errors, validate } = useValidation("mixed", field);
 
   const handleSwitchChange = useCallback(
     (checked) => {
