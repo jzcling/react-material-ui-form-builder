@@ -397,15 +397,15 @@ export default function EmployeeForm(props) {
 
 ### Components With Options
 
-This includes `autocomplete`, `chip-group`, `checkbox-group` and `radio-group`.
+This includes `select`, `autocomplete`, `autocomplete-dnd`, `chip-group`, `checkbox-group` and `radio-group`.
 
-| Prop             | Type     | Default                                                                                                                                                            | Description                                                                                               |
-| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| options          | `array`  | `[]`                                                                                                                                                               | Required if component is one of `select`, `autocomplete`, `chip-group`, `checkbox-group` or `radio-group` |
-| optionConfig     | `object` | select, chip-group, checkbox-group, radio-group: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ value: option, label: option }` | Required if options is an array of objects                                                                |
-| randomizeOptions | `bool`   | `undefined`                                                                                                                                                        | If true, randomises option order on each render                                                           |
-| multiple         | `bool`   | `undefined`                                                                                                                                                        | Only for `chip-group`, `checkbox-group` and `image-picker`. If true, multiple options will be selectible  |
-| sortable         | `bool`   | `undefined`                                                                                                                                                        | Only for `autocomplete`. If true, selected options will be sortable via drag and drop                     |
+| Prop             | Type     | Default                                                                                                                                                            | Description                                                                                                                   |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| options          | `array`  | `[]`                                                                                                                                                               | Required if component is one of `select`, `autocomplete`, `autocomplete-dnd`, `chip-group`, `checkbox-group` or `radio-group` |
+| optionConfig     | `object` | select, chip-group, checkbox-group, radio-group: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ value: option, label: option }` | Required if options is an array of objects                                                                                    |
+| randomizeOptions | `bool`   | `undefined`                                                                                                                                                        | If true, randomises option order on each render                                                                               |
+| multiple         | `bool`   | `undefined`                                                                                                                                                        | Only for `chip-group`, `checkbox-group` and `image-picker`. If true, multiple options will be selectible                      |
+| sortable         | `bool`   | `undefined`                                                                                                                                                        | Only for `autocomplete-dnd`. If true, selected options will be sortable via drag and drop                                     |
 
 ### Date/Time Pickers
 
