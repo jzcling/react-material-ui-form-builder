@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { StandardAutocomplete } from "./Forms/StandardAutocomplete";
+import { StandardAutocompleteNoDrag } from "./Forms/StandardAutocompleteNoDrag";
 import { StandardCheckboxGroup } from "./Forms/StandardCheckboxGroup";
 import { StandardChipGroup } from "./Forms/StandardChipGroup";
 import { StandardCounter } from "./Forms/StandardCounter";
@@ -99,9 +100,19 @@ const FormBuilder = forwardRef((props, ref) => {
             ref={ref}
           />
         );
-      case "autocomplete":
+      case "autocomplete-dnd":
         return (
           <StandardAutocomplete
+            field={field}
+            value={get(form, field.attribute)}
+            updateForm={updateForm}
+            ref={ref}
+          />
+        );
+
+      case "autocomplete":
+        return (
+          <StandardAutocompleteNoDrag
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
@@ -216,7 +227,12 @@ const FormBuilder = forwardRef((props, ref) => {
           />
         );
       case "custom":
-        return field.customComponent(field, form, updateForm, ref);
+        return field.customComponent(
+          field,
+          get(form, field.attribute),
+          updateForm,
+          ref
+        );
       case "text-field":
       default:
         return (
