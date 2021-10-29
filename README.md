@@ -386,8 +386,6 @@ export default function EmployeeForm(props) {
 | component           | `string` | `text-field` | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`time-picker`,<br />`autocomplete`,<br />`autocomplete-dnd`,<br />`chip-group`,<br />`checkbox-group`,<br />`radio-group`,<br />`switch`,<br />`file-upload`,<br />`image-picker`, <br />`rating`,<br />`counter`<br />`display-text`,<br />`display-image`,<br />`display-media`,<br />`rich-text`<br />`custom` |
 | props               | `object` | `undefined`  | Any additional props to pass to the Material UI component                                                                                                                                                                                                                                                                                                                                                      |
 | containerProps      | `object` | `undefined`  | Any additional props to pass to the Material UI Grid item that contains the component                                                                                                                                                                                                                                                                                                                          |
-| labelProps          | `object` | `undefined`  | Only for `checkbox-group`, `radio-group` and `switch`, `image-picker`. Any additional props to pass to Material UI's FormControlLabel or Typography (`image-picker`) that wraps the label.                                                                                                                                                                                                                     |
-| groupContainerProps | `object` | `undefined`  | Only for `chip-group`, `checkbox-group`, `radio-group` and `image-picker`. Any additional props to pass to Material UI's FormControlGroup or ImageList (`image-picker`) that wraps the individual components within the group.                                                                                                                                                                                 |
 | hideCondition       | `bool`   | `undefined`  | Hides field if truthy                                                                                                                                                                                                                                                                                                                                                                                          |
 | validationType^     | `string` | `undefined`  | One of: `mixed`, `string`, `number`, `date`, `boolean`, `array`.                                                                                                                                                                                                                                                                                                                                               |
 | validations^        | `object` | `undefined`  | These are validation options accepted by `yup` in the form of `{validation: arguments}`. Arguments can be a `string` or an `array` of strings in the order that it is accepted by the `yup` option. For validations that do not require any arguments, set the argument to `true`.                                                                                                                             |
@@ -399,73 +397,87 @@ export default function EmployeeForm(props) {
 
 This includes `select`, `autocomplete`, `autocomplete-dnd`, `chip-group`, `checkbox-group` and `radio-group`.
 
-| Prop             | Type     | Default                                                                                                                                                            | Description                                                                                                                   |
-| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| options          | `array`  | `[]`                                                                                                                                                               | Required if component is one of `select`, `autocomplete`, `autocomplete-dnd`, `chip-group`, `checkbox-group` or `radio-group` |
-| optionConfig     | `object` | select, chip-group, checkbox-group, radio-group: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ value: option, label: option }` | Required if options is an array of objects                                                                                    |
-| randomizeOptions | `bool`   | `undefined`                                                                                                                                                        | If true, randomises option order on each render                                                                               |
-| multiple         | `bool`   | `undefined`                                                                                                                                                        | Only for `chip-group`, `checkbox-group` and `image-picker`. If true, multiple options will be selectible                      |
-| sortable         | `bool`   | `undefined`                                                                                                                                                        | Only for `autocomplete-dnd`. If true, selected options will be sortable via drag and drop                                     |
+| Prop                | Type     | Default                                                                                                                                                            | Description                                                                                                                                                                   |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| options             | `array`  | `[]`                                                                                                                                                               | Required                                                                                                                                                                      |
+| optionConfig        | `object` | select, chip-group, checkbox-group, radio-group: <br />`{ key: option, value: option, label: option }`<br />autocomplete: <br />`{ value: option, label: option }` | Required if options is an array of objects                                                                                                                                    |
+| randomizeOptions    | `bool`   | `undefined`                                                                                                                                                        | If true, randomises option order on each render                                                                                                                               |
+| multiple            | `bool`   | `undefined`                                                                                                                                                        | Only for `chip-group`, `checkbox-group`. If true, multiple options will be selectible                                                                                         |
+| labelProps          | `object` | `undefined`                                                                                                                                                        | Only for `checkbox-group`, `radio-group`. Any additional props to pass to Material UI's FormControlLabel that wraps the label.                                                |
+| groupContainerProps | `object` | `undefined`                                                                                                                                                        | Only for `chip-group`, `checkbox-group`, `radio-group`. Any additional props to pass to Material UI's FormControlGroup that wraps the individual components within the group. |
+| sortable            | `bool`   | `undefined`                                                                                                                                                        | Only for `autocomplete-dnd`. If true, selected options will be sortable via drag and drop                                                                                     |
+
+### Switch
+
+This includes `switch`.
+
+| Prop       | Type     | Default     | Description                                                                          |
+| ---------- | -------- | ----------- | ------------------------------------------------------------------------------------ |
+| labelProps | `object` | `undefined` | Any additional props to pass to Material UI's FormControlLabel that wraps the label. |
 
 ### Date/Time Pickers
 
 This includes `date-picker`, `date-time-picker` and `time-picker`.
 
-| Prop     | Type   | Default     | Description                                                                                                                       |
-| -------- | ------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| keyboard | `bool` | `undefined` | Only for `date-picker`, `date-time-picker` and `time-picker`. If true, will use the Keyboard equivalent components of the pickers |
+| Prop     | Type   | Default     | Description                                                         |
+| -------- | ------ | ----------- | ------------------------------------------------------------------- |
+| keyboard | `bool` | `undefined` | If true, will use the Keyboard equivalent components of the pickers |
 
 ### File Upload
 
 This includes `file-upload`.
 
-| Prop        | Type                | Default                                                                                                                                                                                        | Description                                                                                                                               |
-| ----------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| acceptTypes | `string` or `array` | `[".pdf", ".doc", ".docx", ".xml", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", ".xls", ".xlsx", ".csv", "image/*", "audio/*", "video/*"]` | Only for `file-upload`. Concatenated value will be passed as `accept` prop to `input`                                                     |
-| maxSizeMb   | `number`            | `2`                                                                                                                                                                                            | Only for `file-upload`. Max size of each uploaded file.                                                                                   |
-| fileType    | `string`            | `undefined`                                                                                                                                                                                    | Only for `file-upload`. One of: `file`, `image`, `audio`, `video`.                                                                        |
-| imageUrl    | `string`            | `undefined`                                                                                                                                                                                    | Only for `file-upload`. If file type is an image, you may specify the url of the existing image here.                                     |
-| imageSize   | `array`             | `undefined`                                                                                                                                                                                    | Only for `file-upload`. Size of image preview in the form `[width, height]`. imageSize supercedes aspectRatio.                            |
-| aspectRatio | `array`             | `undefined`                                                                                                                                                                                    | Only for `file-upload` and `image-picker`. Aspect ratio of image preview in the form `[width, height]`. imageSize supercedes aspectRatio. |
+| Prop        | Type                | Default                                                                                                                                                                                        | Description                                                                                    |
+| ----------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| acceptTypes | `string` or `array` | `[".pdf", ".doc", ".docx", ".xml", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", ".xls", ".xlsx", ".csv", "image/*", "audio/*", "video/*"]` | Concatenated value will be passed as `accept` prop to `input`                                  |
+| maxSizeMb   | `number`            | `2`                                                                                                                                                                                            | Max size of each uploaded file.                                                                |
+| fileType    | `string`            | `undefined`                                                                                                                                                                                    | One of: `file`, `image`, `audio`, `video`.                                                     |
+| imageUrl    | `string`            | `undefined`                                                                                                                                                                                    | If file type is an image, you may specify the url of the existing image here.                  |
+| imageSize   | `array`             | `undefined`                                                                                                                                                                                    | Size of image preview in the form `[width, height]`. imageSize supercedes aspectRatio.         |
+| aspectRatio | `array`             | `undefined`                                                                                                                                                                                    | Aspect ratio of image preview in the form `[width, height]`. imageSize supercedes aspectRatio. |
 
 ### Display Image/Media
 
 This includes `display-image` and `display-media`.
 
-| Prop   | Type     | Default     | Description                                                             |
-| ------ | -------- | ----------- | ----------------------------------------------------------------------- |
-| src    | `string` | `undefined` | Only for `display-image` and `display-media`. Source of image or media. |
-| alt    | `string` | `undefined` | Only for `display-image`. Alt passed to `img` node.                     |
-| width  | `number` | `undefined` | Only for `display-media`. Width of media player.                        |
-| height | `number` | `undefined` | Only for `display-media`. Height of media player.                       |
+| Prop   | Type     | Default     | Description                                         |
+| ------ | -------- | ----------- | --------------------------------------------------- |
+| src    | `string` | `undefined` | Source of image or media.                           |
+| alt    | `string` | `undefined` | Only for `display-image`. Alt passed to `img` node. |
+| width  | `number` | `undefined` | Only for `display-media`. Width of media player.    |
+| height | `number` | `undefined` | Only for `display-media`. Height of media player.   |
 
 ### Image Picker
 
 This includes `image-picker`.
 
-| Prop       | Type     | Default     | Description                                                                                                                                                                                                               |
-| ---------- | -------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| images     | `array`  | `undefined` | Only for `image-picker`. This should contain an array of objects with attributes `src`, `label` and `alt` (defaults to `label`)                                                                                           |
-| imageCols  | `number` | `{ xs: 2 }` | Only for `image-picker`. Number of columns in image list. This should be an object with breakpoints `xs`, `sm`, `md`, `lg`, `xl` as keys. Columns for each breakpoint default to the previous breakpoint is not specified |
-| labelLines | `number` | `2`         | Only for `image-picker`. Number of lines allowed for label                                                                                                                                                                |
+| Prop                | Type     | Default     | Description                                                                                                                                                                                      |
+| ------------------- | -------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| images              | `array`  | `undefined` | This should contain an array of objects with attributes `src`, `label` and `alt` (defaults to `label`)                                                                                           |
+| imageCols           | `number` | `{ xs: 2 }` | Number of columns in image list. This should be an object with breakpoints `xs`, `sm`, `md`, `lg`, `xl` as keys. Columns for each breakpoint default to the previous breakpoint is not specified |
+| labelLines          | `number` | `2`         | Number of lines allowed for label                                                                                                                                                                |
+| aspectRatio         | `array`  | `undefined` | Aspect ratio of image preview in the form `[width, height]`. imageSize supercedes aspectRatio.                                                                                                   |
+| multiple            | `bool`   | `undefined` | If true, multiple options will be selectible                                                                                                                                                     |
+| labelProps          | `object` | `undefined` | Any additional props to pass to the Typography component that wraps the label.                                                                                                                   |
+| groupContainerProps | `object` | `undefined` | Any additional props to pass to the ImageList component that wraps the individual components within the group.                                                                                   |
 
 ### Rating
 
 This includes `rating`.
 
-| Prop      | Type     | Default     | Description                    |
-| --------- | -------- | ----------- | ------------------------------ |
-| iconColor | `string` | `undefined` | Only for `rating`. Icon colour |
+| Prop      | Type     | Default     | Description |
+| --------- | -------- | ----------- | ----------- |
+| iconColor | `string` | `undefined` | Icon colour |
 
 ### Counter
 
 This includes `counter`.
 
-| Prop     | Type     | Default     | Description                               |
-| -------- | -------- | ----------- | ----------------------------------------- |
-| inputMin | `number` | `0`         | Only for `counter`. Minimum value allowed |
-| inputMax | `number` | `1000000`   | Only for `counter`. Maximum value allowed |
-| fontSize | `number` | `undefined` | Only for `counter`. Counter font size     |
+| Prop     | Type     | Default     | Description           |
+| -------- | -------- | ----------- | --------------------- |
+| inputMin | `number` | `0`         | Minimum value allowed |
+| inputMax | `number` | `1000000`   | Maximum value allowed |
+| fontSize | `number` | `undefined` | Counter font size     |
 
 ### Rich Text
 
