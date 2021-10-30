@@ -506,7 +506,7 @@ Validation is done using yup, which has 6 core types that inherit from the `mixe
     length: 10,
     min: 5,
     max: 20,
-    matches: [/[a-z]/i, 'Can only contain letters'],
+    matches: ['/[a-z]/i', 'Can only contain letters'],
     email: true,
     url: true,
     uuid: true,
