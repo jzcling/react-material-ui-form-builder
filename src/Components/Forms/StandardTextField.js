@@ -50,7 +50,7 @@ const StandardTextField = forwardRef((props, ref) => {
 
   const inputRef = useRef();
 
-  const [thisValue, setThisValue] = useState(value);
+  const [thisValue, setThisValue] = useState(value || "");
   const [focus, setFocus] = useState();
 
   const getValue = useCallback(
