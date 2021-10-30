@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Grid, Typography } from "@material-ui/core";
@@ -45,8 +45,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const FormBuilder = forwardRef((props, ref) => {
-  const { title, fields, form, updateForm, children, index, idPrefix } = props;
+const FormBuilder = (props) => {
+  const { title, fields, form, updateForm, refs, children, index, idPrefix } =
+    props;
   const classes = useStyles();
 
   const handleField = (field) => {
@@ -60,6 +61,12 @@ const FormBuilder = forwardRef((props, ref) => {
       }
     }
     return field;
+  };
+
+  const ref = (field) => (el) => {
+    if (refs) {
+      refs.current[field.attribute] = el;
+    }
   };
 
   const getFormComponent = (field) => {
@@ -278,7 +285,7 @@ const FormBuilder = forwardRef((props, ref) => {
       {children}
     </div>
   );
-});
+};
 
 FormBuilder.displayName = "FormBuilder";
 
@@ -291,6 +298,7 @@ FormBuilder.propTypes = {
   fields: PropTypes.array.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
+  refs: PropTypes.ref,
   children: PropTypes.node,
   index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   idPrefix: PropTypes.string,
