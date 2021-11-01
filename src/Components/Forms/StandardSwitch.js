@@ -4,23 +4,15 @@ import {
   FormControlLabel,
   FormHelperText,
   FormControl,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
 import PropTypes from "prop-types";
 import { Fragment } from "react";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 
-const useStyles = makeStyles((theme) => ({
-  label: {
-    margin: theme.spacing(1, 0),
-  },
-}));
-
 const StandardSwitch = forwardRef((props, ref) => {
-  const classes = useStyles();
   const { field, value, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("mixed", field);
+  const { errors, validate } = useValidation("mixed", field.validations);
 
   const handleSwitchChange = useCallback(
     (checked) => {
@@ -61,7 +53,7 @@ const StandardSwitch = forwardRef((props, ref) => {
           key={field.id}
           control={<Switch {...componentProps(field)} />}
           label={field.label}
-          className={classes.label}
+          style={{ margin: "8px 0" }}
           {...field.labelProps}
         />
         <FormHelperText>{errors[0]}</FormHelperText>

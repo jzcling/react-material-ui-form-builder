@@ -1,7 +1,6 @@
 import React, { forwardRef, Fragment, useMemo } from "react";
-import { Chip, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Autocomplete } from "@material-ui/lab";
+import { Chip, TextField } from "@mui/material";
+import { Autocomplete } from "@mui/material";
 import get from "lodash/get";
 import isObject from "lodash/isObject";
 import PropTypes from "prop-types";
@@ -9,16 +8,12 @@ import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 import { getValidationType, shuffleArray } from "../Utils/helpers";
 
-const useStyles = makeStyles(() => ({
-  textFieldRoot: {
-    marginTop: 0,
-  },
-}));
-
 const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
-  const classes = useStyles();
   const { field, value, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation(getValidationType(field), field);
+  const { errors, validate } = useValidation(
+    getValidationType(field),
+    field.validations
+  );
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -100,7 +95,7 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
       size: "small",
       fullWidth: true,
       options: options,
-      getOptionSelected: (option, value) => {
+      isOptionEqualToValue: (option, value) => {
         /* 
         Required to handle the quirky behaviour of Autocomplete component
         where it returns the value object sometimes and value value sometimes
@@ -120,7 +115,7 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
             }
           }}
           variant="outlined"
-          margin="dense"
+          size="small"
           inputProps={{
             ...params.inputProps,
             autoComplete: "off", // disable autocomplete and autofill
@@ -128,8 +123,10 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
           label={field.label}
           error={errors?.length > 0}
           helperText={errors[0]}
-          classes={{
-            root: classes.textFieldRoot,
+          sx={{
+            "& root": {
+              marginTop: 0,
+            },
           }}
         />
       ),
@@ -150,7 +147,6 @@ const StandardAutocompleteNoDrag = forwardRef((props, ref) => {
         });
       },
       onBlur: () => validate(value),
-      className: classes.autocomplete,
       ...field.props,
     };
   };

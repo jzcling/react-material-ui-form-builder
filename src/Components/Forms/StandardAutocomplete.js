@@ -5,9 +5,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { Chip, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Autocomplete } from "@material-ui/lab";
+import { Autocomplete, Chip, TextField } from "@mui/material";
 import cloneDeep from "lodash/cloneDeep";
 import get from "lodash/get";
 import isObject from "lodash/isObject";
@@ -16,12 +14,6 @@ import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getValidationType, shuffleArray } from "../Utils/helpers";
-
-const useStyles = makeStyles(() => ({
-  textFieldRoot: {
-    marginTop: 0,
-  },
-}));
 
 const reorderTags = (list, startIndex, endIndex) => {
   const result = cloneDeep(list);
@@ -32,9 +24,11 @@ const reorderTags = (list, startIndex, endIndex) => {
 };
 
 const StandardAutocomplete = forwardRef((props, ref) => {
-  const classes = useStyles();
   const { field, value, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation(getValidationType(field), field);
+  const { errors, validate } = useValidation(
+    getValidationType(field),
+    field.validations
+  );
   const [focused, setFocused] = useState(false);
 
   const optionConfig = useMemo(
@@ -117,7 +111,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
       size: "small",
       fullWidth: true,
       options: options,
-      getOptionSelected: (option, value) => {
+      isOptionEqualToValue: (option, value) => {
         /* 
         Required to handle the quirky behaviour of Autocomplete component
         where it returns the value object sometimes and value value sometimes
@@ -137,7 +131,7 @@ const StandardAutocomplete = forwardRef((props, ref) => {
             }
           }}
           variant="outlined"
-          margin="dense"
+          size="small"
           inputProps={{
             ...params.inputProps,
             autoComplete: "off", // disable autocomplete and autofill
@@ -145,8 +139,10 @@ const StandardAutocomplete = forwardRef((props, ref) => {
           label={field.label}
           error={errors?.length > 0}
           helperText={errors[0]}
-          classes={{
-            root: classes.textFieldRoot,
+          sx={{
+            "& root": {
+              marginTop: 0,
+            },
           }}
         />
       ),
@@ -209,7 +205,6 @@ const StandardAutocomplete = forwardRef((props, ref) => {
         validate(value);
       },
       onFocus: () => setFocused(true),
-      className: classes.autocomplete,
       ...field.props,
     };
   };

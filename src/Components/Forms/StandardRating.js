@@ -1,27 +1,14 @@
 import React, { forwardRef } from "react";
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Star, StarBorder } from "@material-ui/icons";
+import { Star, StarBorder } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
-import { Rating } from "@material-ui/lab";
-
-const useStyles = makeStyles((theme) => ({
-  errorText: {
-    marginTop: "4px",
-    fontSize: "0.75rem",
-    color: theme.palette.error.main,
-  },
-  iconColor: (field) => ({
-    color: field.iconColor,
-  }),
-}));
+import { Rating } from "@mui/material";
+import ErrorText from "../Widgets/ErrorText";
 
 const StandardRating = forwardRef((props, ref) => {
   const { field, value, updateForm, showTitle } = props;
-  const classes = useStyles(field);
-  const { errors, validate } = useValidation("number", field);
+  const { errors, validate } = useValidation("number", field.validations);
 
   const componentProps = (field) => {
     return {
@@ -32,8 +19,10 @@ const StandardRating = forwardRef((props, ref) => {
       icon: <Star style={{ margin: "0 8px", fontSize: "32px" }} />,
       emptyIcon: <StarBorder style={{ margin: "0 8px", fontSize: "32px" }} />,
       onChange: (event, value) => updateForm({ [field.attribute]: value }),
-      classes: {
-        iconFilled: classes.iconColor,
+      sx: {
+        "& iconFilled": {
+          color: field.iconColor,
+        },
       },
       ...field.props,
     };
@@ -50,9 +39,7 @@ const StandardRating = forwardRef((props, ref) => {
     >
       {showTitle && field.title && <Title field={field} />}
       <Rating ref={ref} {...componentProps(field)} />
-      {errors?.length > 0 && (
-        <Typography className={classes.errorText}>{errors[0]}</Typography>
-      )}
+      {errors?.length > 0 && <ErrorText error={errors[0]} />}
     </div>
   );
 });

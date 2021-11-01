@@ -1,39 +1,27 @@
 import React, { forwardRef, Fragment, useCallback } from "react";
-import DateFnsUtils from "@date-io/date-fns";
+import DateAdapter from "@mui/lab/AdapterDateFns";
 import { format } from "date-fns";
-import {
-  KeyboardTimePicker,
-  MuiPickersUtilsProvider,
-  TimePicker,
-} from "@material-ui/pickers";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
-import { IconButton, InputAdornment } from "@material-ui/core";
-import { Schedule } from "@material-ui/icons";
-
-const useStyles = makeStyles(() => ({
-  picker: {
-    marginTop: 0,
-    marginBottom: 0,
-  },
-  pickerInput: {
-    paddingRight: 0,
-  },
-}));
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { Schedule } from "@mui/icons-material";
+import {
+  DesktopTimePicker,
+  LocalizationProvider,
+  MobileTimePicker,
+} from "@mui/lab";
 
 const StandardTimePicker = forwardRef((props, ref) => {
-  const classes = useStyles();
   const { field, value, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("date", field);
+  const { errors, validate } = useValidation("date", field.validations);
 
   const component = useCallback(
     (props) => {
       if (field.keyboard) {
-        return <KeyboardTimePicker {...props} />;
+        return <DesktopTimePicker {...props} />;
       }
-      return <TimePicker {...props} />;
+      return <MobileTimePicker {...props} />;
     },
     [field.keyboard]
   );
@@ -41,11 +29,13 @@ const StandardTimePicker = forwardRef((props, ref) => {
   const componentProps = (field) => {
     return {
       id: field.id || field.attribute,
-      className: classes.picker,
+      sx: {
+        my: 0,
+      },
       ampm: false,
       fullWidth: true,
       inputVariant: "outlined",
-      margin: "dense",
+      size: "small",
       format: "HH:mm:ss",
       label: field.label,
       value: value ? format(new Date(), "yyyy-MM-dd") + " " + value : null,
@@ -61,22 +51,19 @@ const StandardTimePicker = forwardRef((props, ref) => {
           updateForm({ [field.attribute]: undefined });
         }
       },
-      KeyboardButtonProps: {
-        "aria-label": field.label,
-      },
+      renderInput: (params) => <TextField fullWidth size="small" {...params} />,
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
-            <IconButton aria-label="open time picker">
+            <IconButton aria-label="open time picker" size="large">
               <Schedule />
             </IconButton>
           </InputAdornment>
         ),
-        classes: {
-          adornedEnd: classes.pickerInput,
+        style: {
+          paddingRight: 0,
         },
       },
-      keyboardIcon: <Schedule />,
       error: errors?.length > 0,
       helperText: errors[0],
       onBlur: () => validate(value),
@@ -100,9 +87,9 @@ const StandardTimePicker = forwardRef((props, ref) => {
           }
         }}
       >
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <LocalizationProvider dateAdapter={DateAdapter}>
           {component(componentProps(field))}
-        </MuiPickersUtilsProvider>
+        </LocalizationProvider>
       </div>
     </Fragment>
   );

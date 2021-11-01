@@ -7,19 +7,12 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { debounce } from "@material-ui/core/utils";
+import { TextField } from "@mui/material";
+import { debounce } from "@mui/material/utils";
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 import { getValidationType } from "../Utils/helpers";
-
-const useStyles = makeStyles(() => ({
-  textFieldRoot: {
-    marginTop: 0,
-  },
-}));
 
 const getValidations = (field) => {
   var validations = {};
@@ -40,11 +33,10 @@ const getValidations = (field) => {
 const debounceTimeout = 200;
 
 const StandardTextField = forwardRef((props, ref) => {
-  const classes = useStyles();
   const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation(
     getValidationType(field),
-    field,
+    field.validations,
     getValidations(field)
   );
 
@@ -96,12 +88,9 @@ const StandardTextField = forwardRef((props, ref) => {
   const componentProps = (field) => {
     return {
       id: field.id || field.attribute,
-      classes: {
-        root: classes.textFieldRoot,
-      },
       fullWidth: true,
       variant: "outlined",
-      margin: "dense",
+      size: "small",
       label: field.label,
       value: thisValue,
       onChange: (event) => {

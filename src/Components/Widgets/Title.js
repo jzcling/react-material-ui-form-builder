@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 

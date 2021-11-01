@@ -123,13 +123,6 @@ With the predefined data above, the following functional component illustrates h
 import React, { useState } from "react";
 import FormBuilder from "@jeremyling/react-material-ui-form-builder";
 import _ from "lodash";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme) => ({
-  flexRow: {
-    flexDirection: "row",
-  },
-}));
 
 export default function EmployeeForm(props) {
   const [form, setForm] = useState({});
@@ -276,8 +269,10 @@ export default function EmployeeForm(props) {
       },
       groupContainerProps: {
         // Here you can pass any props that are accepted by Material UI's FormControl component
-        classes: {
-          root: classes.flexRow,
+        sx: {
+          "& .MuiFormControl-root": {
+            flexDirection: "row",
+          },
         },
       },
       idPrefix: "radio",

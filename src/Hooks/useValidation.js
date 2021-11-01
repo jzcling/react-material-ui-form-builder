@@ -1,11 +1,11 @@
 import React from "react";
 import * as yup from "yup";
 
-function useValidation(type, field, validations = null) {
+function useValidation(type, fieldValidations, validations = null) {
   const [errors, setErrors] = React.useState([]);
 
   if (!validations) {
-    validations = getValidations(field);
+    validations = getValidations(fieldValidations);
   }
   var schema = yup[type]().nullable();
   for (var [key, value] of Object.entries(validations)) {
@@ -62,11 +62,8 @@ function handleMatches(key, value, schema) {
   return schema;
 }
 
-function getValidations(field) {
-  var validations = {};
-  validations.label = "This";
-  validations = { ...validations, ...field.validations };
-  return validations;
+function getValidations(fieldValidations) {
+  return { label: "This", ...fieldValidations };
 }
 
 export { useValidation };

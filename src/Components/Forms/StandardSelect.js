@@ -1,10 +1,5 @@
 import React, { forwardRef, Fragment, useMemo } from "react";
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  Select,
-} from "@material-ui/core";
+import { FormControl, FormHelperText, InputLabel, Select } from "@mui/material";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import { useValidation } from "../../Hooks/useValidation";
@@ -20,7 +15,7 @@ const getValue = (value) => {
 
 const StandardSelect = forwardRef((props, ref) => {
   const { field, value, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("string", field);
+  const { errors, validate } = useValidation("string", field.validations);
 
   const optionConfig = useMemo(
     () => (option) => {
@@ -53,7 +48,7 @@ const StandardSelect = forwardRef((props, ref) => {
     return {
       id: field.id || field.attribute,
       native: true,
-      margin: "dense",
+      size: "small",
       inputProps: {
         name: field.attribute,
         id: field.id || field.attribute,
@@ -78,7 +73,7 @@ const StandardSelect = forwardRef((props, ref) => {
     <Fragment>
       {showTitle && field.title && <Title field={field} />}
       <FormControl variant="outlined" fullWidth error={errors?.length > 0}>
-        <InputLabel margin="dense" htmlFor={field.id || field.attribute}>
+        <InputLabel size="small" htmlFor={field.id || field.attribute}>
           {field.label}
         </InputLabel>
         <Select

@@ -8,22 +8,13 @@ import React, {
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Editor } from "@jeremyling/react-material-ui-rich-text-editor";
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles((theme) => ({
-  errorText: {
-    marginTop: "4px",
-    fontSize: "0.75rem",
-    color: theme.palette.error.main,
-  },
-}));
+import { Typography } from "@mui/material";
+import ErrorText from "../Widgets/ErrorText";
 
 const StandardEditor = forwardRef((props, ref) => {
   const { field, value, updateForm } = props;
-  const classes = useStyles();
   const [preview, setPreview] = useState();
-  const { errors, validate } = useValidation("string", field);
+  const { errors, validate } = useValidation("string", field.validations);
   const [touched, setTouched] = useState(false);
 
   const thisValue = useMemo(() => value || "", [value]);
@@ -63,9 +54,7 @@ const StandardEditor = forwardRef((props, ref) => {
         containerProps={field.groupContainerProps}
         editableProps={field.props}
       />
-      {errors?.length > 0 && (
-        <Typography className={classes.errorText}>{errors[0]}</Typography>
-      )}
+      {errors?.length > 0 && <ErrorText error={errors[0]} />}
     </div>
   );
 });

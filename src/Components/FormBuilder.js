@@ -1,8 +1,5 @@
 import React from "react";
-import clsx from "clsx";
 import PropTypes from "prop-types";
-import { Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { StandardAutocomplete } from "./Forms/StandardAutocomplete";
 import { StandardAutocompleteNoDrag } from "./Forms/StandardAutocompleteNoDrag";
 import { StandardCheckboxGroup } from "./Forms/StandardCheckboxGroup";
@@ -22,6 +19,7 @@ import { StandardImagePicker } from "./Forms/StandardImagePicker";
 import { Title } from "./Widgets/Title";
 import ReactPlayer from "react-player";
 import get from "lodash/get";
+import { Grid, Typography } from "@mui/material";
 
 function sanitizeColProps(col) {
   col = col || {};
@@ -34,21 +32,9 @@ function sanitizeColProps(col) {
   };
 }
 
-const useStyles = makeStyles(() => ({
-  flex: {
-    display: "flex",
-    alignItems: "center",
-  },
-  imageContainer: {
-    display: "flex",
-    justifyContent: "center",
-  },
-}));
-
 const FormBuilder = (props) => {
   const { title, fields, form, updateForm, refs, children, index, idPrefix } =
     props;
-  const classes = useStyles();
 
   const handleField = (field) => {
     if (!field.id) {
@@ -77,7 +63,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "date-time-picker":
@@ -86,7 +72,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "time-picker":
@@ -95,7 +81,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "select":
@@ -104,7 +90,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "autocomplete-dnd":
@@ -113,7 +99,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
 
@@ -123,7 +109,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "chip-group":
@@ -132,7 +118,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "checkbox-group":
@@ -141,7 +127,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "radio-group":
@@ -150,7 +136,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "switch":
@@ -159,7 +145,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "file-upload":
@@ -168,7 +154,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "image-picker":
@@ -177,7 +163,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "rating":
@@ -186,7 +172,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "counter":
@@ -195,14 +181,17 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
       case "display-text":
         return <Title field={field} value={get(form, field.attribute)} />;
       case "display-image":
         return (
-          <div ref={ref} className={classes.imageContainer}>
+          <div
+            ref={ref(field)}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
             <img
               src={field.src}
               alt={field.alt}
@@ -214,7 +203,10 @@ const FormBuilder = (props) => {
         );
       case "display-media":
         return (
-          <div ref={ref} style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            ref={ref(field)}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
             <ReactPlayer
               url={field.src}
               controls
@@ -227,7 +219,7 @@ const FormBuilder = (props) => {
       case "rich-text":
         return (
           <StandardEditor
-            ref={ref}
+            ref={ref(field)}
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
@@ -247,7 +239,7 @@ const FormBuilder = (props) => {
             field={field}
             value={get(form, field.attribute)}
             updateForm={updateForm}
-            ref={ref}
+            ref={ref(field)}
           />
         );
     }
@@ -256,7 +248,8 @@ const FormBuilder = (props) => {
   return (
     <div
       key={String(index) || false}
-      className={clsx(classes.flex, props.className)}
+      className={props.className}
+      style={{ display: "flex", justifyContent: "center" }}
     >
       <Grid container spacing={1}>
         {title && (

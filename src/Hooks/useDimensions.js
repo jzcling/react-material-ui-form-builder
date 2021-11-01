@@ -1,5 +1,4 @@
-import { useMediaQuery } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+import { useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 
 function useDimensions() {

@@ -1,9 +1,9 @@
 import React, { forwardRef, Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { ButtonBase, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { ButtonBase, styled, Typography } from "@mui/material";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
+import ErrorText from "../Widgets/ErrorText";
 
 const fileTypes = [
   ".pdf",
@@ -32,63 +32,55 @@ const flattenDeep = (arr) =>
     Array.isArray(subArray) ? flattenDeep(subArray) : subArray
   );
 
-const useStyles = makeStyles((theme) => ({
-  inputRoot: {
-    textAlign: "center",
-  },
-  imageContainerRoot: {
-    display: "inline-block",
-    position: "relative",
-    width: "100%",
-  },
-  imageSizer: ({ aspectRatio, imageSize }) => ({
-    marginTop: `${
-      ((imageSize[1] || aspectRatio[1] || 1) /
-        (imageSize[0] || aspectRatio[0] || 1)) *
-      100
-    }%`,
-  }),
-  imageContainer: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    objectFit: "contain",
-  },
-  input: {
-    textAlign: "start",
-    border: ({ errors }) =>
-      `1px solid ${errors?.length > 0 ? theme.palette.error.main : "#b9b9b9"}`,
-    borderRadius: "4px",
-    padding: "7px 10px",
-    color: "rgba(0, 0, 0, 0.87)",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    margin: theme.spacing(1, 0),
-  },
-  buttonBase: {
-    width: "100%",
-    display: "block",
-  },
-  errorText: {
-    fontSize: "0.75rem",
-    color: theme.palette.error.main,
-  },
+const ImageContainerRoot = styled("div")(({ field }) => ({
+  display: "inline-block",
+  position: "relative",
+  width: (field.imageSize || [])[0],
+  height: (field.imageSize || [])[1],
+}));
+
+const ImageSizer = styled("div")(({ field }) => ({
+  marginTop: `${
+    ((field.imageSize[1] || field.aspectRatio[1] || 1) /
+      (field.imageSize[0] || field.aspectRatio[0] || 1)) *
+    100
+  }%`,
+}));
+
+const ImageContainer = styled("div")(() => ({
+  position: "absolute",
+  top: 0,
+  bottom: 0,
+  right: 0,
+  left: 0,
+}));
+
+const Image = styled("img")(() => ({
+  width: "100%",
+  height: "100%",
+  objectFit: "contain",
+}));
+
+const Input = styled(Typography)(({ theme }) => ({
+  textAlign: "start",
+  border: ({ errors }) =>
+    `1px solid ${errors?.length > 0 ? theme.palette.error.main : "#b9b9b9"}`,
+  borderRadius: "4px",
+  padding: "7px 10px",
+  color: "rgba(0, 0, 0, 0.87)",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  margin: theme.spacing(1, 0),
+}));
+
+const StyledButtonBase = styled(ButtonBase)(() => ({
+  width: "100%",
+  display: "block",
 }));
 
 const StandardFileUpload = forwardRef((props, ref) => {
   const { field, value, updateForm, showTitle } = props;
-  const { errors, validate } = useValidation("mixed", field);
-  const classes = useStyles({
-    errors: errors,
-    aspectRatio: field.aspectRatio || [],
-    imageSize: field.imageSize || [],
-  });
+  const { errors, validate } = useValidation("mixed", field.validations);
 
   const [fileErrors, setFileErrors] = useState([]);
 
@@ -172,72 +164,45 @@ const StandardFileUpload = forwardRef((props, ref) => {
       />
       <label htmlFor={componentProps(field).id} onBlur={() => validate(value)}>
         {value?.files?.length > 0 ? (
-          <ButtonBase className={classes.buttonBase} component="div">
-            {value.files.map((file, index) => (
-              <div className={classes.inputRoot} key={index}>
-                {field.fileType === "image" && value.imageUrls?.length > 0 && (
-                  <div
-                    className={classes.imageContainerRoot}
-                    style={{
-                      width: (field.imageSize || [])[0],
-                      height: (field.imageSize || [])[1],
-                    }}
-                  >
-                    <div className={classes.imageSizer} />
-                    <div className={classes.imageContainer}>
-                      <img
-                        src={value.imageUrls?.[index]}
-                        alt={file.name}
-                        loading="lazy"
-                        className={classes.image}
-                      />
-                    </div>
-                  </div>
-                )}
-                <Typography className={classes.input}>
-                  {file.name || file}
-                </Typography>
-              </div>
-            ))}
-          </ButtonBase>
-        ) : (
-          <ButtonBase className={classes.buttonBase} component="div">
-            <div className={classes.inputRoot}>
-              {field.fileType === "image" && field.imageUrls?.[0] && (
-                <div
-                  className={classes.imageContainerRoot}
-                  style={{
-                    width: (field.imageSize || [])[0],
-                    height: (field.imageSize || [])[1],
-                  }}
-                >
-                  <div className={classes.imageSizer} />
-                  <div className={classes.imageContainer}>
-                    <img
-                      src={field.imageUrls[0]}
-                      alt={field.label}
+          value.files.map((file, index) => (
+            <StyledButtonBase component="div" key={index}>
+              {field.fileType === "image" && value.imageUrls?.length > 0 && (
+                <ImageContainerRoot field={field}>
+                  <ImageSizer field={field} />
+                  <ImageContainer>
+                    <Image
+                      src={value.imageUrls?.[index]}
+                      alt={file.name}
                       loading="lazy"
-                      className={classes.image}
                     />
-                  </div>
-                </div>
+                  </ImageContainer>
+                </ImageContainerRoot>
               )}
-              <Typography
-                style={{ color: "#777777" }}
-                className={classes.input}
-              >
-                {field.imageUrls?.[0] || field.label}
-              </Typography>
-            </div>
-          </ButtonBase>
-        )}
-        {errors?.length > 0 && (
-          <Typography className={classes.errorText}>{errors[0]}</Typography>
-        )}
-        {fileErrors?.length > 0 && (
-          <Typography className={classes.errorText}>{fileErrors[0]}</Typography>
+              <Input>{file.name || file}</Input>
+            </StyledButtonBase>
+          ))
+        ) : (
+          <StyledButtonBase component="div">
+            {field.fileType === "image" && field.imageUrls?.[0] && (
+              <ImageContainerRoot field={field}>
+                <ImageSizer field={field} />
+                <ImageContainer>
+                  <Image
+                    src={field.imageUrls[0]}
+                    alt={field.label}
+                    loading="lazy"
+                  />
+                </ImageContainer>
+              </ImageContainerRoot>
+            )}
+            <Input style={{ color: "#777777" }}>
+              {field.imageUrls?.[0] || field.label}
+            </Input>
+          </StyledButtonBase>
         )}
       </label>
+      {errors?.length > 0 && <ErrorText error={errors[0]} />}
+      {fileErrors?.length > 0 && <ErrorText error={fileErrors[0]} />}
     </Fragment>
   );
 });
