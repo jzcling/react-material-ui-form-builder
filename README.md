@@ -451,9 +451,11 @@ This includes `image-picker`.
 | images              | `array`  | `undefined` | This should contain an array of objects with attributes `src`, `label` and `alt` (defaults to `label`)                                                                                           |
 | imageCols           | `number` | `{ xs: 2 }` | Number of columns in image list. This should be an object with breakpoints `xs`, `sm`, `md`, `lg`, `xl` as keys. Columns for each breakpoint default to the previous breakpoint is not specified |
 | labelLines          | `number` | `2`         | Number of lines allowed for label                                                                                                                                                                |
+| subLabelLines       | `number` | `2`         | Number of lines allowed for sublabel                                                                                                                                                             |
 | aspectRatio         | `array`  | `undefined` | Aspect ratio of image preview in the form `[width, height]`. imageSize supercedes aspectRatio.                                                                                                   |
 | multiple            | `bool`   | `undefined` | If true, multiple options will be selectible                                                                                                                                                     |
 | labelProps          | `object` | `undefined` | Any additional props to pass to the Typography component that wraps the label.                                                                                                                   |
+| subLabelProps       | `object` | `undefined` | Any additional props to pass to the Typography component that wraps the sublabel.                                                                                                                |
 | groupContainerProps | `object` | `undefined` | Any additional props to pass to the ImageList component that wraps the individual components within the group.                                                                                   |
 
 ### Rating
