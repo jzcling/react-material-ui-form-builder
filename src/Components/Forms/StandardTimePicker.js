@@ -34,9 +34,8 @@ const StandardTimePicker = forwardRef((props, ref) => {
       },
       ampm: false,
       fullWidth: true,
-      inputVariant: "outlined",
       size: "small",
-      format: "HH:mm:ss",
+      inputFormat: "HH:mm:ss",
       label: field.label,
       value: value ? format(new Date(), "yyyy-MM-dd") + " " + value : null,
       onChange: (value) => {

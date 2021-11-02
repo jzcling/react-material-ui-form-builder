@@ -31,9 +31,8 @@ const StandardDatePicker = forwardRef((props, ref) => {
       id: field.id || field.attribute,
       sx: { my: 0 },
       fullWidth: true,
-      inputVariant: "outlined",
       size: "small",
-      format: "dd/MM/yyyy",
+      inputFormat: "dd/MM/yyyy",
       label: field.label,
       value: value || null,
       onChange: (value) => {
