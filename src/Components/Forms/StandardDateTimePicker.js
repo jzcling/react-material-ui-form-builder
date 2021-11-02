@@ -33,8 +33,6 @@ const StandardDateTimePicker = forwardRef((props, ref) => {
         my: 0,
       },
       ampm: false,
-      fullWidth: true,
-      size: "small",
       inputFormat: "dd/MM/yyyy HH:mm:ss",
       label: field.label,
       value: value || null,
