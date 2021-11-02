@@ -134,6 +134,24 @@ const config = [
             },
           ],
           "babel-plugin-lodash",
+          [
+            "babel-plugin-import",
+            {
+              libraryName: "@mui/material",
+              libraryDirectory: "",
+              camel2DashComponentName: false,
+            },
+            "core",
+          ],
+          [
+            "babel-plugin-import",
+            {
+              libraryName: "@mui/icons-material",
+              libraryDirectory: "",
+              camel2DashComponentName: false,
+            },
+            "icons",
+          ],
         ],
         presets: ["@babel/react", "@babel/env"],
         comments: false,
