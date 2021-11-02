@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
-import { IconButton, Tooltip, Typography, useTheme } from "@mui/material";
+import { IconButton, Tooltip, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { Add, Remove } from "@mui/icons-material";
 import { Title } from "../Widgets/Title";
 import { useValidation } from "../../Hooks/useValidation";

@@ -1,6 +1,7 @@
 import React, { forwardRef, Fragment, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { ButtonBase, styled, Typography } from "@mui/material";
+import { ButtonBase, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 import ErrorText from "../Widgets/ErrorText";
