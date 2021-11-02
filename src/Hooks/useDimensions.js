@@ -21,7 +21,7 @@ function useDimensions() {
   const widthType = keys.reduce((output, key) => {
     var query = theme.breakpoints.up(key);
     if (key === "xs") {
-      query = theme.breakpoints.down(key);
+      query = theme.breakpoints.only(key);
     }
 
     var matches = useMediaQuery(query);

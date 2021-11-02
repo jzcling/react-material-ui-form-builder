@@ -99,12 +99,11 @@ const getSubLabelFontSize = (field) =>
     : 14;
 
 function sanitizeImageCols(col) {
-  const copy = { ...(col || {}) };
-  copy.xs = col.xs || 2;
-  copy.sm = col.sm || copy.xs;
-  copy.md = col.md || copy.sm;
-  copy.lg = col.lg || copy.md;
-  copy.xl = col.xl || copy.lg;
+  const copy = { ...(col || { xs: 2 }) };
+  copy.sm = col?.sm || copy.xs;
+  copy.md = col?.md || copy.sm;
+  copy.lg = col?.lg || copy.md;
+  copy.xl = col?.xl || copy.lg;
   return copy;
 }
 
@@ -116,12 +115,6 @@ const StandardImagePicker = forwardRef((props, ref) => {
   );
   const theme = useTheme();
   const { widthType } = useDimensions();
-
-  useEffect(() => {
-    console.log(widthType);
-    console.log(sanitizeImageCols(field.imageCols));
-    console.log(sanitizeImageCols(field.imageCols)[widthType]);
-  }, [widthType]);
 
   const getValueKey = useMemo(() => {
     if (field.getValueKey) {
