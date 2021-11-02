@@ -19,7 +19,7 @@ const StandardCounter = forwardRef((props, ref) => {
           ref(el);
         }
       }}
-      sx={{
+      style={{
         display: "flex",
         alignItems: "center",
       }}
@@ -48,7 +48,7 @@ const StandardCounter = forwardRef((props, ref) => {
         </span>
       </Tooltip>
       <div
-        sx={{
+        style={{
           border: "1px solid #b9b9b9",
           borderRadius: "4px",
           textAlign: "center",

@@ -80,7 +80,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
       sx: {
         height: "auto",
         margin: "4px 8px 4px 0",
-        "& label": {
+        "& .MuiChip-label": {
           padding: "8px",
           ...field?.labelProps?.style,
         },
@@ -102,7 +102,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
       error: errors?.length > 0,
       onBlur: () => validate(value),
       ...field.groupContainerProps,
-      style: { flexWrap: "wrap", ...(field.groupContainerProps || {}).style },
+      sx: { flexWrap: "wrap", ...(field.groupContainerProps || {}).style },
     };
   };
 
