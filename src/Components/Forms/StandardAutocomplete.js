@@ -139,11 +139,6 @@ const StandardAutocomplete = forwardRef((props, ref) => {
           label={field.label}
           error={errors?.length > 0}
           helperText={errors[0]}
-          sx={{
-            "& root": {
-              marginTop: 0,
-            },
-          }}
         />
       ),
       renderTags: (value, getTagProps) => {
