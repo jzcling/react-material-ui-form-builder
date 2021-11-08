@@ -1,6 +1,6 @@
 import React, { forwardRef, Fragment, useCallback } from "react";
 import DateAdapter from "@mui/lab/AdapterDateFns";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
@@ -35,7 +35,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
       ampm: false,
       inputFormat: "HH:mm:ss",
       label: field.label,
-      value: value ? format(new Date(), "yyyy-MM-dd") + " " + value : null,
+      value: value ? parse(value, "yyyy-MM-dd HH:mm:ss", new Date()) : null,
       onChange: (value) => {
         if (value) {
           try {

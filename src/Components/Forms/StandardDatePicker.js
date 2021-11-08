@@ -1,6 +1,6 @@
 import React, { forwardRef, Fragment, useCallback } from "react";
 import DateAdapter from "@mui/lab/AdapterDateFns";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
@@ -32,7 +32,7 @@ const StandardDatePicker = forwardRef((props, ref) => {
       sx: { my: 0 },
       inputFormat: "dd/MM/yyyy",
       label: field.label,
-      value: value || null,
+      value: value ? parse(value, "yyyy-MM-dd", new Date()) : null,
       onChange: (value) => {
         if (value) {
           try {
