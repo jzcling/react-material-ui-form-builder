@@ -11,6 +11,7 @@ import {
   LocalizationProvider,
   MobileTimePicker,
 } from "@mui/lab";
+import ErrorText from "../Widgets/ErrorText";
 
 const StandardTimePicker = forwardRef((props, ref) => {
   const { field, value, updateForm, showTitle } = props;
@@ -88,6 +89,7 @@ const StandardTimePicker = forwardRef((props, ref) => {
           {component(componentProps(field))}
         </LocalizationProvider>
       </div>
+      {errors?.length > 0 && <ErrorText error={errors[0]} />}
     </Fragment>
   );
 });

@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment, useCallback, useEffect } from "react";
+import React, { forwardRef, Fragment, useCallback } from "react";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import { format, parse } from "date-fns";
 import PropTypes from "prop-types";
@@ -11,6 +11,7 @@ import {
   LocalizationProvider,
   MobileDateTimePicker,
 } from "@mui/lab";
+import ErrorText from "../Widgets/ErrorText";
 
 const StandardDateTimePicker = forwardRef((props, ref) => {
   const { field, value, updateForm, showTitle } = props;
@@ -88,6 +89,7 @@ const StandardDateTimePicker = forwardRef((props, ref) => {
           {component(componentProps(field))}
         </LocalizationProvider>
       </div>
+      {errors?.length > 0 && <ErrorText error={errors[0]} />}
     </Fragment>
   );
 });
