@@ -20,7 +20,7 @@ const StandardRating = forwardRef((props, ref) => {
       emptyIcon: <StarBorder style={{ margin: "0 8px", fontSize: "32px" }} />,
       onChange: (event, value) => updateForm({ [field.attribute]: value }),
       sx: {
-        "& iconFilled": {
+        "& .MuiRating-iconFilled": {
           color: field.iconColor,
         },
       },
