@@ -1,6 +1,6 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "scripts": {
     "build": "NODE_ENV=production rollup -c"
   },
@@ -81,6 +81,32 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
     "react-player": "^2.9.0"
+  },
+  "peerDependenciesMeta": {
+    "@jeremyling/react-material-ui-rich-text-editor": {
+      "optional": true
+    },
+    "@mui/icons-material": {
+      "optional": true
+    },
+    "@mui/lab": {
+      "optional": true
+    },
+    "@mui/material": {
+      "optional": true
+    },
+    "date-fns": {
+      "optional": true
+    },
+    "react-beautiful-dnd": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "react-player": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
