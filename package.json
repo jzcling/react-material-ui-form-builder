@@ -1,6 +1,6 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "scripts": {
     "build": "NODE_ENV=production rollup -c"
   },
@@ -44,7 +44,7 @@
     "@babel/preset-react": "^7.16.0",
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
-    "@jeremyling/react-material-ui-rich-text-editor": "^0.2.1",
+    "@jeremyling/react-material-ui-rich-text-editor": "^0.2.3",
     "@mui/icons-material": "^5.1.0",
     "@mui/lab": "^5.0.0-alpha.54",
     "@rollup/plugin-babel": "^5.3.0",
@@ -71,7 +71,7 @@
   "peerDependencies": {
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
-    "@jeremyling/react-material-ui-rich-text-editor": "^0.2.1",
+    "@jeremyling/react-material-ui-rich-text-editor": "^0.2.3",
     "@mui/icons-material": "^5.1.0",
     "@mui/lab": "^5.0.0-alpha.54",
     "@mui/material": "^5.1.0",
