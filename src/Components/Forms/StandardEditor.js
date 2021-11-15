@@ -8,7 +8,6 @@ import React, {
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Editor } from "@jeremyling/react-material-ui-rich-text-editor";
-import { Typography } from "@mui/material";
 import ErrorText from "../Widgets/ErrorText";
 
 const StandardEditor = forwardRef((props, ref) => {
