@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment, useCallback } from "react";
+import React, { forwardRef, Fragment, useCallback, useState } from "react";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import { format, parse } from "date-fns";
 import PropTypes from "prop-types";
@@ -16,6 +16,7 @@ import ErrorText from "../Widgets/ErrorText";
 const StandardDateTimePicker = forwardRef((props, ref) => {
   const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("date", field.validations);
+  const [open, setOpen] = useState();
 
   const component = useCallback(
     (props) => {
@@ -49,7 +50,14 @@ const StandardDateTimePicker = forwardRef((props, ref) => {
           updateForm({ [field.attribute]: undefined });
         }
       },
-      renderInput: (params) => <TextField fullWidth size="small" {...params} />,
+      renderInput: (params) => (
+        <TextField
+          fullWidth
+          size="small"
+          {...params}
+          onClick={() => setOpen(true)}
+        />
+      ),
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -70,6 +78,8 @@ const StandardDateTimePicker = forwardRef((props, ref) => {
           validate(value);
         }
       },
+      open: !!open,
+      onClose: () => setOpen(),
       ...field.props,
     };
   };
