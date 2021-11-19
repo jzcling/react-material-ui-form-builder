@@ -1,6 +1,6 @@
 import { ButtonBase, ImageList, Typography } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
-import React, { forwardRef, useEffect, useMemo } from "react";
+import React, { forwardRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
@@ -36,10 +36,7 @@ const ImageContainerSizer = styled("div")(({ field }) => ({
 
 const ImageContainer = styled("div")(() => ({
   position: "absolute",
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
+  inset: 0,
 }));
 
 const Image = styled("img")(() => ({
@@ -224,7 +221,7 @@ const StandardImagePicker = forwardRef((props, ref) => {
             <ButtonBase key={index} {...componentProps(field, image)}>
               <ImageContainerRoot>
                 <ImageContainerSizer field={field} />
-                <ImageContainer>
+                <ImageContainer {...field.imageProps}>
                   {image.customComponent ? (
                     <div
                       style={{
