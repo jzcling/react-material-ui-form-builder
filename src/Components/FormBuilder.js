@@ -291,7 +291,7 @@ FormBuilder.propTypes = {
   fields: PropTypes.array.isRequired,
   form: PropTypes.object.isRequired,
   updateForm: PropTypes.func,
-  refs: PropTypes.ref,
+  refs: PropTypes.object,
   children: PropTypes.node,
   index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   idPrefix: PropTypes.string,

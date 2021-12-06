@@ -10,7 +10,8 @@ export default function ErrorText(props) {
   return (
     <Typography
       sx={{
-        marginTop: "4px",
+        mt: "4px",
+        mx: "14px",
         fontSize: "0.75rem",
         color: theme.palette.error.main,
       }}
