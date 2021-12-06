@@ -7,6 +7,7 @@ import { useValidation } from "../../Hooks/useValidation";
 import { Title } from "../Widgets/Title";
 import { getValidationType, shuffleArray } from "../Utils/helpers";
 import ErrorText from "../Widgets/ErrorText";
+import CustomChip from "../Widgets/CustomChip";
 
 const StandardChipGroup = forwardRef((props, ref) => {
   const { field, value, updateForm, showTitle } = props;
@@ -21,6 +22,7 @@ const StandardChipGroup = forwardRef((props, ref) => {
         key: option,
         value: option,
         label: option,
+        subLabel: null,
       };
 
       if (!field.optionConfig) {
@@ -36,6 +38,9 @@ const StandardChipGroup = forwardRef((props, ref) => {
       config.label = field.optionConfig.label
         ? String(get(option, field.optionConfig.label))
         : config.label;
+      config.subLabel = field.optionConfig.subLabel
+        ? String(get(option, field.optionConfig.subLabel))
+        : config.subLabel;
 
       return config;
     },
@@ -75,25 +80,48 @@ const StandardChipGroup = forwardRef((props, ref) => {
     } else {
       isSelected = value === optionConfig(option).value;
     }
-    var props = {
-      id: field.id || field.attribute,
-      sx: {
-        height: "auto",
-        margin: "4px 8px 4px 0",
-        "& .MuiChip-label": {
-          padding: "8px",
-          ...field?.labelProps?.style,
+    var props;
+    if (field.customChip) {
+      props = {
+        id: field.id || field.attribute,
+        key: optionConfig(option).key,
+        label: optionConfig(option).label,
+        subLabel: optionConfig(option).subLabel,
+        active: isSelected,
+        ...field.props,
+        labelProps: field.labelProps,
+        subLabelProps: field.subLabelProps,
+        sx: {
+          height: "auto",
+          margin: "4px 8px 4px 0",
+          ...(field.props?.sx || field.props?.style),
         },
-      },
-      key: optionConfig(option).key,
-      label: optionConfig(option).label,
-      color: isSelected ? "primary" : "default",
-      variant: isSelected ? "default" : "outlined",
-      ...field.props,
-      onClick: field.props?.onClick
-        ? field.props.onClick(option)
-        : () => handleChipClick(option),
-    };
+        onClick: field.props?.onClick
+          ? field.props.onClick(option)
+          : () => handleChipClick(option),
+      };
+    } else {
+      props = {
+        id: field.id || field.attribute,
+        key: optionConfig(option).key,
+        label: optionConfig(option).label,
+        color: isSelected ? "primary" : "default",
+        variant: isSelected ? "default" : "outlined",
+        ...field.props,
+        sx: {
+          height: "auto",
+          margin: "4px 8px 4px 0",
+          ...(field.props?.sx || field.props?.style),
+          "& .MuiChip-label": {
+            padding: "8px",
+            ...(field.labelProps?.sx || field.labelProps?.style),
+          },
+        },
+        onClick: field.props?.onClick
+          ? field.props.onClick(option)
+          : () => handleChipClick(option),
+      };
+    }
     return props;
   };
 
@@ -128,7 +156,11 @@ const StandardChipGroup = forwardRef((props, ref) => {
               }}
               key={field.id + "-" + index}
             >
-              <Chip {...componentProps(field, option)} />
+              {field.customChip ? (
+                <CustomChip {...componentProps(field, option)} />
+              ) : (
+                <Chip {...componentProps(field, option)} />
+              )}
             </div>
           ))}
         </FormControl>
