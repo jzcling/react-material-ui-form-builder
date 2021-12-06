@@ -11,12 +11,12 @@ import {
   LocalizationProvider,
   MobileTimePicker,
 } from "@mui/lab";
-import ErrorText from "../Widgets/ErrorText";
 
 const StandardTimePicker = forwardRef((props, ref) => {
   const { field, value, updateForm, showTitle } = props;
   const { errors, validate } = useValidation("date", field.validations);
   const [open, setOpen] = useState();
+  const [error, setError] = useState();
 
   const component = useCallback(
     (props) => {
@@ -37,8 +37,9 @@ const StandardTimePicker = forwardRef((props, ref) => {
       ampm: false,
       inputFormat: "HH:mm:ss",
       label: field.label,
-      value: value ? parse(value, "yyyy-MM-dd HH:mm:ss", new Date()) : null,
+      value: value ? parse(value, "HH:mm:ss", new Date()) : null,
       onChange: (value) => {
+        setError();
         if (value) {
           try {
             const formatted = format(value, "HH:mm:ss");
@@ -50,12 +51,28 @@ const StandardTimePicker = forwardRef((props, ref) => {
           updateForm({ [field.attribute]: undefined });
         }
       },
+      onError: (reason, value) => {
+        if (reason === "minTime") {
+          setError(
+            "Time should not be before " +
+              format(field.props.minTime, "HH:mm:ss")
+          );
+        }
+        if (reason === "maxTime") {
+          setError(
+            "Time should not be after " +
+              format(field.props.maxTime, "HH:mm:ss")
+          );
+        }
+      },
       renderInput: (params) => (
         <TextField
           fullWidth
           size="small"
           {...params}
           onClick={() => setOpen(true)}
+          error={!!error || errors.length > 0}
+          helperText={error || errors[0]}
         />
       ),
       InputProps: {
@@ -70,12 +87,11 @@ const StandardTimePicker = forwardRef((props, ref) => {
           paddingRight: 0,
         },
       },
-      error: errors?.length > 0,
-      helperText: errors[0],
-      onBlur: () => validate(value),
+      onBlur: () =>
+        validate(value ? parse(value, "HH:mm:ss", new Date()) : value),
       onKeyDown: (event) => {
         if (event.which === 13) {
-          validate(value);
+          validate(value ? parse(value, "HH:mm:ss", new Date()) : value);
         }
       },
       open: !!open,
@@ -90,7 +106,8 @@ const StandardTimePicker = forwardRef((props, ref) => {
       <div
         ref={(el) => {
           if (el && ref) {
-            el.validate = (value) => validate(value);
+            el.validate = (value) =>
+              validate(value ? parse(value, "HH:mm:ss", new Date()) : value);
             ref(el);
           }
         }}
@@ -99,7 +116,6 @@ const StandardTimePicker = forwardRef((props, ref) => {
           {component(componentProps(field))}
         </LocalizationProvider>
       </div>
-      {errors?.length > 0 && <ErrorText error={errors[0]} />}
     </Fragment>
   );
 });
