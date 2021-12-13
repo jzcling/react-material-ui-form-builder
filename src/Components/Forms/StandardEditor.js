@@ -12,20 +12,16 @@ import ErrorText from "../Widgets/ErrorText";
 
 const StandardEditor = forwardRef((props, ref) => {
   const { field, value, updateForm } = props;
-  const [preview, setPreview] = useState();
   const { errors, validate } = useValidation("string", field.validations);
   const [touched, setTouched] = useState(false);
 
   const thisValue = useMemo(() => value || "", [value]);
 
-  const validateHtml = useCallback(
-    (html) => {
-      var dom = new DOMParser().parseFromString(html, "text/html");
-      const stripped = dom.body.textContent;
-      validate(stripped);
-    },
-    [thisValue]
-  );
+  const validateHtml = useCallback((html) => {
+    var dom = new DOMParser().parseFromString(html, "text/html");
+    const stripped = dom.body.textContent;
+    validate(stripped);
+  }, []);
 
   useEffect(() => {
     if (touched) {
@@ -45,9 +41,7 @@ const StandardEditor = forwardRef((props, ref) => {
     >
       <Editor
         html={thisValue}
-        document={preview}
-        onChange={(document) => setPreview(document)}
-        onBlur={(html) => {
+        updateHtml={(html) => {
           updateForm({ [field.attribute]: html });
         }}
         containerProps={field.groupContainerProps}
