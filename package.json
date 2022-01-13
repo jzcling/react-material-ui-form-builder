@@ -44,7 +44,7 @@
     "@babel/preset-react": "^7.16.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.2",
+    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.7",
     "@mui/icons-material": "^5.2.1",
     "@mui/lab": "^5.0.0-alpha.59",
     "@rollup/plugin-babel": "^5.3.0",
