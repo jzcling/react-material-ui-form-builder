@@ -55,7 +55,7 @@
     "babel-plugin-direct-import": "^1.0.0",
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "date-fns": "^2.27.0",
+    "date-fns": "^2.28.0",
     "eslint": "^8.4.1",
     "eslint-plugin-react": "^7.27.1",
     "lodash": "^4.17.21",
