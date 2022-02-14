@@ -75,7 +75,7 @@ const StandardTextField = forwardRef((props, ref) => {
           }
         }
         updateForm({ [field.attribute]: value });
-      }, debounceTimeout),
+      }, field.debounceTimeout || debounceTimeout),
     [updateForm]
   );
 
