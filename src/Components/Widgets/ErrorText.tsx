@@ -1,9 +1,13 @@
+import React from "react";
+
 import { Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
-import PropTypes from "prop-types";
 
-export default function ErrorText(props) {
+interface ErrorProps {
+  error: string;
+}
+
+export default function ErrorText(props: ErrorProps): JSX.Element {
   const { error } = props;
   const theme = useTheme();
 
@@ -20,7 +24,3 @@ export default function ErrorText(props) {
     </Typography>
   );
 }
-
-ErrorText.propTypes = {
-  error: PropTypes.string,
-};
