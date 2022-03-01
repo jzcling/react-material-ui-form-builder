@@ -11,11 +11,14 @@ import { CommonFieldProps, MultiOptionFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
 import { Title, TitleProps } from "./widgets/Title";
 
-export interface StandardRadioGroupProps
-  extends CommonFieldProps,
-    MultiOptionFieldProps {
+export interface StandardRadioGroupProps extends CommonFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
   props: RadioProps;
+  options: MultiOptionFieldProps["options"];
+  optionConfig: MultiOptionFieldProps["optionConfig"];
+  randomizeOptions: MultiOptionFieldProps["randomizeOptions"];
+  labelProps: MultiOptionFieldProps["labelProps"];
+  groupContainerProps: MultiOptionFieldProps["groupContainerProps"];
 }
 
 const StandardRadioGroup = forwardRef(
