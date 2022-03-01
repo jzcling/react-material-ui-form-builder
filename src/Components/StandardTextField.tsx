@@ -1,5 +1,5 @@
 import React, { forwardRef, Fragment } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
 
 import { TextField, TextFieldProps } from "@mui/material";
 
@@ -24,7 +24,8 @@ const StandardTextField = forwardRef(
     const titleProps: TitleProps = getTitleProps(fieldConfig);
 
     const componentProps = (
-      fieldConfig: StandardTextFieldProps
+      fieldConfig: StandardTextFieldProps,
+      field: ControllerRenderProps
     ): TextFieldProps => {
       return {
         id: fieldConfig.attribute,
@@ -40,6 +41,7 @@ const StandardTextField = forwardRef(
         },
         inputRef: ref,
         ...fieldConfig.props,
+        ...field,
       };
     };
 
@@ -51,7 +53,7 @@ const StandardTextField = forwardRef(
         render={({ field }) => (
           <Fragment>
             {showTitle && titleProps.title && <Title {...titleProps} />}
-            <TextField {...componentProps(fieldConfig)} {...field} />
+            <TextField {...componentProps(fieldConfig, field)} />
           </Fragment>
         )}
       />
