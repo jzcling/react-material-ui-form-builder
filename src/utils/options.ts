@@ -7,12 +7,12 @@ export interface Option<T = unknown> {
 }
 
 export interface OptionConfig {
-  key?: string;
-  value: string;
+  key: string;
+  value?: string;
   label: string;
 }
 
-function instanceOfOption(object: any): object is Option {
+function instanceOfOption<T>(object: any): object is Option<T> {
   return "key" in object && "value" in object && "label" in object;
 }
 
@@ -22,17 +22,17 @@ export function getOptionFromConfig<T = unknown>(
 ): Option<T> {
   if (config) {
     return {
-      key: String(get(option, config.key || config.label)),
-      value: get(option, config.value),
+      key: String(get(option, config.key)),
+      value: config.value ? get(option, config.value) : option,
       label: String(get(option, config.label)),
     };
   }
 
-  if (instanceOfOption(option)) {
+  if (instanceOfOption<T>(option)) {
     return {
-      key: String((option as Option<T>).key),
-      value: (option as Option<T>).value,
-      label: String((option as Option<T>).label),
+      key: String(option.key),
+      value: option.value,
+      label: String(option.label),
     };
   }
 
