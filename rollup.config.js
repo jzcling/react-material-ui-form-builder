@@ -1,36 +1,36 @@
-import { terser } from "rollup-plugin-terser";
-import commonjs from "@rollup/plugin-commonjs";
-import resolve from "@rollup/plugin-node-resolve";
-import babel from "@rollup/plugin-babel";
-import json from "@rollup/plugin-json";
-import replace from "@rollup/plugin-replace";
 import analyze from "rollup-plugin-analyzer";
-import pkg from "./package.json";
-import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 import autoExternal from "rollup-plugin-auto-external";
+import { sizeSnapshot } from "rollup-plugin-size-snapshot";
+import { terser } from "rollup-plugin-terser";
+import replace from "@rollup/plugin-replace";
+import babel from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
+import resolve from "@rollup/plugin-node-resolve";
+import typescript from "@rollup/plugin-typescript";
+import jsx from "acorn-jsx";
+
+import pkg from "./package.json";
 
 const config = [
   {
     input: {
-      index: "src/index.js",
-      StandardAutocomplete: "src/Components/Forms/StandardAutocomplete.js",
-      StandardAutocompleteNoDrag:
-        "src/Components/Forms/StandardAutocompleteNoDrag.js",
-      StandardCheckboxGroup: "src/Components/Forms/StandardCheckboxGroup.js",
-      StandardChipGroup: "src/Components/Forms/StandardChipGroup.js",
-      StandardDatePicker: "src/Components/Forms/StandardDatePicker.js",
-      StandardDateTimePicker: "src/Components/Forms/StandardDateTimePicker.js",
-      StandardEditor: "src/Components/Forms/StandardEditor.js",
-      StandardFileUpload: "src/Components/Forms/StandardFileUpload.js",
-      StandardImagePicker: "src/Components/Forms/StandardImagePicker.js",
-      StandardRadioGroup: "src/Components/Forms/StandardRadioGroup.js",
-      StandardRating: "src/Components/Forms/StandardRating.js",
-      StandardSelect: "src/Components/Forms/StandardSelect.js",
-      StandardSwitch: "src/Components/Forms/StandardSwitch.js",
-      StandardTextField: "src/Components/Forms/StandardTextField.js",
-      StandardTimePicker: "src/Components/Forms/StandardTimePicker.js",
-      useValidation: "src/Hooks/useValidation.js",
-      FormBuilder: "src/Components/FormBuilder.js",
+      index: "src/index.ts",
+      StandardAutocomplete: "src/components/StandardAutocomplete.tsx",
+      StandardCheckboxGroup: "src/components/StandardCheckboxGroup.tsx",
+      StandardChipGroup: "src/components/StandardChipGroup.tsx",
+      StandardDatePicker: "src/components/StandardDatePicker.tsx",
+      StandardDateTimePicker: "src/components/StandardDateTimePicker.tsx",
+      StandardEditor: "src/components/StandardEditor.tsx",
+      StandardFileUpload: "src/components/StandardFileUpload.tsx",
+      StandardImagePicker: "src/components/StandardImagePicker.tsx",
+      StandardRadioGroup: "src/components/StandardRadioGroup.tsx",
+      StandardRating: "src/components/StandardRating.tsx",
+      StandardSelect: "src/components/StandardSelect.tsx",
+      StandardSwitch: "src/components/StandardSwitch.tsx",
+      StandardTextField: "src/components/StandardTextField.tsx",
+      StandardTimePicker: "src/components/StandardTimePicker.tsx",
+      FormBuilder: "src/components/FormBuilder.tsx",
     },
     output: [
       {
@@ -46,6 +46,7 @@ const config = [
         sourcemap: true,
       },
     ],
+    acornInjectPlugins: [jsx()],
     plugins: [
       replace({
         "process.env.NODE_ENV": JSON.stringify("production"),
@@ -56,6 +57,7 @@ const config = [
         exclude: ["src/**"],
         include: ["node_modules/**"],
       }),
+      typescript(),
       babel({
         babelHelpers: "runtime",
         exclude: "node_modules/**",
@@ -89,7 +91,7 @@ const config = [
     external: [/lodash/, /@mui\//, /@babel\/runtime/, "prop-types"],
   },
   {
-    input: "src/index.js",
+    input: "src/index.ts",
     output: [
       {
         file: `dist/${pkg.name}.min.js`,
@@ -101,8 +103,10 @@ const config = [
           react: "React",
           "react-dom": "ReactDOM",
         },
+        inlineDynamicImports: true,
       },
     ],
+    acornInjectPlugins: [jsx()],
     plugins: [
       replace({
         "process.env.NODE_ENV": JSON.stringify("production"),
@@ -113,6 +117,7 @@ const config = [
         exclude: ["src/**"],
         include: ["node_modules/**"],
       }),
+      typescript(),
       babel({
         babelHelpers: "bundled",
         exclude: "node_modules/**",
