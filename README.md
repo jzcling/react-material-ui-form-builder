@@ -164,10 +164,10 @@ export default function EmployeeForm(props) {
         sm: 6,
       },
       validationType: "string",
-      validations: {
-        required: true,
-        max: 50,
-      },
+      validations: [
+        [required, true],
+        [max, 50],
+      ],
     },
     {
       attribute: "email",
@@ -180,10 +180,10 @@ export default function EmployeeForm(props) {
         // Here you can pass any props that are accepted by Material UI's TextField component
       },
       validationType: "string",
-      validations: {
-        required: true,
-        email: true,
-      },
+      validations: [
+        [required, true],
+        [email, true],
+      ],
     },
     {
       attribute: "jobId",
@@ -327,7 +327,7 @@ export default function EmployeeForm(props) {
         multiple: true,
       },
       hideCondition:
-        (jobs.find((j) => j.id === form.jobId) || {}).title ===
+        (jobs.find((j) => j.id === form.jobId)?.title ===
         "Entry Level Staff", // This will hide the form field if the condition is truthy
     },
     {
@@ -368,29 +368,29 @@ export default function EmployeeForm(props) {
 
 ### Common
 
-| Prop                | Type     | Default      | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ------------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| attribute           | `string` | `undefined`  | Form attribute that controls input and is modified by input                                                                                                                                                                                                                                                                                                                                                     |
-| label               | `string` | `undefined`  | Component label for `text-field`, `select`, `autocomplete`, `autocomplete-dnd`, `date-picker`, `date-time-picker`, `time-picker`, `switch`. Can be omitted if label is not required.                                                                                                                                                                                                                            |
-| title               | `string` | `undefined`  | Title for component. Can be used to describe input or hold a question.                                                                                                                                                                                                                                                                                                                                          |
-| titleProps          | `object` | `undefined`  | Title props passed to Typography component wrapping title                                                                                                                                                                                                                                                                                                                                                       |
-| titleSuffix         | `string` | `undefined`  | Title suffix to append to title. Could be used to denote required fields                                                                                                                                                                                                                                                                                                                                        |
-| titleSuffixProps    | `object` | `undefined`  | Title suffix props passed to span component wrapping title suffix                                                                                                                                                                                                                                                                                                                                               |
-| titleContainerProps | `object` | `undefined`  | Props passed to container wrapping the title and titleSuffix                                                                                                                                                                                                                                                                                                                                                    |
-| col                 | `object` | `{ xs: 12 }` | Grid columns that component should take                                                                                                                                                                                                                                                                                                                                                                         |
-| component           | `string` | `text-field` | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`time-picker`,<br />`autocomplete`,<br />`autocomplete-dnd`,<br />`chip-group`,<br />`checkbox-group`,<br />`radio-group`,<br />`switch`,<br />`file-upload`,<br />`image-picker`,<br />`rating`,<br />`counter`,<br />`display-text`,<br />`display-image`,<br />`display-media`,<br />`rich-text`,<br />`custom` |
-| props               | `object` | `undefined`  | Any additional props to pass to the Material UI component                                                                                                                                                                                                                                                                                                                                                       |
-| containerProps      | `object` | `undefined`  | Any additional props to pass to the Material UI Grid item that contains the component                                                                                                                                                                                                                                                                                                                           |
-| hideCondition       | `bool`   | `undefined`  | Hides field if truthy                                                                                                                                                                                                                                                                                                                                                                                           |
-| validationType^     | `string` | `undefined`  | One of: `mixed`, `string`, `number`, `date`, `boolean`, `array`.                                                                                                                                                                                                                                                                                                                                                |
-| validations^        | `object` | `undefined`  | These are validation options accepted by `yup` in the form of `{validation: arguments}`. Arguments can be a `string` or an `array` of strings in the order that it is accepted by the `yup` option. For validations that do not require any arguments, set the argument to `true`.                                                                                                                              |
-| customComponent     | `func`   | `undefined`  | Function that accepts the props `(field, ref)` and returns a node                                                                                                                                                                                                                                                                                                                                               |
+| Prop                | Type     | Default      | Description                                                                                                                                                                                                                                                                                                                                                                            |
+| ------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| attribute           | `string` | `undefined`  | Form attribute that controls input and is modified by input                                                                                                                                                                                                                                                                                                                            |
+| label               | `string` | `undefined`  | Component label for `text-field`, `select`, `autocomplete`, `date-picker`, `date-time-picker`, `time-picker`, `switch`. Can be omitted if label is not required.                                                                                                                                                                                                                       |
+| title               | `string` | `undefined`  | Title for component. Can be used to describe input or hold a question.                                                                                                                                                                                                                                                                                                                 |
+| titleProps          | `object` | `undefined`  | Title props passed to Typography component wrapping title                                                                                                                                                                                                                                                                                                                              |
+| titleSuffix         | `string` | `undefined`  | Title suffix to append to title. Could be used to denote required fields                                                                                                                                                                                                                                                                                                               |
+| titleSuffixProps    | `object` | `undefined`  | Title suffix props passed to span component wrapping title suffix                                                                                                                                                                                                                                                                                                                      |
+| titleContainerProps | `object` | `undefined`  | Props passed to container wrapping the title and titleSuffix                                                                                                                                                                                                                                                                                                                           |
+| col                 | `object` | `{ xs: 12 }` | Grid columns that component should take                                                                                                                                                                                                                                                                                                                                                |
+| component           | `string` | `text-field` | One of: <br />`text-field`,<br />`select`,<br />`date-picker`,<br />`date-time-picker`,<br />`time-picker`,<br />`autocomplete`,<br />`chip-group`,<br />`checkbox-group`,<br />`radio-group`,<br />`switch`,<br />`file-upload`,<br />`image-picker`,<br />`rating`,<br />`counter`,<br />`display-text`,<br />`display-image`,<br />`display-media`,<br />`rich-text`,<br />`custom` |
+| props               | `object` | `undefined`  | Any additional props to pass to the Material UI component                                                                                                                                                                                                                                                                                                                              |
+| containerProps      | `object` | `undefined`  | Any additional props to pass to the Material UI Grid item that contains the component                                                                                                                                                                                                                                                                                                  |
+| hideCondition       | `bool`   | `undefined`  | Hides field if truthy                                                                                                                                                                                                                                                                                                                                                                  |
+| validationType^     | `string` | `undefined`  | One of: `mixed`, `string`, `number`, `date`, `boolean`, `array`.                                                                                                                                                                                                                                                                                                                       |
+| validations^        | `object` | `undefined`  | These are validation options accepted by `yup` in the form of `{validation: arguments}`. Arguments can be a `string` or an `array` of strings in the order that it is accepted by the `yup` option. For validations that do not require any arguments, set the argument to `true`.                                                                                                     |
+| customComponent     | `func`   | `undefined`  | Function that accepts the props `(field, ref)` and returns a node                                                                                                                                                                                                                                                                                                                      |
 
 ^See below for examples
 
 ### Components With Options
 
-This includes `select`, `autocomplete`, `autocomplete-dnd`, `chip-group`, `checkbox-group` and `radio-group`.
+This includes `select`, `autocomplete`, `chip-group`, `checkbox-group` and `radio-group`.
 
 | Prop                | Type     | Default                                                                                                                                                                           | Description                                                                                                                                                            |
 | ------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -400,7 +400,7 @@ This includes `select`, `autocomplete`, `autocomplete-dnd`, `chip-group`, `check
 | multiple            | `bool`   | `undefined`                                                                                                                                                                       | Only for `chip-group`, `checkbox-group`. If true, multiple options will be selectible                                                                                  |
 | labelProps          | `object` | `undefined`                                                                                                                                                                       | Only for `checkbox-group`, `radio-group`. Any additional props to pass to Material UI's FormControlLabel that wraps the label.                                         |
 | groupContainerProps | `object` | `undefined`                                                                                                                                                                       | Only for `chip-group`, `checkbox-group`, `radio-group`. Any additional props to pass to Material UI's FormGroup that wraps the individual components within the group. |
-| sortable            | `bool`   | `undefined`                                                                                                                                                                       | Only for `autocomplete-dnd`. If true, selected options will be sortable via drag and drop                                                                              |
+| sortable            | `bool`   | `undefined`                                                                                                                                                                       | Only for `autocomplete`. If true, selected options will be sortable via drag and drop                                                                                  |
 
 ### Switch
 
@@ -448,11 +448,11 @@ This includes `image-picker`.
 
 | Prop                | Type     | Default     | Description                                                                                                                                                                                      |
 | ------------------- | -------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| images              | `array`  | `undefined` | This should contain an array of objects with attributes `src`, `label` and `alt` (defaults to `label`)                                                                                           |
+| images              | `array`  | `undefined` | This should contain an array of objects with attributes `src`, `label`, `subLabel`, and `alt` (defaults to `label`)                                                                              |
 | imageCols           | `number` | `{ xs: 2 }` | Number of columns in image list. This should be an object with breakpoints `xs`, `sm`, `md`, `lg`, `xl` as keys. Columns for each breakpoint default to the previous breakpoint is not specified |
 | labelLines          | `number` | `2`         | Number of lines allowed for label                                                                                                                                                                |
 | subLabelLines       | `number` | `2`         | Number of lines allowed for sublabel                                                                                                                                                             |
-| aspectRatio         | `array`  | `undefined` | Aspect ratio of image preview in the form `[width, height]`.                                                                                                                                     |
+| aspectRatio         | `array`  | `[1, 1]`    | Aspect ratio of image preview in the form `[width, height]`.                                                                                                                                     |
 | multiple            | `bool`   | `undefined` | If true, multiple options will be selectible                                                                                                                                                     |
 | imageProps          | `object` | `undefined` | Any additional props to pass to the Box component that wraps the img.                                                                                                                            |
 | labelProps          | `object` | `undefined` | Any additional props to pass to the Typography component that wraps the label.                                                                                                                   |
@@ -497,16 +497,16 @@ Validation is done using yup, which has 6 core types that inherit from the `mixe
   component: 'text-field',
   label: ...,
   validationType: 'string',
-  validations: {
-    required: true,
-    length: 10,
-    min: 5,
-    max: 20,
-    matches: ['/[a-z]/i', 'Can only contain letters'],
-    email: true,
-    url: true,
-    uuid: true,
-  }
+  validations: [
+    [required, true],
+    [length, 10],
+    [min, 5],
+    [max, 20],
+    [matches, ['/[a-z]/i', 'Can only contain letters']],
+    [email, true],
+    [url, true],
+    [uuid, true],
+  ]
 }
 
 // Example field 2
@@ -518,16 +518,16 @@ Validation is done using yup, which has 6 core types that inherit from the `mixe
   },
   label: ...,
   validationType: 'number',
-  validations: {
-    required: true,
-    min: 5,
-    max: 20,
-    lessThan: 20,
-    moreThan: 5,
-    positive: true,
-    negative: true,
-    integer: true,
-  }
+  validations: [
+    [required, true],
+    [min, 5],
+    [max, 20],
+    [lessThan, 20],
+    [moreThan, 5],
+    [positive, true],
+    [negative, true],
+    [integer, true],
+  ]
 }
 ```
 
