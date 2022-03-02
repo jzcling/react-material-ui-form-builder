@@ -4,8 +4,8 @@ import { EditableProps } from "slate-react/dist/components/editable";
 import { DatePickerProps, DateTimePickerProps, TimePickerProps } from "@mui/lab";
 import {
   AutocompleteProps, BoxProps, ButtonBaseProps, CheckboxProps, ChipProps, FormControlLabelProps,
-  FormControlProps, GridProps, ImageListProps, RadioProps, RatingProps, SelectProps, StandardProps,
-  SwitchProps, TextFieldProps, TypographyProps
+  FormControlProps, GridProps, ImageListProps, PaperProps, RadioProps, RatingProps, SelectProps,
+  StandardProps, SwitchProps, TextFieldProps, TypographyProps
 } from "@mui/material";
 
 import { AutocompleteOptionConfig } from "../../utils/autocomplete";
@@ -130,7 +130,11 @@ export interface CommonFieldProps {
     | SwitchProps
     | ButtonBaseProps
     | RatingProps
-    | BoxProps;
+    | BoxProps
+    | DetailedHTMLProps<
+        React.HTMLAttributes<HTMLInputElement>,
+        HTMLInputElement
+      >;
   /** Any additional props to pass to the Material UI Grid item that contains the component */
   containerProps?: GridProps;
   /** Hides field if truthy */
@@ -239,7 +243,7 @@ export interface FileUploadFieldProps {
   acceptTypes?: string | Array<string>;
   /** Max size of each uploaded file. */
   maxSizeMb?: number;
-  fileType?: "file " | "image " | "audio " | "video ";
+  fileType?: FileType;
   /** If file type is image, you may specify the urls of the existing images here. */
   imageUrls?: Array<string>;
   /** Size of image preview in the form `[width, height]`.
@@ -248,6 +252,8 @@ export interface FileUploadFieldProps {
   /** Aspect ratio of image preview in the form
    * `[width, height]`. imageSize supercedes aspectRatio. */
   aspectRatio?: Array<[number, number]>;
+  /** If true, allows multiple file uploads */
+  multiple?: boolean;
 }
 
 export interface DisplayFieldProps {
@@ -318,7 +324,7 @@ export interface RichTextFieldProps {
   /** Method to update html, taking serialized html as argument */
   updateHtml?: (html: string) => void;
   /* Props to pass to the Material UI Paper wrapper */
-  containerProps?: GridProps;
+  groupContainerProps?: PaperProps;
   /** Props to pass to the Slate Editable component */
   editableProps?: EditableProps;
 }
@@ -340,3 +346,11 @@ export interface ImagePickerObject {
   alt?: string;
   customComponent: JSX.Element;
 }
+
+export const FileType = {
+  File: "file",
+  Image: "image",
+  Audio: "audio",
+  Video: "video",
+} as const;
+export type FileType = typeof FileType[keyof typeof FileType];
