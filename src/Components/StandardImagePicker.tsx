@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment, useMemo } from "react";
+import React, { Fragment, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import {
@@ -18,7 +18,7 @@ export interface StandardImagePickerProps
   extends CommonFieldProps,
     ImagePickerFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: ButtonBaseProps;
+  props: ButtonBaseProps<"div", { component: "div" }>;
 }
 
 type StyledProps = {
@@ -118,8 +118,8 @@ function sanitizeImageCols(col?: GridColMap): GridColMap {
   return copy;
 }
 
-const StandardImagePicker = forwardRef(
-  (props: { field: StandardImagePickerProps; showTitle: boolean }, ref) => {
+const StandardImagePicker = (
+  (props: { field: StandardImagePickerProps; showTitle: boolean }) => {
     const {
       control,
       getValues,
@@ -197,10 +197,9 @@ const StandardImagePicker = forwardRef(
       fieldConfig: StandardImagePickerProps,
       option: ImagePickerObject,
       value: ImagePickerObject | Array<ImagePickerObject>
-    ): ButtonBaseProps => {
+    ): ButtonBaseProps<"div", { component: "div" }> => {
       return {
         id: fieldConfig.attribute,
-        // component: "div",
         sx: {
           width: `calc(100% - ${
             isSelected(fieldConfig, option, value) ? "12px" : "8px"
@@ -213,6 +212,7 @@ const StandardImagePicker = forwardRef(
           flexDirection: "column",
         },
         ...fieldConfig.props,
+        component: "div",
       };
     };
 

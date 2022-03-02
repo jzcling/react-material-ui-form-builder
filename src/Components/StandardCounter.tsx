@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { Add, Remove } from "@mui/icons-material";
@@ -16,8 +16,8 @@ export interface StandardCounterProps
   props: BoxProps & { disabled?: boolean };
 }
 
-const StandardCounter = forwardRef(
-  (props: { field: StandardCounterProps; showTitle: boolean }, ref) => {
+const StandardCounter = (
+  (props: { field: StandardCounterProps; showTitle: boolean }) => {
     const {
       control,
       getValues,
@@ -34,7 +34,6 @@ const StandardCounter = forwardRef(
         defaultValue={getValues(fieldConfig.attribute)}
         render={({ field }) => (
           <Box
-            ref={ref}
             sx={{
               display: "flex",
               alignItems: "center",

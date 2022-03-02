@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment } from "react";
+import React, { Fragment } from "react";
 import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
 
 import { TextField, TextFieldProps } from "@mui/material";
@@ -12,8 +12,8 @@ export interface StandardTextFieldProps extends CommonFieldProps {
   props: TextFieldProps;
 }
 
-const StandardTextField = forwardRef(
-  (props: { field: StandardTextFieldProps; showTitle: boolean }, ref) => {
+const StandardTextField = (
+  (props: { field: StandardTextFieldProps; showTitle: boolean }) => {
     const {
       control,
       getValues,
@@ -39,7 +39,6 @@ const StandardTextField = forwardRef(
             trigger(fieldConfig.attribute);
           }
         },
-        inputRef: ref,
         ...fieldConfig.props,
         ...field,
       };

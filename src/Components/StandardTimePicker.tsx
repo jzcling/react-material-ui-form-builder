@@ -1,5 +1,5 @@
 import { format, parse } from "date-fns";
-import React, { forwardRef, Fragment, useCallback, useState } from "react";
+import React, { Fragment, useCallback, useState } from "react";
 import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
 
 import { Schedule } from "@mui/icons-material";
@@ -18,8 +18,8 @@ interface StandardTimePickerProps extends CommonFieldProps, DateTimeFieldProps {
   props: TimePickerProps<Date>;
 }
 
-const StandardTimePicker = forwardRef(
-  (props: { field: StandardTimePickerProps; showTitle: boolean }, ref) => {
+const StandardTimePicker = (
+  (props: { field: StandardTimePickerProps; showTitle: boolean }) => {
     const {
       control,
       getValues,
@@ -103,7 +103,7 @@ const StandardTimePicker = forwardRef(
         render={({ field }) => (
           <Fragment>
             {showTitle && titleProps.title && <Title {...titleProps} />}
-            <Box ref={ref}>
+            <Box>
               <LocalizationProvider dateAdapter={DateAdapter}>
                 {component(componentProps(fieldConfig, field.value))}
               </LocalizationProvider>
