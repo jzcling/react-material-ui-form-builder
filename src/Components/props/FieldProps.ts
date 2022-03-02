@@ -147,7 +147,7 @@ export interface CommonFieldProps {
    * Arguments can be a `string` or an `array` of strings in the order that it is accepted
    * by the `yup` option. For validations that do not require any arguments, set the argument
    * to `true`. */
-  validations?: Array<[ValidationMethod, string | number | Array<string>]>;
+  validations?: Array<Validation>;
   /** Function that accepts the props `(field, ref)` and returns a node */
   customComponent?: (field: unknown) => JSX.Element;
 }
@@ -382,6 +382,11 @@ export const ValidationMethod = {
 } as const;
 export type ValidationMethod =
   typeof ValidationMethod[keyof typeof ValidationMethod];
+
+export type Validation = [
+  ValidationMethod,
+  true | string | number | RegExp | Array<any>
+];
 
 export interface ImagePickerObject {
   src: string;

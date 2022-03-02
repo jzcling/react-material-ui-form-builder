@@ -2,7 +2,7 @@ import React from "react";
 import * as yup from "yup";
 
 import { FieldProp } from "../components/FormBuilder";
-import { SchemaType, ValidationMethod } from "../components/props/FieldProps";
+import { SchemaType, Validation, ValidationMethod } from "../components/props/FieldProps";
 
 function useValidation(fields: Array<FieldProp>) {
   const formSchema: { [x: string]: yup.AnySchema } = {};
@@ -23,14 +23,32 @@ function useValidation(fields: Array<FieldProp>) {
 
 function getFieldSchema(
   schemaType?: SchemaType,
-  validations?: Array<
-    [ValidationMethod, true | string | number | RegExp | Array<any>]
-  >,
+  validations?: Array<Validation>,
   label?: string
 ): any {
   let schema: any;
 
-  schema = schema[schemaType || "mixed"]();
+  switch (schemaType) {
+    case "string":
+      schema = yup.string();
+      break;
+    case "number":
+      schema = yup.number();
+      break;
+    case "boolean":
+      schema = yup.boolean();
+      break;
+    case "date":
+      schema = yup.date();
+      break;
+    case "array":
+      schema = yup.array();
+      break;
+    case "mixed":
+    default:
+      schema = yup.mixed();
+      break;
+  }
 
   schema.optional().label(label || "This");
 
