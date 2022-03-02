@@ -1,10 +1,15 @@
-import { useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 
-function useDimensions() {
+import { useMediaQuery } from "@mui/material";
+import { Breakpoint, useTheme } from "@mui/material/styles";
+
+function useDimensions(): {
+  widthType: Breakpoint;
+  width: number;
+  height: number;
+} {
   const theme = useTheme();
-  const keys = [...theme.breakpoints.keys].reverse();
+  const keys = [...theme.breakpoints.keys];
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
@@ -18,23 +23,22 @@ function useDimensions() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const widthType = keys.reduce((output, key) => {
-    var query = theme.breakpoints.up(key);
-    if (key === "xs") {
-      query = theme.breakpoints.only(key);
-    }
-
-    var matches = useMediaQuery(query);
-    return !output && matches ? key : output;
-  }, null);
+  const widthType = keys.reduce((output: Breakpoint, key: Breakpoint) => {
+    let query = theme.breakpoints.up(key);
+    let matches = useMediaQuery(query);
+    return matches ? key : output;
+  }, "xs");
 
   return {
-    widthType: widthType,
+    widthType,
     ...windowDimensions,
   };
 }
 
-function getWindowDimensions() {
+function getWindowDimensions(): {
+  width: number;
+  height: number;
+} {
   const { innerWidth: width, innerHeight: height } = window;
   return {
     width,
