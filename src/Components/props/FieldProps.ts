@@ -3,9 +3,9 @@ import { EditableProps } from "slate-react/dist/components/editable";
 
 import { DatePickerProps, DateTimePickerProps, TimePickerProps } from "@mui/lab";
 import {
-  AutocompleteProps, BoxProps, CheckboxProps, ChipProps, FormControlLabelProps, FormControlProps,
-  GridProps, ImageListProps, RadioProps, RatingProps, SelectProps, StandardProps, SwitchProps,
-  TextFieldProps, TypographyProps
+  AutocompleteProps, BoxProps, ButtonBaseProps, CheckboxProps, ChipProps, FormControlLabelProps,
+  FormControlProps, GridProps, ImageListProps, RadioProps, RatingProps, SelectProps, StandardProps,
+  SwitchProps, TextFieldProps, TypographyProps
 } from "@mui/material";
 
 import { AutocompleteOptionConfig } from "../../utils/autocomplete";
@@ -128,7 +128,7 @@ export interface CommonFieldProps {
     | CheckboxProps
     | RadioProps
     | SwitchProps
-    | ImageListProps
+    | ButtonBaseProps
     | RatingProps
     | BoxProps;
   /** Any additional props to pass to the Material UI Grid item that contains the component */
@@ -278,13 +278,12 @@ export interface ImagePickerFieldProps {
    *
    * Columns for each breakpoint default to the previous breakpoint is not specified
    * */
-  imageCols?: number;
+  imageCols?: GridColMap;
   /** Number of lines allowed for label */
   labelLines?: number;
   /** Number of lines allowed for sublabel */
   subLabelLines?: number;
-  /** Aspect ratio of image preview in the form
-   * `[width, height]`. imageSize supercedes aspectRatio. */
+  /** Aspect ratio of image preview in the form `[width, height]`. */
   aspectRatio?: Array<[number, number]>;
   /** If true, multiple options will be selectible */
   multiple?: boolean;
@@ -296,6 +295,8 @@ export interface ImagePickerFieldProps {
   subLabelProps?: TypographyProps;
   /** Any additional props to pass to the ImageList component that wraps the individual components within the group. */
   groupContainerProps?: ImageListProps;
+  getValueKey?: (value: ImagePickerObject) => string;
+  getOptionKey?: (option: ImagePickerObject) => string;
 }
 
 export interface RatingFieldProps {
@@ -322,7 +323,7 @@ export interface RichTextFieldProps {
   editableProps?: EditableProps;
 }
 
-interface GridColMap {
+export interface GridColMap {
   xs?: number;
   sm?: number;
   md?: number;
@@ -332,8 +333,10 @@ interface GridColMap {
 
 interface Validation {}
 
-interface ImagePickerObject {
+export interface ImagePickerObject {
   src: string;
   label: string;
+  subLabel?: string;
   alt?: string;
+  customComponent: JSX.Element;
 }
