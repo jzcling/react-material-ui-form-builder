@@ -19,6 +19,9 @@
 .env.test.local
 .env.production.local
 .vscode
+.rollup.cache
+
+tsconfig.tsbuildinfo
 
 npm-debug.log*
 yarn-debug.log*
