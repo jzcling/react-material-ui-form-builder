@@ -13,7 +13,7 @@ import { getTitleProps } from "../utils";
 import { CommonFieldProps, DateTimeFieldProps } from "./props/FieldProps";
 import { Title, TitleProps } from "./widgets/Title";
 
-interface StandardDateTimePickerProps
+export interface StandardDateTimePickerProps
   extends CommonFieldProps,
     DateTimeFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
@@ -22,7 +22,7 @@ interface StandardDateTimePickerProps
 
 const StandardDateTimePicker = (props: {
   field: StandardDateTimePickerProps;
-  showTitle: boolean;
+  showTitle?: boolean;
 }) => {
   const {
     control,
@@ -53,9 +53,6 @@ const StandardDateTimePicker = (props: {
       ampm: false,
       inputFormat: "dd/MM/yyyy HH:mm:ss",
       label: fieldConfig.label,
-      value: value
-        ? parse(value, "yyyy-MM-dd HH:mm:ss", new Date())
-        : undefined,
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -71,6 +68,9 @@ const StandardDateTimePicker = (props: {
       open: !!open,
       onClose: () => setOpen(false),
       ...fieldConfig.props,
+      value: value
+        ? parse(value, "yyyy-MM-dd HH:mm:ss", new Date())
+        : undefined,
       onChange: (value) => {
         if (value) {
           try {
@@ -108,7 +108,7 @@ const StandardDateTimePicker = (props: {
       defaultValue={getValues(fieldConfig.attribute)}
       render={({ field }) => (
         <Fragment>
-          {showTitle && titleProps.title && <Title {...titleProps} />}
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <Box>
             <LocalizationProvider dateAdapter={DateAdapter}>
               {component(componentProps(fieldConfig, field.value))}

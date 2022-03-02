@@ -1,4 +1,5 @@
 import React, { DetailedHTMLProps } from "react";
+import { ReactPlayerProps } from "react-player";
 import { EditableProps } from "slate-react/dist/components/editable";
 
 import { DatePickerProps, DateTimePickerProps, TimePickerProps } from "@mui/lab";
@@ -13,6 +14,7 @@ import { OptionConfig } from "../../utils/options";
 import { TitleProps } from "../widgets/Title";
 
 export interface CommonFieldProps {
+  id?: string;
   /** Form attribute that controls input and is modified by input.
    * Also acts as id
    */
@@ -24,8 +26,6 @@ export interface CommonFieldProps {
    * `select`,
    *
    * `autocomplete`,
-   *
-   * `autocomplete-dnd`,
    *
    * `date-picker`,
    *
@@ -66,8 +66,6 @@ export interface CommonFieldProps {
    *
    * `autocomplete`,
    *
-   * `autocomplete-dnd`,
-   *
    * `chip-group`,
    *
    * `checkbox-group`,
@@ -101,7 +99,6 @@ export interface CommonFieldProps {
     | "date-time-picker"
     | "time-picker"
     | "autocomplete"
-    | "autocomplete-dnd"
     | "chip-group"
     | "checkbox-group"
     | "radio-group"
@@ -132,22 +129,27 @@ export interface CommonFieldProps {
     | RatingProps
     | BoxProps
     | DetailedHTMLProps<
-        React.HTMLAttributes<HTMLInputElement>,
+        React.InputHTMLAttributes<HTMLInputElement>,
         HTMLInputElement
-      >;
+      >
+    | DetailedHTMLProps<
+        React.ImgHTMLAttributes<HTMLImageElement>,
+        HTMLImageElement
+      >
+    | ReactPlayerProps;
   /** Any additional props to pass to the Material UI Grid item that contains the component */
   containerProps?: GridProps;
   /** Hides field if truthy */
   hideCondition?: boolean;
   /** One of: `mixed`, `string`, `number`, `date`, `boolean`, `array` */
-  validationType?: "mixed" | "string" | "number" | "date" | "boolean" | "array";
+  validationType?: SchemaType;
   /** These are validation options accepted by `yup` in the form of `{validation: arguments}`.
    * Arguments can be a `string` or an `array` of strings in the order that it is accepted
    * by the `yup` option. For validations that do not require any arguments, set the argument
    * to `true`. */
-  validations?: Array<Validation>;
+  validations?: Array<[ValidationMethod, string | number | Array<string>]>;
   /** Function that accepts the props `(field, ref)` and returns a node */
-  customComponent?: (field: unknown, ref: React.Ref<unknown>) => JSX.Element;
+  customComponent?: (field: unknown) => JSX.Element;
 }
 
 export interface MultiOptionFieldProps<T = unknown> {
@@ -194,14 +196,11 @@ export interface AutocompleteFieldProps<T = unknown> {
   optionConfig?: AutocompleteOptionConfig;
   /** If true, randomises option order on each render */
   randomizeOptions?: boolean;
-  /**
-   * Only for `autocomplete-dnd`.
-   *
-   * If true, selected options will be sortable via drag and drop */
+  /** If true, selected options will be sortable via drag and drop */
   sortable?: boolean;
 }
 
-export interface CustomChipGroupFieldProps {
+export interface ChipGroupFieldProps {
   options: Array<string | number | Record<string, unknown>>;
   /** Required if options is an array of objects. */
   optionConfig?: OptionConfig;
@@ -254,6 +253,21 @@ export interface FileUploadFieldProps {
   aspectRatio?: Array<[number, number]>;
   /** If true, allows multiple file uploads */
   multiple?: boolean;
+}
+
+export interface StandardDisplayImageProps
+  extends CommonFieldProps,
+    DisplayFieldProps {
+  props?: DetailedHTMLProps<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    HTMLImageElement
+  >;
+}
+
+export interface StandardDisplayMediaProps
+  extends CommonFieldProps,
+    DisplayFieldProps {
+  props?: ReactPlayerProps;
 }
 
 export interface DisplayFieldProps {
@@ -337,7 +351,37 @@ export interface GridColMap {
   xl?: number;
 }
 
-interface Validation {}
+export const SchemaType = {
+  Mixed: "mixed",
+  String: "string",
+  Number: "number",
+  Date: "date",
+  Boolean: "boolean",
+  Array: "array",
+} as const;
+export type SchemaType = typeof SchemaType[keyof typeof SchemaType];
+
+export const ValidationMethod = {
+  Required: "required",
+  Length: "length",
+  Min: "min",
+  Max: "max",
+  Matches: "matches",
+  Email: "email",
+  Url: "url",
+  Uuid: "uuid",
+  LessThan: "lessThan",
+  MoreThan: "moreThan",
+  Positive: "positive",
+  Negative: "negative",
+  Integer: "integer",
+  OneOf: "oneOf",
+  NotOneOf: "notOneOf",
+  Test: "test",
+  When: "when",
+} as const;
+export type ValidationMethod =
+  typeof ValidationMethod[keyof typeof ValidationMethod];
 
 export interface ImagePickerObject {
   src: string;

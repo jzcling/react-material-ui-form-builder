@@ -17,7 +17,7 @@ export interface StandardSwitchProps
 
 const StandardSwitch = (props: {
   field: StandardSwitchProps;
-  showTitle: boolean;
+  showTitle?: boolean;
 }) => {
   const {
     control,
@@ -60,7 +60,7 @@ const StandardSwitch = (props: {
       defaultValue={getValues(fieldConfig.attribute) || false}
       render={({ field }) => (
         <Fragment>
-          {showTitle && titleProps.title && <Title {...titleProps} />}
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormControl error={!!errors[fieldConfig.attribute]}>
             <FormControlLabel
               key={fieldConfig.attribute}

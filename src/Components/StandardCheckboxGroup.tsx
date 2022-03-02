@@ -24,7 +24,7 @@ export interface StandardCheckboxGroupProps extends CommonFieldProps {
 
 const StandardCheckboxGroup = (props: {
   field: StandardCheckboxGroupProps;
-  showTitle: boolean;
+  showTitle?: boolean;
 }) => {
   const {
     control,
@@ -117,7 +117,7 @@ const StandardCheckboxGroup = (props: {
       defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Fragment>
-          {showTitle && titleProps.title && <Title {...titleProps} />}
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormGroup>
             <FormControl {...containerProps(fieldConfig)}>
               {options.map((option, index) => (

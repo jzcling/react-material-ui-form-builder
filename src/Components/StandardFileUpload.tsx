@@ -105,7 +105,7 @@ const StyledButtonBase = styled(ButtonBase)(() => ({
 
 const StandardFileUpload = (props: {
   field: StandardFileUploadProps;
-  showTitle: boolean;
+  showTitle?: boolean;
 }) => {
   const {
     control,
@@ -195,7 +195,7 @@ const StandardFileUpload = (props: {
       defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Fragment>
-          {showTitle && titleProps.title && <Title {...titleProps} />}
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <input {...componentProps(fieldConfig)} />
           <label
             htmlFor={componentProps(fieldConfig).id}

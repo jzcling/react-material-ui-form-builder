@@ -7,13 +7,13 @@ import {
 
 import { getTitleProps, shuffleArray } from "../utils";
 import { getOptionFromConfig, Option } from "../utils/options";
-import { CommonFieldProps, CustomChipGroupFieldProps } from "./props/FieldProps";
+import { ChipGroupFieldProps, CommonFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
 import { Title, TitleProps } from "./widgets/Title";
 
 export interface StandardChipGroupProps
   extends CommonFieldProps,
-    CustomChipGroupFieldProps {
+    ChipGroupFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
   props: ChipProps & {
     onClick?: (
@@ -25,7 +25,7 @@ export interface StandardChipGroupProps
 
 const StandardChipGroup = (props: {
   field: StandardChipGroupProps;
-  showTitle: boolean;
+  showTitle?: boolean;
 }) => {
   const {
     control,
@@ -126,7 +126,7 @@ const StandardChipGroup = (props: {
       defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Fragment>
-          {showTitle && titleProps.title && <Title {...titleProps} />}
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormGroup>
             <FormControl {...containerProps(fieldConfig)}>
               {options.map((option, index) => (

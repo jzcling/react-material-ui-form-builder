@@ -118,182 +118,183 @@ function sanitizeImageCols(col?: GridColMap): GridColMap {
   return copy;
 }
 
-const StandardImagePicker = (
-  (props: { field: StandardImagePickerProps; showTitle: boolean }) => {
-    const {
-      control,
-      getValues,
-      setValue,
-      trigger,
-      formState: { errors },
-    } = useFormContext();
-    const { field: fieldConfig, showTitle } = props;
-    const titleProps: TitleProps = getTitleProps(fieldConfig);
-    const theme = useTheme();
-    const { widthType } = useDimensions();
+const StandardImagePicker = (props: {
+  field: StandardImagePickerProps;
+  showTitle?: boolean;
+}) => {
+  const {
+    control,
+    getValues,
+    setValue,
+    trigger,
+    formState: { errors },
+  } = useFormContext();
+  const { field: fieldConfig, showTitle } = props;
+  const titleProps: TitleProps = getTitleProps(fieldConfig);
+  const theme = useTheme();
+  const { widthType } = useDimensions();
 
-    const getValueKey = useMemo(() => {
-      if (fieldConfig.getValueKey) {
-        return fieldConfig.getValueKey;
+  const getValueKey = useMemo(() => {
+    if (fieldConfig.getValueKey) {
+      return fieldConfig.getValueKey;
+    }
+    return (value: ImagePickerObject) => value?.label || value?.src;
+  }, [fieldConfig.getValueKey]);
+
+  const getOptionKey = useMemo(() => {
+    if (fieldConfig.getOptionKey) {
+      return fieldConfig.getOptionKey;
+    }
+    return (option: ImagePickerObject) => option?.label || option?.src;
+  }, [fieldConfig.getOptionKey]);
+
+  const handleClick = (
+    option: ImagePickerObject,
+    value: ImagePickerObject | Array<ImagePickerObject>
+  ) => {
+    if (fieldConfig.multiple && Array.isArray(value)) {
+      const index = value?.findIndex(
+        (value) => getValueKey(value) === getOptionKey(option)
+      );
+      if (index >= 0) {
+        // option is currently selected, so remove it
+        let copy: Array<ImagePickerObject> | undefined = [...value];
+        copy.splice(index, 1);
+        if (copy.length === 0) {
+          copy = undefined;
+        }
+        setValue(fieldConfig.attribute, copy);
+        return;
       }
-      return (value: ImagePickerObject) => value?.label || value?.src;
-    }, [fieldConfig.getValueKey]);
-
-    const getOptionKey = useMemo(() => {
-      if (fieldConfig.getOptionKey) {
-        return fieldConfig.getOptionKey;
+      setValue(fieldConfig.attribute, [...(value || []), option]);
+    } else {
+      if (getValueKey(value as ImagePickerObject) === getOptionKey(option)) {
+        // option currently selected, so remove it
+        setValue(fieldConfig.attribute, undefined);
+        return;
       }
-      return (option: ImagePickerObject) => option?.label || option?.src;
-    }, [fieldConfig.getOptionKey]);
+      setValue(fieldConfig.attribute, option);
+    }
+  };
 
-    const handleClick = (
-      option: ImagePickerObject,
-      value: ImagePickerObject | Array<ImagePickerObject>
-    ) => {
-      if (fieldConfig.multiple && Array.isArray(value)) {
-        const index = value?.findIndex(
+  const isSelected = (
+    fieldConfig: StandardImagePickerProps,
+    option: ImagePickerObject,
+    value: ImagePickerObject | Array<ImagePickerObject>
+  ) => {
+    let isSelected;
+    if (fieldConfig.multiple && Array.isArray(value)) {
+      isSelected =
+        value?.findIndex(
           (value) => getValueKey(value) === getOptionKey(option)
-        );
-        if (index >= 0) {
-          // option is currently selected, so remove it
-          let copy: Array<ImagePickerObject> | undefined = [...value];
-          copy.splice(index, 1);
-          if (copy.length === 0) {
-            copy = undefined;
-          }
-          setValue(fieldConfig.attribute, copy);
-          return;
-        }
-        setValue(fieldConfig.attribute, [...(value || []), option]);
-      } else {
-        if (getValueKey(value as ImagePickerObject) === getOptionKey(option)) {
-          // option currently selected, so remove it
-          setValue(fieldConfig.attribute, undefined);
-          return;
-        }
-        setValue(fieldConfig.attribute, option);
-      }
+        ) >= 0;
+    } else {
+      isSelected =
+        getValueKey(value as ImagePickerObject) === getOptionKey(option);
+    }
+    return isSelected;
+  };
+
+  const componentProps = (
+    fieldConfig: StandardImagePickerProps,
+    option: ImagePickerObject,
+    value: ImagePickerObject | Array<ImagePickerObject>
+  ): ButtonBaseProps<"div", { component: "div" }> => {
+    return {
+      id: fieldConfig.attribute,
+      sx: {
+        width: `calc(100% - ${
+          isSelected(fieldConfig, option, value) ? "12px" : "8px"
+        })`,
+        margin: "2px",
+        border: isSelected(fieldConfig, option, value)
+          ? `2px solid ${theme.palette.primary.main}`
+          : undefined,
+        borderRadius: "4px",
+        flexDirection: "column",
+      },
+      ...fieldConfig.props,
+      component: "div",
     };
+  };
 
-    const isSelected = (
-      fieldConfig: StandardImagePickerProps,
-      option: ImagePickerObject,
-      value: ImagePickerObject | Array<ImagePickerObject>
-    ) => {
-      let isSelected;
-      if (fieldConfig.multiple && Array.isArray(value)) {
-        isSelected =
-          value?.findIndex(
-            (value) => getValueKey(value) === getOptionKey(option)
-          ) >= 0;
-      } else {
-        isSelected =
-          getValueKey(value as ImagePickerObject) === getOptionKey(option);
-      }
-      return isSelected;
-    };
+  const containerProps = (
+    fieldConfig: StandardImagePickerProps
+  ): ImageListProps | undefined => fieldConfig.groupContainerProps;
 
-    const componentProps = (
-      fieldConfig: StandardImagePickerProps,
-      option: ImagePickerObject,
-      value: ImagePickerObject | Array<ImagePickerObject>
-    ): ButtonBaseProps<"div", { component: "div" }> => {
-      return {
-        id: fieldConfig.attribute,
-        sx: {
-          width: `calc(100% - ${
-            isSelected(fieldConfig, option, value) ? "12px" : "8px"
-          })`,
-          margin: "2px",
-          border: isSelected(fieldConfig, option, value)
-            ? `2px solid ${theme.palette.primary.main}`
-            : undefined,
-          borderRadius: "4px",
-          flexDirection: "column",
-        },
-        ...fieldConfig.props,
-        component: "div",
-      };
-    };
-
-    const containerProps = (
-      fieldConfig: StandardImagePickerProps
-    ): ImageListProps | undefined => fieldConfig.groupContainerProps;
-
-    return (
-      <Controller
-        name={fieldConfig.attribute}
-        control={control}
-        defaultValue={getValues(fieldConfig.attribute) || 0}
-        render={({ field }) => (
-          <Fragment>
-            {showTitle && titleProps.title && <Title {...titleProps} />}
-            <ImageListRoot>
-              <StyledImageList
-                {...containerProps(fieldConfig)}
-                cols={sanitizeImageCols(fieldConfig.imageCols)[widthType]}
-                rowHeight="auto"
-              >
-                {fieldConfig.images?.map((image, index) => (
-                  <ButtonBase
-                    key={index}
-                    {...componentProps(fieldConfig, image, field.value)}
-                  >
-                    <ImageContainerRoot>
-                      <ImageContainerSizer fieldConfig={fieldConfig} />
-                      <ImageContainer {...fieldConfig.imageProps}>
-                        {image.customComponent ? (
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              width: "100%",
-                              height: "100%",
-                            }}
-                          >
-                            {image.customComponent}
-                          </Box>
-                        ) : (
-                          <Image
-                            src={image.src}
-                            alt={image.alt || image.label}
-                            title={image.label || image.alt}
-                            loading="lazy"
-                          />
-                        )}
-                      </ImageContainer>
-                    </ImageContainerRoot>
-                    {image.label && (
-                      <LabelContainer fieldConfig={fieldConfig}>
-                        <Label
-                          fieldConfig={fieldConfig}
-                          {...fieldConfig.labelProps}
+  return (
+    <Controller
+      name={fieldConfig.attribute}
+      control={control}
+      defaultValue={getValues(fieldConfig.attribute) || 0}
+      render={({ field }) => (
+        <Fragment>
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          <ImageListRoot>
+            <StyledImageList
+              {...containerProps(fieldConfig)}
+              cols={sanitizeImageCols(fieldConfig.imageCols)[widthType]}
+              rowHeight="auto"
+            >
+              {fieldConfig.images?.map((image, index) => (
+                <ButtonBase
+                  key={index}
+                  {...componentProps(fieldConfig, image, field.value)}
+                >
+                  <ImageContainerRoot>
+                    <ImageContainerSizer fieldConfig={fieldConfig} />
+                    <ImageContainer {...fieldConfig.imageProps}>
+                      {image.customComponent ? (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "100%",
+                            height: "100%",
+                          }}
                         >
-                          {image.label}
-                        </Label>
-                      </LabelContainer>
-                    )}
-                    {image.subLabel && (
-                      <SubLabelContainer fieldConfig={fieldConfig}>
-                        <SubLabel
-                          fieldConfig={fieldConfig}
-                          {...fieldConfig.subLabelProps}
-                        >
-                          {image.subLabel}
-                        </SubLabel>
-                      </SubLabelContainer>
-                    )}
-                  </ButtonBase>
-                ))}
-              </StyledImageList>
-            </ImageListRoot>
-            {errors?.length > 0 && <ErrorText error={errors[0]} />}
-          </Fragment>
-        )}
-      />
-    );
-  }
-);
+                          {image.customComponent}
+                        </Box>
+                      ) : (
+                        <Image
+                          src={image.src}
+                          alt={image.alt || image.label}
+                          title={image.label || image.alt}
+                          loading="lazy"
+                        />
+                      )}
+                    </ImageContainer>
+                  </ImageContainerRoot>
+                  {image.label && (
+                    <LabelContainer fieldConfig={fieldConfig}>
+                      <Label
+                        fieldConfig={fieldConfig}
+                        {...fieldConfig.labelProps}
+                      >
+                        {image.label}
+                      </Label>
+                    </LabelContainer>
+                  )}
+                  {image.subLabel && (
+                    <SubLabelContainer fieldConfig={fieldConfig}>
+                      <SubLabel
+                        fieldConfig={fieldConfig}
+                        {...fieldConfig.subLabelProps}
+                      >
+                        {image.subLabel}
+                      </SubLabel>
+                    </SubLabelContainer>
+                  )}
+                </ButtonBase>
+              ))}
+            </StyledImageList>
+          </ImageListRoot>
+          {errors?.length > 0 && <ErrorText error={errors[0]} />}
+        </Fragment>
+      )}
+    />
+  );
+};
 
 export { StandardImagePicker };

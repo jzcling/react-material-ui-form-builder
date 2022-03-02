@@ -19,7 +19,7 @@ export interface StandardSelectProps extends CommonFieldProps {
 
 const StandardSelect = (props: {
   field: StandardSelectProps;
-  showTitle: boolean;
+  showTitle?: boolean;
 }) => {
   const {
     control,
@@ -68,7 +68,7 @@ const StandardSelect = (props: {
       defaultValue={getValues(fieldConfig.attribute) || ""}
       render={({ field }) => (
         <Fragment>
-          {showTitle && titleProps.title && <Title {...titleProps} />}
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormControl variant="outlined" fullWidth error={errors?.length > 0}>
             <InputLabel
               // size="small"

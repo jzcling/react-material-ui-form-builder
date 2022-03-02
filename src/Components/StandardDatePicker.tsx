@@ -1,6 +1,6 @@
 import { format, parse } from "date-fns";
 import React, { Fragment, useCallback, useState } from "react";
-import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import { DateRange } from "@mui/icons-material";
 import {
@@ -13,14 +13,16 @@ import { getTitleProps } from "../utils";
 import { CommonFieldProps, DateTimeFieldProps } from "./props/FieldProps";
 import { Title, TitleProps } from "./widgets/Title";
 
-interface StandardDatePickerProps extends CommonFieldProps, DateTimeFieldProps {
+export interface StandardDatePickerProps
+  extends CommonFieldProps,
+    DateTimeFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
   props: DatePickerProps<Date>;
 }
 
 const StandardDatePicker = (props: {
   field: StandardDatePickerProps;
-  showTitle: boolean;
+  showTitle?: boolean;
 }) => {
   const {
     control,
@@ -50,7 +52,6 @@ const StandardDatePicker = (props: {
     return {
       inputFormat: "dd/MM/yyyy",
       label: fieldConfig.label,
-      value: value ? parse(value, "yyyy-MM-dd", new Date()) : undefined,
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -66,6 +67,7 @@ const StandardDatePicker = (props: {
       open: !!open,
       onClose: () => setOpen(false),
       ...fieldConfig.props,
+      value: value ? parse(value, "yyyy-MM-dd", new Date()) : undefined,
       onChange: (value) => {
         if (value) {
           try {
@@ -103,7 +105,7 @@ const StandardDatePicker = (props: {
       defaultValue={getValues(fieldConfig.attribute)}
       render={({ field }) => (
         <Fragment>
-          {showTitle && titleProps.title && <Title {...titleProps} />}
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <Box>
             <LocalizationProvider dateAdapter={DateAdapter}>
               {component(componentProps(fieldConfig, field.value))}

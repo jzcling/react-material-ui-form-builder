@@ -23,7 +23,7 @@ export interface StandardRadioGroupProps extends CommonFieldProps {
 
 const StandardRadioGroup = (props: {
   field: StandardRadioGroupProps;
-  showTitle: boolean;
+  showTitle?: boolean;
 }) => {
   const {
     control,
@@ -86,7 +86,7 @@ const StandardRadioGroup = (props: {
       defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Fragment>
-          {showTitle && titleProps.title && <Title {...titleProps} />}
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormGroup>
             <FormControl {...containerProps(fieldConfig)}>
               {options.map((option, index) => (

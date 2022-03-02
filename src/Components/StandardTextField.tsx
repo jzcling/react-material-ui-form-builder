@@ -12,52 +12,53 @@ export interface StandardTextFieldProps extends CommonFieldProps {
   props: TextFieldProps;
 }
 
-const StandardTextField = (
-  (props: { field: StandardTextFieldProps; showTitle: boolean }) => {
-    const {
-      control,
-      getValues,
-      trigger,
-      formState: { errors },
-    } = useFormContext();
-    const { field: fieldConfig, showTitle } = props;
-    const titleProps: TitleProps = getTitleProps(fieldConfig);
+const StandardTextField = (props: {
+  field: StandardTextFieldProps;
+  showTitle?: boolean;
+}) => {
+  const {
+    control,
+    getValues,
+    trigger,
+    formState: { errors },
+  } = useFormContext();
+  const { field: fieldConfig, showTitle } = props;
+  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
-    const componentProps = (
-      fieldConfig: StandardTextFieldProps,
-      field: ControllerRenderProps
-    ): TextFieldProps => {
-      return {
-        id: fieldConfig.attribute,
-        fullWidth: true,
-        size: "small",
-        label: fieldConfig.label,
-        error: !!errors[fieldConfig.attribute],
-        helperText: errors[fieldConfig.attribute]?.message,
-        onKeyDown: (event) => {
-          if (event.key === "Enter") {
-            trigger(fieldConfig.attribute);
-          }
-        },
-        ...fieldConfig.props,
-        ...field,
-      };
+  const componentProps = (
+    fieldConfig: StandardTextFieldProps,
+    field: ControllerRenderProps
+  ): TextFieldProps => {
+    return {
+      id: fieldConfig.attribute,
+      fullWidth: true,
+      size: "small",
+      label: fieldConfig.label,
+      error: !!errors[fieldConfig.attribute],
+      helperText: errors[fieldConfig.attribute]?.message,
+      onKeyDown: (event) => {
+        if (event.key === "Enter") {
+          trigger(fieldConfig.attribute);
+        }
+      },
+      ...fieldConfig.props,
+      ...field,
     };
+  };
 
-    return (
-      <Controller
-        name={fieldConfig.attribute}
-        control={control}
-        defaultValue={getValues(fieldConfig.attribute) || ""}
-        render={({ field }) => (
-          <Fragment>
-            {showTitle && titleProps.title && <Title {...titleProps} />}
-            <TextField {...componentProps(fieldConfig, field)} />
-          </Fragment>
-        )}
-      />
-    );
-  }
-);
+  return (
+    <Controller
+      name={fieldConfig.attribute}
+      control={control}
+      defaultValue={getValues(fieldConfig.attribute) || ""}
+      render={({ field }) => (
+        <Fragment>
+          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          <TextField {...componentProps(fieldConfig, field)} />
+        </Fragment>
+      )}
+    />
+  );
+};
 
 export { StandardTextField };
