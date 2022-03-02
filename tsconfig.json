@@ -27,4 +27,5 @@
   "exclude": [
     "src/**/*.test.ts", "node_modules"
   ],
+  "files": ["src/index.d.ts"]
 }
