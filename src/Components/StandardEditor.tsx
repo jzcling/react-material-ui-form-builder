@@ -11,7 +11,7 @@ export interface StandardEditorProps
   extends CommonFieldProps,
     RichTextFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: EditableProps;
+  props?: EditableProps;
 }
 
 const StandardEditor = (props: {

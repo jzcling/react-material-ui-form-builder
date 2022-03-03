@@ -42,7 +42,7 @@ export interface StandardFileUploadProps
   extends CommonFieldProps,
     FileUploadFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: DetailedHTMLProps<
+  props?: DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;

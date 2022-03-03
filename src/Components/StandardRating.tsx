@@ -13,7 +13,7 @@ export interface StandardRatingProps
   extends CommonFieldProps,
     RatingFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: RatingProps;
+  props?: RatingProps;
 }
 
 const StandardRating = (props: {

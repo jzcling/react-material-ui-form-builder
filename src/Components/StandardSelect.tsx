@@ -11,7 +11,7 @@ import { Title, TitleProps } from "./widgets/Title";
 
 export interface StandardSelectProps extends CommonFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: SelectProps;
+  props?: SelectProps;
   options: MultiOptionFieldProps<string | number>["options"];
   optionConfig?: MultiOptionFieldProps["optionConfig"];
   randomizeOptions?: MultiOptionFieldProps["randomizeOptions"];

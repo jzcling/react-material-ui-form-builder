@@ -15,7 +15,7 @@ export interface StandardChipGroupProps
   extends CommonFieldProps,
     ChipGroupFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: ChipProps & {
+  props?: ChipProps & {
     onClick?: (
       option: Option,
       value: unknown | Array<unknown>

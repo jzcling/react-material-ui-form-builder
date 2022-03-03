@@ -17,7 +17,7 @@ export interface StandardDateTimePickerProps
   extends CommonFieldProps,
     DateTimeFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: DateTimePickerProps<Date>;
+  props?: DateTimePickerProps<Date>;
 }
 
 const StandardDateTimePicker = (props: {

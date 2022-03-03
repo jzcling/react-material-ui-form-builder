@@ -13,7 +13,7 @@ import { Title, TitleProps } from "./widgets/Title";
 
 export interface StandardRadioGroupProps extends CommonFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: RadioProps;
+  props?: RadioProps;
   options: MultiOptionFieldProps["options"];
   optionConfig: MultiOptionFieldProps["optionConfig"];
   randomizeOptions: MultiOptionFieldProps["randomizeOptions"];

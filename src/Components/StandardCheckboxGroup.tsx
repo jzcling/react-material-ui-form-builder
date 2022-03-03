@@ -13,7 +13,7 @@ import { Title, TitleProps } from "./widgets/Title";
 
 export interface StandardCheckboxGroupProps extends CommonFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: CheckboxProps;
+  props?: CheckboxProps;
   options: MultiOptionFieldProps["options"];
   optionConfig: MultiOptionFieldProps["optionConfig"];
   randomizeOptions: MultiOptionFieldProps["randomizeOptions"];

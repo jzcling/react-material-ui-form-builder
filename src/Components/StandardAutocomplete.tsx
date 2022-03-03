@@ -17,7 +17,7 @@ export interface StandardAutocompleteProps
   extends CommonFieldProps,
     AutocompleteFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props:
+  props?:
     | AutocompleteProps<unknown, true, true, true>
     | AutocompleteProps<unknown, false, true, true>;
 }

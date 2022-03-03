@@ -18,7 +18,7 @@ export interface StandardImagePickerProps
   extends CommonFieldProps,
     ImagePickerFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: ButtonBaseProps<"div", { component: "div" }>;
+  props?: ButtonBaseProps<"div", { component: "div" }>;
 }
 
 type StyledProps = {

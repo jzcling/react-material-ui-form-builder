@@ -13,7 +13,7 @@ export interface StandardCounterProps
   extends CommonFieldProps,
     CounterFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: BoxProps & { disabled?: boolean };
+  props?: BoxProps & { disabled?: boolean };
 }
 
 const StandardCounter = (props: {

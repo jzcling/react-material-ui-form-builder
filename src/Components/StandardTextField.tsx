@@ -9,7 +9,7 @@ import { Title, TitleProps } from "./widgets/Title";
 
 export interface StandardTextFieldProps extends CommonFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
-  props: TextFieldProps;
+  props?: TextFieldProps;
 }
 
 const StandardTextField = (props: {

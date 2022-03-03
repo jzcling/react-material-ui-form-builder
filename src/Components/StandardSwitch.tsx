@@ -12,7 +12,7 @@ export interface StandardSwitchProps
     SwitchFieldProps {
   attribute: Required<CommonFieldProps>["attribute"];
   label: Required<CommonFieldProps>["label"];
-  props: SwitchProps;
+  props?: SwitchProps;
 }
 
 const StandardSwitch = (props: {
