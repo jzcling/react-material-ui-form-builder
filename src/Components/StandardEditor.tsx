@@ -46,7 +46,9 @@ const StandardEditor = (props: {
             containerProps={fieldConfig.groupContainerProps}
             editableProps={fieldConfig.props}
           />
-          {errors?.length > 0 && <ErrorText error={errors[0]} />}
+          {!!errors[fieldConfig.attribute] && (
+            <ErrorText error={errors[fieldConfig.attribute]?.message} />
+          )}
         </div>
       )}
     />

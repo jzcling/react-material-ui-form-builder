@@ -67,7 +67,11 @@ const StandardSelect = (props: {
       render={({ field }) => (
         <Fragment>
           {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
-          <FormControl variant="outlined" fullWidth error={errors?.length > 0}>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            error={!!errors[fieldConfig.attribute]}
+          >
             <InputLabel
               // size="small"
               htmlFor={fieldConfig.attribute}
@@ -82,7 +86,9 @@ const StandardSelect = (props: {
                 </option>
               ))}
             </Select>
-            <FormHelperText>{errors[0]}</FormHelperText>
+            <FormHelperText>
+              {errors[fieldConfig.attribute]?.message}
+            </FormHelperText>
           </FormControl>
         </Fragment>
       )}

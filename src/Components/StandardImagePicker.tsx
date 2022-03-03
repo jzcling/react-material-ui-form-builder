@@ -287,7 +287,9 @@ const StandardImagePicker = (props: {
               ))}
             </StyledImageList>
           </ImageListRoot>
-          {errors?.length > 0 && <ErrorText error={errors[0]} />}
+          {!!errors[fieldConfig.attribute] && (
+            <ErrorText error={errors[fieldConfig.attribute]?.message} />
+          )}
         </Fragment>
       )}
     />
