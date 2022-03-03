@@ -7,9 +7,7 @@ import {
   Autocomplete, AutocompleteProps, AutocompleteRenderGetTagProps, Chip, TextField
 } from "@mui/material";
 
-import {
-  AutocompleteOption, getLabel, getOptionFromConfig, getOptions
-} from "../utils/autocomplete";
+import { getLabel, getOptionFromConfig, getOptions } from "../utils/autocomplete";
 import { AutocompleteFieldProps, CommonFieldProps } from "./props/FieldProps";
 import { Title } from "./widgets/Title";
 
