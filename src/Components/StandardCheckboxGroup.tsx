@@ -55,10 +55,10 @@ function StandardCheckboxGroup<T>(props: {
       if (checked) {
         setValue(fieldConfig.attribute, [...(value || []), option.value]);
       } else {
-        const index = (value || []).findIndex(
-          (value) => value === option.value
+        const index = (value || []).findIndex((value) =>
+          isEqual(value, option.value)
         );
-        if (index >= 0) {
+        if (index > -1) {
           let copy: Array<T> | undefined = [...value];
           copy.splice(index, 1);
           if (copy.length === 0) {

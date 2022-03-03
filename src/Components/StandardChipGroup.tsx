@@ -41,8 +41,10 @@ function StandardChipGroup<T>(props: {
 
   function handleChipClick<T>(option: Option<T>, value: T): void {
     if (fieldConfig.multiple && Array.isArray(value)) {
-      const index = (value || []).findIndex((opt: T) => opt === option.value);
-      if (index >= 0) {
+      const index = (value || []).findIndex((opt: T) =>
+        isEqual(opt, option.value)
+      );
+      if (index > -1) {
         let copy: Array<Option<T>> | undefined = [...value];
         copy.splice(index, 1);
         if (copy.length === 0) {
