@@ -55,7 +55,7 @@ function StandardChipGroup<T>(props: {
       }
       setValue(fieldConfig.attribute, [...(value || []), option.value]);
     } else {
-      if (value === option.value) {
+      if (isEqual(value, option.value)) {
         setValue(fieldConfig.attribute, undefined);
         return;
       }
