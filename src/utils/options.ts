@@ -1,4 +1,5 @@
 import get from "lodash/get";
+import isObject from "lodash/isObject";
 
 export interface Option<T = unknown> {
   key: string;
@@ -10,10 +11,6 @@ export interface OptionConfig {
   key: string;
   value?: string;
   label: string;
-}
-
-function instanceOfOption<T>(object: any): object is Option<T> {
-  return "key" in object && "value" in object && "label" in object;
 }
 
 export function getOptionFromConfig<T = unknown>(
@@ -28,7 +25,7 @@ export function getOptionFromConfig<T = unknown>(
     };
   }
 
-  if (instanceOfOption<T>(option)) {
+  if (isObject(option) && option.value) {
     return {
       key: String(option.key),
       value: option.value,
