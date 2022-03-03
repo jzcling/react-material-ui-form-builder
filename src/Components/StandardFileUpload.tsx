@@ -121,9 +121,9 @@ const StandardFileUpload = (props: {
       return fieldConfig.acceptTypes as string;
     }
     if (Array.isArray(fieldConfig.acceptTypes)) {
-      return flattenDeep(fieldConfig.acceptTypes).join(" ");
+      return flattenDeep(fieldConfig.acceptTypes).join(",");
     }
-    return fileTypes.join(" ");
+    return fileTypes.join(",");
   }, [fieldConfig.acceptTypes]);
 
   const attachFiles = (files: FileList | null) => {
