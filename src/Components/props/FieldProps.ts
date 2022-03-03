@@ -122,7 +122,7 @@ export interface CommonFieldProps<T extends keyof ComponentType> {
   /** One of: `mixed`, `string`, `number`, `date`, `boolean`, `array` */
   validationType?: keyof SchemaType;
   /** These are validation options accepted by `yup` in the form of `[validation, arguments]`.
-   * Arguments can be a `string` or an `array` of strings in the order that it is accepted
+   * Arguments can be a `string`, `number`, `true`, `regex` or an `array` of such in the order that it is accepted
    * by the `yup` option. For validations that do not require any arguments, set the argument
    * to `true`. */
   validations?: Array<Validation>;
@@ -167,6 +167,8 @@ export interface MultiOptionFieldProps<T> {
 export interface AutocompleteFieldProps<T> {
   options: Array<T>;
   /**
+   * Required if options is an array of objects. Examples:
+   *
    * `{ value?: optionKey, label: optionKey }`
    *
    * Leave value undefined for entire object
