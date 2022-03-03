@@ -86,6 +86,7 @@ function StandardChipGroup<T>(props: {
       sx: {
         height: "auto",
         margin: "4px 8px 4px 0",
+        borderRadius: "20px",
         ...fieldConfig.props?.sx,
         "& .MuiChip-label": {
           padding: "8px",
