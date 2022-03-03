@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import React, { Fragment, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -60,7 +61,7 @@ function StandardRadioGroup<T>(props: {
       key: option.key,
       color: "primary",
       ...fieldConfig.props,
-      checked: value === option.value,
+      checked: isEqual(value, option.value),
       value: option.value,
       onChange: (event) =>
         handleRadioChange(option.value, event.target.checked),

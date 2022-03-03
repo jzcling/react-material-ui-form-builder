@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import React, { Fragment, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -83,9 +84,10 @@ function StandardCheckboxGroup<T>(props: {
   ): CheckboxProps => {
     let isSelected: boolean;
     if (fieldConfig.multiple && Array.isArray(value)) {
-      isSelected = value && value.includes(option.value);
+      isSelected =
+        value && value.findIndex((v) => isEqual(v, option.value)) > -1;
     } else {
-      isSelected = value === option.value;
+      isSelected = isEqual(value, option.value);
     }
     return {
       id: fieldConfig.attribute,
@@ -132,7 +134,9 @@ function StandardCheckboxGroup<T>(props: {
                 />
               ))}
             </FormControl>
-            {errors?.length > 0 && <ErrorText error={errors[0]} />}
+            {!!errors[fieldConfig.attribute] && (
+              <ErrorText error={errors[fieldConfig.attribute]?.message} />
+            )}
           </FormGroup>
         </Fragment>
       )}
