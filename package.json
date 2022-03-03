@@ -31,7 +31,7 @@
   "devDependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
-    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.8",
+    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.9",
     "@mui/icons-material": "^5.4.4",
     "@mui/lab": "^5.0.0-alpha.71",
     "@mui/material": "^5.4.4",
@@ -70,7 +70,7 @@
   "peerDependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
-    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.8",
+    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.9",
     "@mui/icons-material": "^5.4.4",
     "@mui/lab": "^5.0.0-alpha.71",
     "@mui/material": "^5.4.4",
