@@ -134,8 +134,6 @@ function StandardAutocomplete<T>(props: {
       isOptionEqualToValue: (option, value) => {
         // Required to handle the quirky behaviour of Autocomplete component
         // where it returns the value object sometimes and value value sometimes
-        console.log("value", value);
-        console.log(option);
         return isObject(value)
           ? isEqual(
               getOptionFromConfig(
@@ -224,8 +222,6 @@ function StandardAutocomplete<T>(props: {
       isOptionEqualToValue: (option, value) => {
         // Required to handle the quirky behaviour of Autocomplete component
         // where it returns the value object sometimes and value value sometimes
-        console.log("value", value);
-        console.log(option);
         return isObject(value)
           ? isEqual(
               getOptionFromConfig(
