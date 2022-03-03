@@ -88,7 +88,10 @@ function StandardRadioGroup<T>(props: {
         <Fragment>
           {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormGroup>
-            <FormControl {...containerProps(fieldConfig)}>
+            <FormControl
+              component={"fieldset" as "div"}
+              {...containerProps(fieldConfig)}
+            >
               {options.map((option, index) => (
                 <FormControlLabel
                   key={fieldConfig.attribute + "-" + index}

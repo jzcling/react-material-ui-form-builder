@@ -118,7 +118,10 @@ function StandardChipGroup<T>(props: {
         <Fragment>
           {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormGroup>
-            <FormControl {...containerProps(fieldConfig)}>
+            <FormControl
+              component={"fieldset" as "div"}
+              {...containerProps(fieldConfig)}
+            >
               {options.map((option, index) => (
                 <Box key={fieldConfig.attribute + "-" + index}>
                   <Chip {...componentProps(fieldConfig, option, field.value)} />
