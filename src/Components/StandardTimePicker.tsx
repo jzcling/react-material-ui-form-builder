@@ -100,7 +100,6 @@ const StandardTimePicker = (props: {
     <Controller
       name={fieldConfig.attribute}
       control={control}
-      defaultValue={getValues(fieldConfig.attribute)}
       render={({ field }) => (
         <Fragment>
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}

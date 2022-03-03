@@ -118,7 +118,6 @@ function StandardCheckboxGroup<T>(props: {
     <Controller
       name={fieldConfig.attribute}
       control={control}
-      defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Fragment>
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}

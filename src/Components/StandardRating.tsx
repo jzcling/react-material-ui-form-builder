@@ -51,7 +51,6 @@ const StandardRating = (props: {
     <Controller
       name={fieldConfig.attribute}
       control={control}
-      defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Box>
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}

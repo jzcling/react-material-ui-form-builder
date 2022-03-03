@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { EditableProps } from "slate-react/dist/components/editable";
 
 import { Editor } from "@jeremyling/react-material-ui-rich-text-editor";
 
@@ -34,7 +33,6 @@ const StandardEditor = (props: { field: StandardEditorProps }) => {
     <Controller
       name={fieldConfig.attribute}
       control={control}
-      defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <div onFocus={() => setTouched(true)}>
           <Editor

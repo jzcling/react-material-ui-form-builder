@@ -58,7 +58,6 @@ const StandardSwitch = (props: {
     <Controller
       name={fieldConfig.attribute}
       control={control}
-      defaultValue={getValues(fieldConfig.attribute) || false}
       render={({ field }) => (
         <Fragment>
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}

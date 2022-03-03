@@ -30,7 +30,6 @@ const StandardCounter = (props: {
     <Controller
       name={fieldConfig.attribute}
       control={control}
-      defaultValue={getValues(fieldConfig.attribute)}
       render={({ field }) => (
         <Box
           sx={{
