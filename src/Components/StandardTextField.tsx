@@ -3,13 +3,11 @@ import { Controller, ControllerRenderProps, useFormContext } from "react-hook-fo
 
 import { TextField, TextFieldProps } from "@mui/material";
 
-import { getTitleProps } from "../utils";
 import { CommonFieldProps } from "./props/FieldProps";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
-export interface StandardTextFieldProps extends CommonFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: TextFieldProps;
+export interface StandardTextFieldProps extends CommonFieldProps<"text-field"> {
+  attribute: Required<CommonFieldProps<"text-field">>["attribute"];
 }
 
 const StandardTextField = (props: {
@@ -23,7 +21,6 @@ const StandardTextField = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
   const componentProps = (
     fieldConfig: StandardTextFieldProps,

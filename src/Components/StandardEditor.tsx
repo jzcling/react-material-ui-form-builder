@@ -8,10 +8,9 @@ import { CommonFieldProps, RichTextFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
 
 export interface StandardEditorProps
-  extends CommonFieldProps,
+  extends CommonFieldProps<"rich-text">,
     RichTextFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: EditableProps;
+  attribute: Required<CommonFieldProps<"rich-text">>["attribute"];
 }
 
 const StandardEditor = (props: {

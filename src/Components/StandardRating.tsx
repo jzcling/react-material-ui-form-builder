@@ -4,16 +4,14 @@ import { Controller, ControllerRenderProps, useFormContext } from "react-hook-fo
 import { Star, StarBorder } from "@mui/icons-material";
 import { Box, Rating, RatingProps } from "@mui/material";
 
-import { getTitleProps } from "../utils";
 import { CommonFieldProps, RatingFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
 export interface StandardRatingProps
-  extends CommonFieldProps,
+  extends CommonFieldProps<"rating">,
     RatingFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: RatingProps;
+  attribute: Required<CommonFieldProps<"rating">>["attribute"];
 }
 
 const StandardRating = (props: {
@@ -27,7 +25,6 @@ const StandardRating = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
   const componentProps = (
     fieldConfig: StandardRatingProps,

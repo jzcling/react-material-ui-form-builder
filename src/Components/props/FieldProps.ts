@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps } from "react";
+import React, { DetailedHTMLProps, MouseEventHandler } from "react";
 import { ReactPlayerProps } from "react-player";
 import { EditableProps } from "slate-react/dist/components/editable";
 
@@ -11,10 +11,10 @@ import {
 
 import { SchemaType } from "../../hooks/useValidation";
 import { AutocompleteOptionConfig } from "../../utils/autocomplete";
-import { OptionConfig } from "../../utils/options";
+import { Option, OptionConfig } from "../../utils/options";
 import { TitleProps } from "../widgets/Title";
 
-export interface CommonFieldProps {
+export interface CommonFieldProps<T extends keyof ComponentType> {
   id?: string;
   /** Form attribute that controls input and is modified by input.
    * Also acts as id
@@ -93,58 +93,35 @@ export interface CommonFieldProps {
    *
    * `custom`
    * */
-  component?:
-    | "text-field"
-    | "select"
-    | "date-picker"
-    | "date-time-picker"
-    | "time-picker"
-    | "autocomplete"
-    | "chip-group"
-    | "checkbox-group"
-    | "radio-group"
-    | "switch"
-    | "file-upload"
-    | "image-picker"
-    | "rating"
-    | "counter"
-    | "display-text"
-    | "display-image"
-    | "display-media"
-    | "rich-text"
-    | "custom";
+  component: T;
+  // | "text-field"
+  // | "select"
+  // | "date-picker"
+  // | "date-time-picker"
+  // | "time-picker"
+  // | "autocomplete"
+  // | "chip-group"
+  // | "checkbox-group"
+  // | "radio-group"
+  // | "switch"
+  // | "file-upload"
+  // | "image-picker"
+  // | "rating"
+  // | "counter"
+  // | "display-text"
+  // | "display-image"
+  // | "display-media"
+  // | "rich-text"
+  // | "custom";
   /** Any additional props to pass to the Material UI component */
-  props?:
-    | TextFieldProps
-    | SelectProps
-    | DatePickerProps<Date>
-    | DateTimePickerProps<Date>
-    | TimePickerProps<Date>
-    | AutocompleteProps<unknown, true, true, true>
-    | AutocompleteProps<unknown, false, true, true>
-    | ChipProps
-    | CheckboxProps
-    | RadioProps
-    | SwitchProps
-    | ButtonBaseProps
-    | RatingProps
-    | BoxProps
-    | DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement
-      >
-    | DetailedHTMLProps<
-        React.ImgHTMLAttributes<HTMLImageElement>,
-        HTMLImageElement
-      >
-    | ReactPlayerProps;
+  props?: ComponentType[T];
   /** Any additional props to pass to the Material UI Grid item that contains the component */
   containerProps?: GridProps;
   /** Hides field if truthy */
   hideCondition?: boolean;
   /** One of: `mixed`, `string`, `number`, `date`, `boolean`, `array` */
   validationType?: keyof SchemaType;
-  /** These are validation options accepted by `yup` in the form of `{validation: arguments}`.
+  /** These are validation options accepted by `yup` in the form of `[validation, arguments]`.
    * Arguments can be a `string` or an `array` of strings in the order that it is accepted
    * by the `yup` option. For validations that do not require any arguments, set the argument
    * to `true`. */
@@ -153,9 +130,9 @@ export interface CommonFieldProps {
   customComponent?: (field: unknown) => JSX.Element;
 }
 
-export interface MultiOptionFieldProps<T = unknown> {
+export interface MultiOptionFieldProps<T> {
   /** Required for `select`, `checkbox-group` and `radio-group` */
-  options: Array<T | Record<string, T>>;
+  options: Array<T>;
   /**
    * Only for `select`, `checkbox-group` and `radio-group`
    *
@@ -187,8 +164,8 @@ export interface MultiOptionFieldProps<T = unknown> {
   groupContainerProps?: FormControlProps;
 }
 
-export interface AutocompleteFieldProps<T = unknown> {
-  options: Array<T | Record<string, T>>;
+export interface AutocompleteFieldProps<T> {
+  options: Array<T>;
   /**
    * `{ value?: optionKey, label: optionKey }`
    *
@@ -201,10 +178,10 @@ export interface AutocompleteFieldProps<T = unknown> {
   sortable?: boolean;
 }
 
-export interface ChipGroupFieldProps {
-  options: Array<string | number | Record<string, unknown>>;
+export interface ChipGroupFieldProps<T> {
+  options: Array<T>;
   /** Required if options is an array of objects. */
-  optionConfig?: OptionConfig;
+  optionConfig: T extends Object ? OptionConfig : OptionConfig | undefined;
   /** If true, randomises option order on each render */
   randomizeOptions?: boolean;
   /** If true, multiple options will be selectible */
@@ -256,20 +233,18 @@ export interface FileUploadFieldProps {
   multiple?: boolean;
 }
 
+export interface StandardDisplayTextProps
+  extends CommonFieldProps<"display-text"> {}
+
 export interface StandardDisplayImageProps
-  extends CommonFieldProps,
-    DisplayFieldProps {
-  props?: DetailedHTMLProps<
-    React.ImgHTMLAttributes<HTMLImageElement>,
-    HTMLImageElement
-  >;
-}
+  extends CommonFieldProps<"display-image">,
+    DisplayFieldProps {}
 
 export interface StandardDisplayMediaProps
-  extends CommonFieldProps,
-    DisplayFieldProps {
-  props?: ReactPlayerProps;
-}
+  extends CommonFieldProps<"display-media">,
+    DisplayFieldProps {}
+
+export interface StandardCustomProps extends CommonFieldProps<"custom"> {}
 
 export interface DisplayFieldProps {
   /** Source of image or media. */
@@ -394,3 +369,38 @@ export const FileType = {
   Video: "video",
 } as const;
 export type FileType = typeof FileType[keyof typeof FileType];
+
+export type ComponentType = {
+  "text-field": TextFieldProps;
+  select: SelectProps;
+  "date-picker": DatePickerProps<Date>;
+  "date-time-picker": DateTimePickerProps<Date>;
+  "time-picker": TimePickerProps<Date>;
+  autocomplete:
+    | AutocompleteProps<unknown, true, true, true>
+    | AutocompleteProps<unknown, false, true, true>;
+  "chip-group": ChipProps & {
+    onClick?: (
+      option: Option<unknown>,
+      value: unknown | Array<unknown>
+    ) => MouseEventHandler;
+  };
+  "checkbox-group": CheckboxProps;
+  "radio-group": RadioProps;
+  switch: SwitchProps;
+  "file-upload": DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >;
+  "image-picker": ButtonBaseProps<"div", { component: "div" }>;
+  rating: RatingProps;
+  counter: BoxProps & { disabled?: boolean };
+  "display-text": undefined;
+  "display-image": DetailedHTMLProps<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    HTMLImageElement
+  >;
+  "display-media": ReactPlayerProps;
+  "rich-text": EditableProps;
+  custom: any;
+};

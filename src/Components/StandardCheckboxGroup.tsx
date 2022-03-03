@@ -5,27 +5,27 @@ import {
   Checkbox, CheckboxProps, FormControl, FormControlLabel, FormControlProps, FormGroup
 } from "@mui/material";
 
-import { getTitleProps, shuffleArray } from "../utils";
+import { shuffleArray } from "../utils";
 import { getOptionFromConfig, Option } from "../utils/options";
 import { CommonFieldProps, MultiOptionFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
-export interface StandardCheckboxGroupProps extends CommonFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: CheckboxProps;
-  options: MultiOptionFieldProps["options"];
-  optionConfig: MultiOptionFieldProps["optionConfig"];
-  randomizeOptions: MultiOptionFieldProps["randomizeOptions"];
-  multiple: MultiOptionFieldProps["multiple"];
-  labelProps: MultiOptionFieldProps["labelProps"];
-  groupContainerProps: MultiOptionFieldProps["groupContainerProps"];
+export interface StandardCheckboxGroupProps<T>
+  extends CommonFieldProps<"checkbox-group"> {
+  attribute: Required<CommonFieldProps<"checkbox-group">>["attribute"];
+  options: MultiOptionFieldProps<T>["options"];
+  optionConfig: MultiOptionFieldProps<T>["optionConfig"];
+  randomizeOptions: MultiOptionFieldProps<T>["randomizeOptions"];
+  multiple: MultiOptionFieldProps<T>["multiple"];
+  labelProps: MultiOptionFieldProps<T>["labelProps"];
+  groupContainerProps: MultiOptionFieldProps<T>["groupContainerProps"];
 }
 
-const StandardCheckboxGroup = (props: {
-  field: StandardCheckboxGroupProps;
+function StandardCheckboxGroup<T>(props: {
+  field: StandardCheckboxGroupProps<T>;
   showTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -34,9 +34,8 @@ const StandardCheckboxGroup = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
-  const options: Array<Option> = useMemo(() => {
+  const options: Array<Option<T>> = useMemo(() => {
     let options = fieldConfig.options || [];
     if (fieldConfig.randomizeOptions) {
       options = shuffleArray(fieldConfig.options || []);
@@ -46,11 +45,11 @@ const StandardCheckboxGroup = (props: {
     );
   }, [fieldConfig.options, fieldConfig.optionConfig]);
 
-  const handleCheckboxChange = (
-    option: Option,
+  function handleCheckboxChange<T>(
+    option: Option<T>,
     checked: boolean,
-    value: unknown | Array<unknown>
-  ) => {
+    value: T
+  ) {
     if (fieldConfig.multiple && Array.isArray(value)) {
       if (checked) {
         setValue(fieldConfig.attribute, [...(value || []), option.value]);
@@ -59,7 +58,7 @@ const StandardCheckboxGroup = (props: {
           (value) => value === option.value
         );
         if (index >= 0) {
-          let copy: Array<unknown> | undefined = [...value];
+          let copy: Array<T> | undefined = [...value];
           copy.splice(index, 1);
           if (copy.length === 0) {
             copy = undefined;
@@ -75,12 +74,12 @@ const StandardCheckboxGroup = (props: {
         setValue(fieldConfig.attribute, undefined);
       }
     }
-  };
+  }
 
   const componentProps = (
-    fieldConfig: StandardCheckboxGroupProps,
-    option: Option,
-    value: unknown | Array<unknown>
+    fieldConfig: StandardCheckboxGroupProps<T>,
+    option: Option<T>,
+    value: T
   ): CheckboxProps => {
     let isSelected: boolean;
     if (fieldConfig.multiple && Array.isArray(value)) {
@@ -100,7 +99,7 @@ const StandardCheckboxGroup = (props: {
   };
 
   const containerProps = (
-    fieldConfig: StandardCheckboxGroupProps
+    fieldConfig: StandardCheckboxGroupProps<T>
   ): FormControlProps => {
     return {
       error: !!errors[fieldConfig.attribute],
@@ -139,6 +138,6 @@ const StandardCheckboxGroup = (props: {
       )}
     />
   );
-};
+}
 
 export { StandardCheckboxGroup };

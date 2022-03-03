@@ -1,6 +1,4 @@
-import { CommonFieldProps } from "../components/props/FieldProps";
-
-export function shuffleArray(array: Array<any>) {
+export function shuffleArray<T>(array: Array<T>) {
   const copy = [...array];
   for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -9,22 +7,4 @@ export function shuffleArray(array: Array<any>) {
   return copy;
 }
 
-export function getTitleProps(field: CommonFieldProps) {
-  const {
-    title,
-    titleProps,
-    titleContainerProps,
-    titleSuffixComponent,
-    titleSuffix,
-    titleSuffixProps,
-  } = field;
-
-  return {
-    title: title || "",
-    titleProps,
-    titleContainerProps,
-    titleSuffixComponent,
-    titleSuffix,
-    titleSuffixProps,
-  };
-}
+export type Unpack<T> = T extends (infer U)[] ? U : T;

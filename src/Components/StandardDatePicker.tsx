@@ -9,15 +9,13 @@ import {
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
 
-import { getTitleProps } from "../utils";
 import { CommonFieldProps, DateTimeFieldProps } from "./props/FieldProps";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
 export interface StandardDatePickerProps
-  extends CommonFieldProps,
+  extends CommonFieldProps<"date-picker">,
     DateTimeFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: DatePickerProps<Date>;
+  attribute: Required<CommonFieldProps<"date-picker">>["attribute"];
 }
 
 const StandardDatePicker = (props: {
@@ -32,7 +30,6 @@ const StandardDatePicker = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
   const [open, setOpen] = useState<boolean>();
 
   const component = useCallback(

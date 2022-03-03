@@ -1,30 +1,30 @@
 import React, { Fragment, useMemo } from "react";
-import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import {
   FormControl, FormControlLabel, FormControlProps, FormGroup, Radio, RadioProps, Typography
 } from "@mui/material";
 
-import { getTitleProps, shuffleArray } from "../utils";
+import { shuffleArray } from "../utils";
 import { getOptionFromConfig, Option } from "../utils/options";
 import { CommonFieldProps, MultiOptionFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
-export interface StandardRadioGroupProps extends CommonFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: RadioProps;
-  options: MultiOptionFieldProps["options"];
-  optionConfig: MultiOptionFieldProps["optionConfig"];
-  randomizeOptions: MultiOptionFieldProps["randomizeOptions"];
-  labelProps: MultiOptionFieldProps["labelProps"];
-  groupContainerProps: MultiOptionFieldProps["groupContainerProps"];
+export interface StandardRadioGroupProps<T>
+  extends CommonFieldProps<"radio-group"> {
+  attribute: Required<CommonFieldProps<"radio-group">>["attribute"];
+  options: MultiOptionFieldProps<T>["options"];
+  optionConfig: MultiOptionFieldProps<T>["optionConfig"];
+  randomizeOptions: MultiOptionFieldProps<T>["randomizeOptions"];
+  labelProps: MultiOptionFieldProps<T>["labelProps"];
+  groupContainerProps: MultiOptionFieldProps<T>["groupContainerProps"];
 }
 
-const StandardRadioGroup = (props: {
-  field: StandardRadioGroupProps;
+function StandardRadioGroup<T>(props: {
+  field: StandardRadioGroupProps<T>;
   showTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -33,9 +33,8 @@ const StandardRadioGroup = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
-  const options: Array<Option> = useMemo(() => {
+  const options: Array<Option<T>> = useMemo(() => {
     let options = fieldConfig.options || [];
     if (fieldConfig.randomizeOptions) {
       options = shuffleArray(fieldConfig.options || []);
@@ -45,16 +44,16 @@ const StandardRadioGroup = (props: {
     );
   }, [fieldConfig.options, fieldConfig.optionConfig]);
 
-  const handleRadioChange = (value: unknown, checked: boolean) => {
+  const handleRadioChange = (value: T, checked: boolean) => {
     if (checked) {
       setValue(fieldConfig.attribute, value);
     }
   };
 
   const componentProps = (
-    fieldConfig: StandardRadioGroupProps,
-    option: Option,
-    value: unknown
+    fieldConfig: StandardRadioGroupProps<T>,
+    option: Option<T>,
+    value: T
   ): RadioProps => {
     return {
       id: fieldConfig.attribute,
@@ -64,12 +63,12 @@ const StandardRadioGroup = (props: {
       checked: value === option.value,
       value: option.value,
       onChange: (event) =>
-        handleRadioChange(event.target.value, event.target.checked),
+        handleRadioChange(option.value, event.target.checked),
     };
   };
 
   const containerProps = (
-    fieldConfig: StandardRadioGroupProps
+    fieldConfig: StandardRadioGroupProps<T>
   ): FormControlProps => {
     return {
       error: !!errors[fieldConfig.attribute],
@@ -110,6 +109,6 @@ const StandardRadioGroup = (props: {
       )}
     />
   );
-};
+}
 
 export { StandardRadioGroup };

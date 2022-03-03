@@ -4,17 +4,16 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import { FormControl, FormHelperText, InputLabel, Select, SelectProps } from "@mui/material";
 
-import { getTitleProps, shuffleArray } from "../utils";
+import { shuffleArray } from "../utils";
 import { getOptionFromConfig, Option } from "../utils/options";
 import { CommonFieldProps, MultiOptionFieldProps } from "./props/FieldProps";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
-export interface StandardSelectProps extends CommonFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: SelectProps;
+export interface StandardSelectProps extends CommonFieldProps<"select"> {
+  attribute: Required<CommonFieldProps<"select">>["attribute"];
   options: MultiOptionFieldProps<string | number>["options"];
-  optionConfig?: MultiOptionFieldProps["optionConfig"];
-  randomizeOptions?: MultiOptionFieldProps["randomizeOptions"];
+  optionConfig?: MultiOptionFieldProps<string | number>["optionConfig"];
+  randomizeOptions?: MultiOptionFieldProps<string | number>["randomizeOptions"];
 }
 
 const StandardSelect = (props: {
@@ -29,7 +28,6 @@ const StandardSelect = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
   const options: Array<Option<string | number>> = useMemo(() => {
     let options = fieldConfig.options || [];

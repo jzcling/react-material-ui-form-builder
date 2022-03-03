@@ -7,18 +7,16 @@ import {
 import { styled, useTheme } from "@mui/material/styles";
 
 import { useDimensions } from "../hooks/useDimensions";
-import { getTitleProps } from "../utils";
 import {
   CommonFieldProps, GridColMap, ImagePickerFieldProps, ImagePickerObject
 } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
 export interface StandardImagePickerProps
-  extends CommonFieldProps,
+  extends CommonFieldProps<"image-picker">,
     ImagePickerFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: ButtonBaseProps<"div", { component: "div" }>;
+  attribute: Required<CommonFieldProps<"image-picker">>["attribute"];
 }
 
 type StyledProps = {
@@ -130,7 +128,6 @@ const StandardImagePicker = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
   const theme = useTheme();
   const { widthType } = useDimensions();
 

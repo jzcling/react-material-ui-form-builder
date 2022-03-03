@@ -1,32 +1,24 @@
-import React, { Fragment, MouseEventHandler, useMemo } from "react";
-import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
+import React, { Fragment, useMemo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-import {
-  Box, Chip, ChipProps, FormControl, FormControlProps, FormGroup, SxProps, TypographyProps
-} from "@mui/material";
+import { Box, Chip, ChipProps, FormControl, FormControlProps, FormGroup } from "@mui/material";
 
-import { getTitleProps, shuffleArray } from "../utils";
+import { shuffleArray } from "../utils";
 import { getOptionFromConfig, Option } from "../utils/options";
 import { ChipGroupFieldProps, CommonFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
-export interface StandardChipGroupProps
-  extends CommonFieldProps,
-    ChipGroupFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: ChipProps & {
-    onClick?: (
-      option: Option,
-      value: unknown | Array<unknown>
-    ) => MouseEventHandler;
-  };
+export interface StandardChipGroupProps<T>
+  extends CommonFieldProps<"chip-group">,
+    ChipGroupFieldProps<T> {
+  attribute: Required<CommonFieldProps<"chip-group">>["attribute"];
 }
 
-const StandardChipGroup = (props: {
-  field: StandardChipGroupProps;
+function StandardChipGroup<T>(props: {
+  field: StandardChipGroupProps<T>;
   showTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -35,9 +27,8 @@ const StandardChipGroup = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
-  const options: Array<Option> = useMemo(() => {
+  const options: Array<Option<T>> = useMemo(() => {
     let options = fieldConfig.options || [];
     if (fieldConfig.randomizeOptions) {
       options = shuffleArray(fieldConfig.options || []);
@@ -47,16 +38,11 @@ const StandardChipGroup = (props: {
     );
   }, [fieldConfig.options, fieldConfig.optionConfig]);
 
-  const handleChipClick = (
-    option: Option,
-    value: unknown | Array<unknown>
-  ): void => {
+  function handleChipClick<T>(option: Option<T>, value: T): void {
     if (fieldConfig.multiple && Array.isArray(value)) {
-      const index = (value || []).findIndex(
-        (opt: unknown) => opt === option.value
-      );
+      const index = (value || []).findIndex((opt: T) => opt === option.value);
       if (index >= 0) {
-        let copy: Array<Option> | undefined = [...value];
+        let copy: Array<Option<T>> | undefined = [...value];
         copy.splice(index, 1);
         if (copy.length === 0) {
           copy = undefined;
@@ -72,12 +58,12 @@ const StandardChipGroup = (props: {
       }
       setValue(fieldConfig.attribute, option.value);
     }
-  };
+  }
 
   const componentProps = (
-    fieldConfig: StandardChipGroupProps,
-    option: Option,
-    value: unknown | Array<unknown>
+    fieldConfig: StandardChipGroupProps<T>,
+    option: Option<T>,
+    value: T
   ): ChipProps => {
     let isSelected: boolean;
     if (fieldConfig.multiple && Array.isArray(value)) {
@@ -109,7 +95,7 @@ const StandardChipGroup = (props: {
   };
 
   const containerProps = (
-    fieldConfig: StandardChipGroupProps
+    fieldConfig: StandardChipGroupProps<T>
   ): FormControlProps => {
     return {
       error: !!errors[fieldConfig.attribute],
@@ -143,6 +129,6 @@ const StandardChipGroup = (props: {
       )}
     />
   );
-};
+}
 
 export { StandardChipGroup };

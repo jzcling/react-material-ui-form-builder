@@ -2,18 +2,16 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { Add, Remove } from "@mui/icons-material";
-import { Box, BoxProps, IconButton, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 
-import { getTitleProps } from "../utils";
 import { CommonFieldProps, CounterFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
 export interface StandardCounterProps
-  extends CommonFieldProps,
+  extends CommonFieldProps<"counter">,
     CounterFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: BoxProps & { disabled?: boolean };
+  attribute: Required<CommonFieldProps<"counter">>["attribute"];
 }
 
 const StandardCounter = (props: {
@@ -27,7 +25,6 @@ const StandardCounter = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
   return (
     <Controller

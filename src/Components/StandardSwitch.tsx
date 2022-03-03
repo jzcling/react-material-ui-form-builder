@@ -3,16 +3,14 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import { FormControl, FormControlLabel, FormHelperText, Switch, SwitchProps } from "@mui/material";
 
-import { getTitleProps } from "../utils";
 import { CommonFieldProps, SwitchFieldProps } from "./props/FieldProps";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
 export interface StandardSwitchProps
-  extends CommonFieldProps,
+  extends CommonFieldProps<"switch">,
     SwitchFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  label: Required<CommonFieldProps>["label"];
-  props?: SwitchProps;
+  attribute: Required<CommonFieldProps<"switch">>["attribute"];
+  label: Required<CommonFieldProps<"switch">>["label"];
 }
 
 const StandardSwitch = (props: {
@@ -27,7 +25,6 @@ const StandardSwitch = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
   const handleSwitchChange = (checked: boolean, value?: unknown) => {
     if (checked) {

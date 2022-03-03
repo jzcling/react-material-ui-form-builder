@@ -3,20 +3,14 @@ import isObject from "lodash/isObject";
 
 import { shuffleArray } from "./";
 
-export interface AutocompleteOption<T = unknown> {
-  value: T;
-  label: string;
-}
+export type AutocompleteOption<T> = T | Array<T>;
 
 export interface AutocompleteOptionConfig {
   value?: string;
   label: string;
 }
 
-export function getOptions(
-  options?: Array<unknown | Record<string, unknown>>,
-  randomize?: boolean
-) {
+export function getOptions<T>(options?: Array<T>, randomize?: boolean) {
   let opts = options || [];
   if (randomize) {
     opts = shuffleArray(opts);
@@ -24,15 +18,12 @@ export function getOptions(
   return opts;
 }
 
-export function getOptionFromConfig(
-  option: unknown | Record<string, unknown>,
+export function getOptionFromConfig<T>(
+  option: T | Array<T>,
   config?: AutocompleteOptionConfig,
   multiple?: boolean
-): AutocompleteOption<unknown> {
-  const opt: AutocompleteOption = {
-    value: option,
-    label: String(option),
-  };
+): AutocompleteOption<T> {
+  let opt: AutocompleteOption<T> = option;
 
   if (!config) {
     return opt;
@@ -41,7 +32,7 @@ export function getOptionFromConfig(
   if (config.value) {
     // This is to account for the quirky behaviour of onChange returning an array
     if (multiple && Array.isArray(option)) {
-      const value = [];
+      const value: Array<T> = [];
       for (const item of option) {
         if (isObject(item)) {
           value.push(get(item, config.value));
@@ -49,26 +40,9 @@ export function getOptionFromConfig(
           value.push(item);
         }
       }
-      opt.value = value;
+      opt = value;
     } else {
-      opt.value = get(option, config.value);
-    }
-  }
-
-  if (config.label) {
-    // This is to account for the quirky behaviour of onChange returning an array
-    if (multiple && Array.isArray(option)) {
-      const label = [];
-      for (const item of option) {
-        if (isObject(item)) {
-          label.push(item);
-        } else {
-          label.push(get(item, config.label));
-        }
-      }
-      opt.label = String(label);
-    } else {
-      opt.label = get(option, config.label);
+      opt = get(option, config.value);
     }
   }
 
@@ -80,18 +54,28 @@ export function getOptionFromConfig(
   where it returns the option object when opening the selection box
   and returns the option value upon selection
   */
-export function getLabel(
-  option: unknown | Record<string, unknown>,
-  options: Array<unknown | Record<string, unknown>>,
-  config?: AutocompleteOptionConfig
+export function getLabel<T>(
+  option: T,
+  options: Array<T>,
+  config?: AutocompleteOptionConfig,
+  multiple?: boolean
 ) {
-  if (isObject(option)) {
-    return getOptionFromConfig(option).label;
+  // if not config, options must be primitive
+  if (!config) {
+    return String(option);
   }
+  if (isObject(option)) {
+    return String(get(option, config.label));
+  }
+  // if option is not an object, get option by value
+  // then get the label based on config
   if (config?.value) {
     const o =
-      options.find((o) => getOptionFromConfig(o).value === option) || {};
-    return getOptionFromConfig(o)?.label;
+      options.find(
+        (o) => getOptionFromConfig(o, config, multiple) === option
+      ) || {};
+    return String(get(o, config.label));
   }
-  return String(option);
+  // if all else fails, return option as string
+  return String(option || "");
 }

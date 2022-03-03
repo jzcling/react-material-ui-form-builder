@@ -1,14 +1,12 @@
 import React, { DetailedHTMLProps, Fragment, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-import { Theme } from "@emotion/react";
 import { Button, ButtonBase, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-import { getTitleProps } from "../utils";
 import { CommonFieldProps, FileType, FileUploadFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
 const fileTypes = [
   ".pdf",
@@ -39,13 +37,9 @@ function flattenDeep<T>(arr: Array<T>): Array<T> {
 }
 
 export interface StandardFileUploadProps
-  extends CommonFieldProps,
+  extends CommonFieldProps<"file-upload">,
     FileUploadFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >;
+  attribute: Required<CommonFieldProps<"file-upload">>["attribute"];
 }
 
 type FieldConfigProps = {
@@ -115,7 +109,6 @@ const StandardFileUpload = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
 
   const [fileErrors, setFileErrors] = useState<Array<string>>([]);
 

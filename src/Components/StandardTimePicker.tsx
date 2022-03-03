@@ -1,6 +1,6 @@
 import { format, parse } from "date-fns";
 import React, { Fragment, useCallback, useState } from "react";
-import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import { Schedule } from "@mui/icons-material";
 import {
@@ -9,15 +9,13 @@ import {
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
 
-import { getTitleProps } from "../utils";
 import { CommonFieldProps, DateTimeFieldProps } from "./props/FieldProps";
-import { Title, TitleProps } from "./widgets/Title";
+import { Title } from "./widgets/Title";
 
 export interface StandardTimePickerProps
-  extends CommonFieldProps,
+  extends CommonFieldProps<"time-picker">,
     DateTimeFieldProps {
-  attribute: Required<CommonFieldProps>["attribute"];
-  props?: TimePickerProps<Date>;
+  attribute: Required<CommonFieldProps<"time-picker">>["attribute"];
 }
 
 const StandardTimePicker = (props: {
@@ -32,7 +30,6 @@ const StandardTimePicker = (props: {
     formState: { errors },
   } = useFormContext();
   const { field: fieldConfig, showTitle } = props;
-  const titleProps: TitleProps = getTitleProps(fieldConfig);
   const [open, setOpen] = useState<boolean>();
 
   const component = useCallback(

@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FieldValues, FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 
 import { useValidation } from "../hooks/useValidation";
+import { Unpack } from "../utils";
 import {
-  GridColMap, StandardDisplayImageProps, StandardDisplayMediaProps
+  GridColMap, StandardCustomProps, StandardDisplayImageProps, StandardDisplayMediaProps,
+  StandardDisplayTextProps
 } from "./props/FieldProps";
 import { StandardAutocomplete, StandardAutocompleteProps } from "./StandardAutocomplete";
 import { StandardCheckboxGroup, StandardCheckboxGroupProps } from "./StandardCheckboxGroup";
@@ -56,7 +58,7 @@ const handleField = (
   field: FieldProp,
   index?: string | number,
   idPrefix?: string
-) => {
+): FieldProp => {
   if (!field.id) {
     field.id = field.attribute;
     if (index) {
@@ -70,37 +72,116 @@ const handleField = (
 };
 
 export type FieldProp =
-  | StandardAutocompleteProps
-  | StandardCheckboxGroupProps
-  | StandardChipGroupProps
+  | StandardAutocompleteProps<unknown>
+  | StandardCheckboxGroupProps<unknown>
+  | StandardChipGroupProps<unknown>
   | StandardCounterProps
   | StandardDatePickerProps
   | StandardDateTimePickerProps
   | StandardEditorProps
   | StandardFileUploadProps
   | StandardImagePickerProps
-  | StandardRadioGroupProps
+  | StandardRadioGroupProps<unknown>
   | StandardRatingProps
   | StandardSelectProps
   | StandardSwitchProps
   | StandardTextFieldProps
   | StandardTimePickerProps
+  | StandardDisplayTextProps
   | StandardDisplayImageProps
-  | StandardDisplayMediaProps;
+  | StandardDisplayMediaProps
+  | StandardCustomProps;
+
+function getFormComponent(field: FieldProp): JSX.Element {
+  switch (field.component) {
+    case "date-picker":
+      return <StandardDatePicker field={field as StandardDatePickerProps} />;
+    case "date-time-picker":
+      return (
+        <StandardDateTimePicker field={field as StandardDateTimePickerProps} />
+      );
+    case "time-picker":
+      return <StandardTimePicker field={field as StandardTimePickerProps} />;
+    case "select":
+      return <StandardSelect field={field as StandardSelectProps} />;
+    case "autocomplete":
+      return (
+        <StandardAutocomplete<Unpack<typeof field.options>>
+          field={
+            field as StandardAutocompleteProps<Unpack<typeof field.options>>
+          }
+        />
+      );
+    case "chip-group":
+      return (
+        <StandardChipGroup<Unpack<typeof field.options>>
+          field={field as StandardChipGroupProps<Unpack<typeof field.options>>}
+        />
+      );
+    case "checkbox-group":
+      return (
+        <StandardCheckboxGroup<Unpack<typeof field.options>>
+          field={
+            field as StandardCheckboxGroupProps<Unpack<typeof field.options>>
+          }
+        />
+      );
+    case "radio-group":
+      return (
+        <StandardRadioGroup<Unpack<typeof field.options>>
+          field={field as StandardRadioGroupProps<Unpack<typeof field.options>>}
+        />
+      );
+    case "switch":
+      return <StandardSwitch field={field as StandardSwitchProps} />;
+    case "file-upload":
+      return <StandardFileUpload field={field as StandardFileUploadProps} />;
+    case "image-picker":
+      return <StandardImagePicker field={field as StandardImagePickerProps} />;
+    case "rating":
+      return <StandardRating field={field as StandardRatingProps} />;
+    case "counter":
+      return <StandardCounter field={field as StandardCounterProps} />;
+    case "display-text":
+      return <Title field={field} />;
+    case "display-image":
+      let f: any = field as StandardDisplayImageProps;
+      return (
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <img
+            src={f.src}
+            alt={f.alt}
+            title={f.alt}
+            {...f.props}
+            loading="lazy"
+          />
+        </Box>
+      );
+    case "display-media":
+    // return await renderReactPlayer(field as StandardDisplayMediaProps);
+    case "rich-text":
+      return <StandardEditor field={field as StandardEditorProps} />;
+    case "custom":
+      return field.customComponent!(field as any);
+    case "text-field":
+    default:
+      return <StandardTextField field={field as StandardTextFieldProps} />;
+  }
+}
 
 interface FormBuilderProps {
   title?: string;
   fields: Array<FieldProp>;
-  initForm: Record<string, unknown>;
+  defaultValue: FieldValues;
   children?: React.ReactNode;
   index?: string | number;
   idPrefix?: string;
-  className: string;
-  onSubmit: (form: Record<string, unknown>) => void;
+  className?: string;
+  onSubmit: SubmitHandler<FieldValues>;
 }
 
-function FormBuilder(props: FormBuilderProps) {
-  const { title, fields, initForm, children, index, idPrefix, onSubmit } =
+function FormBuilder(props: FormBuilderProps): JSX.Element {
+  const { title, fields, defaultValue, children, index, idPrefix, onSubmit } =
     props;
   const { schema } = useValidation(fields);
   const methods = useForm({
@@ -109,73 +190,8 @@ function FormBuilder(props: FormBuilderProps) {
   });
 
   useEffect(() => {
-    methods.reset(initForm);
-  }, [initForm]);
-
-  const getFormComponent = (field: FieldProp) => {
-    switch (field.component) {
-      case "date-picker":
-        return <StandardDatePicker field={field as StandardDatePickerProps} />;
-      case "date-time-picker":
-        return (
-          <StandardDateTimePicker
-            field={field as StandardDateTimePickerProps}
-          />
-        );
-      case "time-picker":
-        return <StandardTimePicker field={field as StandardTimePickerProps} />;
-      case "select":
-        return <StandardSelect field={field as StandardSelectProps} />;
-      case "autocomplete":
-        return (
-          <StandardAutocomplete field={field as StandardAutocompleteProps} />
-        );
-      case "chip-group":
-        return <StandardChipGroup field={field as StandardChipGroupProps} />;
-      case "checkbox-group":
-        return (
-          <StandardCheckboxGroup field={field as StandardCheckboxGroupProps} />
-        );
-      case "radio-group":
-        return <StandardRadioGroup field={field as StandardRadioGroupProps} />;
-      case "switch":
-        return <StandardSwitch field={field as StandardSwitchProps} />;
-      case "file-upload":
-        return <StandardFileUpload field={field as StandardFileUploadProps} />;
-      case "image-picker":
-        return (
-          <StandardImagePicker field={field as StandardImagePickerProps} />
-        );
-      case "rating":
-        return <StandardRating field={field as StandardRatingProps} />;
-      case "counter":
-        return <StandardCounter field={field as StandardCounterProps} />;
-      case "display-text":
-        return <Title field={field} />;
-      case "display-image":
-        let f: any = field as StandardDisplayImageProps;
-        return (
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <img
-              src={f.src}
-              alt={f.alt}
-              title={f.alt}
-              {...f.props}
-              loading="lazy"
-            />
-          </Box>
-        );
-      case "display-media":
-        return renderReactPlayer(field as StandardDisplayMediaProps);
-      case "rich-text":
-        return <StandardEditor field={field as StandardEditorProps} />;
-      case "custom":
-        return field.customComponent!(field as any);
-      case "text-field":
-      default:
-        return <StandardTextField field={field as StandardTextFieldProps} />;
-    }
-  };
+    methods.reset(defaultValue);
+  }, [defaultValue]);
 
   return (
     <FormProvider {...methods}>
@@ -194,6 +210,7 @@ function FormBuilder(props: FormBuilderProps) {
 
             {fields?.map((field, index) => {
               field = handleField(field, index, idPrefix);
+              // const component = await getFormComponent(field);
               return (
                 !field.hideCondition && (
                   <Grid
@@ -211,6 +228,7 @@ function FormBuilder(props: FormBuilderProps) {
 
           {children}
         </Box>
+        <Button type="submit">Submit</Button>
       </form>
     </FormProvider>
   );

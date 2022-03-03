@@ -1,12 +1,13 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "0.9.32",
+  "version": "1.0.0",
   "scripts": {
     "build": "rm -rf dist && NODE_ENV=production rollup -c"
   },
   "description": "An easy-to-use and quick form builder using the following React Material UI input components:",
-  "main": "dist/cjs/index.js",
-  "module": "dist/es/index.js",
+  "main": "dist/cjs/index",
+  "module": "dist/es/index",
+  "typings": "dist/es/index",
   "files": [
     "dist/*"
   ],
@@ -28,20 +29,6 @@
   },
   "homepage": "https://github.com/jzcling/react-material-ui-form-builder#readme",
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.5",
-    "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-proposal-decorators": "^7.17.2",
-    "@babel/plugin-proposal-export-namespace-from": "^7.16.7",
-    "@babel/plugin-proposal-function-sent": "^7.16.7",
-    "@babel/plugin-proposal-json-strings": "^7.16.7",
-    "@babel/plugin-proposal-numeric-separator": "^7.16.7",
-    "@babel/plugin-proposal-throw-expressions": "^7.16.7",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-syntax-import-meta": "^7.10.4",
-    "@babel/plugin-transform-runtime": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@jeremyling/react-material-ui-rich-text-editor": "^0.3.8",
@@ -60,9 +47,6 @@
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "acorn-jsx": "^5.3.2",
-    "babel-plugin-direct-import": "^1.0.0",
-    "babel-plugin-lodash": "^3.3.4",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "date-fns": "^2.28.0",
     "eslint": "^8.10.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -72,13 +56,12 @@
     "eslint-plugin-react": "^7.29.2",
     "eslint-plugin-react-hooks": "^4.3.0",
     "lodash": "^4.17.21",
-    "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
-    "react-dom": "^17.0.2",
     "react-player": "^2.9.0",
     "rollup-plugin-analyzer": "^4.0.0",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-size-snapshot": "^0.12.0",
+    "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-terser": "^7.0.2",
     "slate": "^0.73.1",
     "slate-react": "^0.73.0",
@@ -125,7 +108,6 @@
     }
   },
   "dependencies": {
-    "@babel/runtime": "^7.17.2",
     "@hookform/resolvers": "^2.8.8",
     "react-hook-form": "^7.27.1",
     "yup": "^0.32.11"
