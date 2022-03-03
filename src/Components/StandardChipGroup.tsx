@@ -39,13 +39,13 @@ function StandardChipGroup<T>(props: {
     );
   }, [fieldConfig.options, fieldConfig.optionConfig]);
 
-  function handleChipClick<T>(option: Option<T>, value: T): void {
-    if (fieldConfig.multiple && Array.isArray(value)) {
-      const index = (value || []).findIndex((opt: T) =>
+  function handleChipClick(option: Option<T>, value: T | Array<T>): void {
+    if (fieldConfig.multiple) {
+      const index = ((value as Array<T>) || []).findIndex((opt: T) =>
         isEqual(opt, option.value)
       );
       if (index > -1) {
-        let copy: Array<Option<T>> | undefined = [...value];
+        let copy: Array<T> | undefined = [...(value as Array<T>)];
         copy.splice(index, 1);
         if (copy.length === 0) {
           copy = undefined;
@@ -53,7 +53,10 @@ function StandardChipGroup<T>(props: {
         setValue(fieldConfig.attribute, copy);
         return;
       }
-      setValue(fieldConfig.attribute, [...(value || []), option.value]);
+      setValue(fieldConfig.attribute, [
+        ...((value as Array<T>) || []),
+        option.value,
+      ]);
     } else {
       if (isEqual(value, option.value)) {
         setValue(fieldConfig.attribute, undefined);
@@ -66,7 +69,7 @@ function StandardChipGroup<T>(props: {
   const componentProps = (
     fieldConfig: StandardChipGroupProps<T>,
     option: Option<T>,
-    value: T
+    value: T | Array<T>
   ): ChipProps => {
     let isSelected: boolean;
     if (fieldConfig.multiple && Array.isArray(value)) {

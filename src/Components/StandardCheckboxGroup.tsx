@@ -46,20 +46,23 @@ function StandardCheckboxGroup<T>(props: {
     );
   }, [fieldConfig.options, fieldConfig.optionConfig]);
 
-  function handleCheckboxChange<T>(
+  function handleCheckboxChange(
     option: Option<T>,
     checked: boolean,
-    value: T
+    value: T | Array<T>
   ) {
-    if (fieldConfig.multiple && Array.isArray(value)) {
+    if (fieldConfig.multiple) {
       if (checked) {
-        setValue(fieldConfig.attribute, [...(value || []), option.value]);
+        setValue(fieldConfig.attribute, [
+          ...((value as Array<T>) || []),
+          option.value,
+        ]);
       } else {
-        const index = (value || []).findIndex((value) =>
+        const index = ((value as Array<T>) || []).findIndex((value) =>
           isEqual(value, option.value)
         );
         if (index > -1) {
-          let copy: Array<T> | undefined = [...value];
+          let copy: Array<T> | undefined = [...(value as Array<T>)];
           copy.splice(index, 1);
           if (copy.length === 0) {
             copy = undefined;
@@ -80,7 +83,7 @@ function StandardCheckboxGroup<T>(props: {
   const componentProps = (
     fieldConfig: StandardCheckboxGroupProps<T>,
     option: Option<T>,
-    value: T
+    value: T | Array<T>
   ): CheckboxProps => {
     let isSelected: boolean;
     if (fieldConfig.multiple && Array.isArray(value)) {
