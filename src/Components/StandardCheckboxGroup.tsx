@@ -15,11 +15,11 @@ export interface StandardCheckboxGroupProps<T>
   extends CommonFieldProps<"checkbox-group"> {
   attribute: Required<CommonFieldProps<"checkbox-group">>["attribute"];
   options: MultiOptionFieldProps<T>["options"];
-  optionConfig: MultiOptionFieldProps<T>["optionConfig"];
-  randomizeOptions: MultiOptionFieldProps<T>["randomizeOptions"];
-  multiple: MultiOptionFieldProps<T>["multiple"];
-  labelProps: MultiOptionFieldProps<T>["labelProps"];
-  groupContainerProps: MultiOptionFieldProps<T>["groupContainerProps"];
+  optionConfig?: MultiOptionFieldProps<T>["optionConfig"];
+  randomizeOptions?: MultiOptionFieldProps<T>["randomizeOptions"];
+  multiple?: MultiOptionFieldProps<T>["multiple"];
+  labelProps?: MultiOptionFieldProps<T>["labelProps"];
+  groupContainerProps?: MultiOptionFieldProps<T>["groupContainerProps"];
 }
 
 function StandardCheckboxGroup<T>(props: {

@@ -183,7 +183,7 @@ export interface AutocompleteFieldProps<T> {
 export interface ChipGroupFieldProps<T> {
   options: Array<T>;
   /** Required if options is an array of objects. */
-  optionConfig: T extends Object ? OptionConfig : OptionConfig | undefined;
+  optionConfig?: OptionConfig;
   /** If true, randomises option order on each render */
   randomizeOptions?: boolean;
   /** If true, multiple options will be selectible */

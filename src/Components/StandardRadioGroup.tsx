@@ -15,10 +15,10 @@ export interface StandardRadioGroupProps<T>
   extends CommonFieldProps<"radio-group"> {
   attribute: Required<CommonFieldProps<"radio-group">>["attribute"];
   options: MultiOptionFieldProps<T>["options"];
-  optionConfig: MultiOptionFieldProps<T>["optionConfig"];
-  randomizeOptions: MultiOptionFieldProps<T>["randomizeOptions"];
-  labelProps: MultiOptionFieldProps<T>["labelProps"];
-  groupContainerProps: MultiOptionFieldProps<T>["groupContainerProps"];
+  optionConfig?: MultiOptionFieldProps<T>["optionConfig"];
+  randomizeOptions?: MultiOptionFieldProps<T>["randomizeOptions"];
+  labelProps?: MultiOptionFieldProps<T>["labelProps"];
+  groupContainerProps?: MultiOptionFieldProps<T>["groupContainerProps"];
 }
 
 function StandardRadioGroup<T>(props: {
