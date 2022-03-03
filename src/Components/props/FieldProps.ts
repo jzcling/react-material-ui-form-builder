@@ -315,10 +315,6 @@ export interface CounterFieldProps {
 }
 
 export interface RichTextFieldProps {
-  /** HTML to be deserialized as content */
-  html?: string;
-  /** Method to update html, taking serialized html as argument */
-  updateHtml?: (html: string) => void;
   /* Props to pass to the Material UI Paper wrapper */
   groupContainerProps?: PaperProps;
   /** Props to pass to the Slate Editable component */

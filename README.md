@@ -481,12 +481,10 @@ This includes `counter`.
 
 ### Rich Text
 
-| Prop           | Type     | Default        | Description                                               |
-| -------------- | -------- | -------------- | --------------------------------------------------------- |
-| html           | `string` | `undefined`    | HTML to be deserialized as content                        |
-| updateHtml     | `func`   | `(html) => {}` | Method to update html, taking serialized html as argument |
-| containerProps | `object` | `undefined`    | Props to pass to the Material UI Paper wrapper            |
-| editableProps  | `object` | `undefined`    | Props to pass to the Slate Editable component             |
+| Prop           | Type     | Default     | Description                                    |
+| -------------- | -------- | ----------- | ---------------------------------------------- |
+| containerProps | `object` | `undefined` | Props to pass to the Material UI Paper wrapper |
+| editableProps  | `object` | `undefined` | Props to pass to the Slate Editable component  |
 
 ## Validation
 
