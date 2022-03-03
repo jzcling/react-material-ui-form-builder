@@ -48,7 +48,7 @@ const StandardDateTimePicker = (props: {
   ): DateTimePickerProps<Date> => {
     return {
       ampm: false,
-      inputFormat: "dd/MM/yyyy HH:mm:ss",
+      inputFormat: "dd/MM/yyyy HH:mm",
       label: fieldConfig.label,
       InputProps: {
         endAdornment: (
@@ -58,8 +58,8 @@ const StandardDateTimePicker = (props: {
             </IconButton>
           </InputAdornment>
         ),
-        style: {
-          paddingRight: 0,
+        sx: {
+          pr: fieldConfig.keyboard ? undefined : 0,
         },
       },
       open: !!open,
@@ -71,7 +71,7 @@ const StandardDateTimePicker = (props: {
       onChange: (value) => {
         if (value) {
           try {
-            const formatted = format(value, "yyyy-MM-dd HH:mm:ss");
+            const formatted = format(value, "yyyy-MM-dd HH:mm:00");
             setValue(fieldConfig.attribute, formatted);
           } catch (error) {
             console.log(error);

@@ -58,7 +58,7 @@ const StandardDatePicker = (props: {
           </InputAdornment>
         ),
         sx: {
-          pr: 0,
+          pr: fieldConfig.keyboard ? undefined : 0,
         },
       },
       open: !!open,

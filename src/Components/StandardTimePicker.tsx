@@ -48,7 +48,7 @@ const StandardTimePicker = (props: {
   ): TimePickerProps<Date> => {
     return {
       ampm: false,
-      inputFormat: "HH:mm:ss",
+      inputFormat: "HH:mm",
       label: fieldConfig.label,
       InputProps: {
         endAdornment: (
@@ -58,8 +58,8 @@ const StandardTimePicker = (props: {
             </IconButton>
           </InputAdornment>
         ),
-        style: {
-          paddingRight: 0,
+        sx: {
+          pr: fieldConfig.keyboard ? undefined : 0,
         },
       },
       open: !!open,
@@ -69,7 +69,7 @@ const StandardTimePicker = (props: {
       onChange: (value) => {
         if (value) {
           try {
-            const formatted = format(value, "HH:mm:ss");
+            const formatted = format(value, "HH:mm:00");
             setValue(fieldConfig.attribute, formatted);
           } catch (error) {
             console.log(error);
