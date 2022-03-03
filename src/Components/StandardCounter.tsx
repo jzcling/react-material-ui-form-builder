@@ -16,7 +16,7 @@ export interface StandardCounterProps
 
 const StandardCounter = (props: {
   field: StandardCounterProps;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) => {
   const {
     control,
@@ -24,7 +24,7 @@ const StandardCounter = (props: {
     setValue,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
 
   return (
     <Controller
@@ -38,7 +38,7 @@ const StandardCounter = (props: {
             alignItems: "center",
           }}
         >
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <Tooltip title="Reduce">
             <span>
               <IconButton

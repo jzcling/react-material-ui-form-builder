@@ -118,7 +118,7 @@ function sanitizeImageCols(col?: GridColMap): GridColMap {
 
 const StandardImagePicker = (props: {
   field: StandardImagePickerProps;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) => {
   const {
     control,
@@ -127,7 +127,7 @@ const StandardImagePicker = (props: {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
   const theme = useTheme();
   const { widthType } = useDimensions();
 
@@ -226,7 +226,7 @@ const StandardImagePicker = (props: {
       defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Fragment>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <ImageListRoot>
             <StyledImageList
               {...containerProps(fieldConfig)}

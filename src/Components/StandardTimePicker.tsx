@@ -20,7 +20,7 @@ export interface StandardTimePickerProps
 
 const StandardTimePicker = (props: {
   field: StandardTimePickerProps;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) => {
   const {
     control,
@@ -29,7 +29,7 @@ const StandardTimePicker = (props: {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
   const [open, setOpen] = useState<boolean>();
 
   const component = useCallback(
@@ -103,7 +103,7 @@ const StandardTimePicker = (props: {
       defaultValue={getValues(fieldConfig.attribute)}
       render={({ field }) => (
         <Fragment>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <Box>
             <LocalizationProvider dateAdapter={DateAdapter}>
               {component(componentProps(fieldConfig, field.value))}

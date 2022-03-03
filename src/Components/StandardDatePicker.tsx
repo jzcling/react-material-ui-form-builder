@@ -20,7 +20,7 @@ export interface StandardDatePickerProps
 
 const StandardDatePicker = (props: {
   field: StandardDatePickerProps;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) => {
   const {
     control,
@@ -29,7 +29,7 @@ const StandardDatePicker = (props: {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
   const [open, setOpen] = useState<boolean>();
 
   const component = useCallback(
@@ -102,7 +102,7 @@ const StandardDatePicker = (props: {
       defaultValue={getValues(fieldConfig.attribute)}
       render={({ field }) => (
         <Fragment>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <Box>
             <LocalizationProvider dateAdapter={DateAdapter}>
               {component(componentProps(fieldConfig, field.value))}

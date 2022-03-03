@@ -18,7 +18,7 @@ export interface StandardChipGroupProps<T>
 
 function StandardChipGroup<T>(props: {
   field: StandardChipGroupProps<T>;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) {
   const {
     control,
@@ -27,7 +27,7 @@ function StandardChipGroup<T>(props: {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
 
   const options: Array<Option<T>> = useMemo(() => {
     let options = fieldConfig.options || [];
@@ -120,7 +120,7 @@ function StandardChipGroup<T>(props: {
       defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Fragment>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormGroup>
             <FormControl
               component={"fieldset" as "div"}

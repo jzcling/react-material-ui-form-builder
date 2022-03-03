@@ -16,7 +16,7 @@ export interface StandardRatingProps
 
 const StandardRating = (props: {
   field: StandardRatingProps;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) => {
   const {
     control,
@@ -24,7 +24,7 @@ const StandardRating = (props: {
     setValue,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
 
   const componentProps = (
     fieldConfig: StandardRatingProps,
@@ -54,7 +54,7 @@ const StandardRating = (props: {
       defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Box>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <Rating {...componentProps(fieldConfig, field)} />
           {!!errors[fieldConfig.attribute] && (
             <ErrorText error={errors[fieldConfig.attribute].message} />

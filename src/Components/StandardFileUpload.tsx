@@ -99,7 +99,7 @@ const StyledButtonBase = styled(ButtonBase)(() => ({
 
 const StandardFileUpload = (props: {
   field: StandardFileUploadProps;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) => {
   const {
     control,
@@ -108,7 +108,7 @@ const StandardFileUpload = (props: {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
 
   const [fileErrors, setFileErrors] = useState<Array<string>>([]);
 
@@ -188,7 +188,7 @@ const StandardFileUpload = (props: {
       defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Fragment>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <input {...componentProps(fieldConfig)} />
           <label
             htmlFor={componentProps(fieldConfig).id}

@@ -18,7 +18,7 @@ export interface StandardSelectProps extends CommonFieldProps<"select"> {
 
 const StandardSelect = (props: {
   field: StandardSelectProps;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) => {
   const {
     control,
@@ -27,7 +27,7 @@ const StandardSelect = (props: {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
 
   const options: Array<Option<string | number>> = useMemo(() => {
     let options = fieldConfig.options || [];
@@ -66,7 +66,7 @@ const StandardSelect = (props: {
       defaultValue={getValues(fieldConfig.attribute) || ""}
       render={({ field }) => (
         <Fragment>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormControl
             variant="outlined"
             fullWidth

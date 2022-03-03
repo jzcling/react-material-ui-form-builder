@@ -12,7 +12,7 @@ export interface StandardTextFieldProps extends CommonFieldProps<"text-field"> {
 
 const StandardTextField = (props: {
   field: StandardTextFieldProps;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) => {
   const {
     control,
@@ -20,7 +20,7 @@ const StandardTextField = (props: {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
 
   const componentProps = (
     fieldConfig: StandardTextFieldProps,
@@ -50,7 +50,7 @@ const StandardTextField = (props: {
       defaultValue={getValues(fieldConfig.attribute) || ""}
       render={({ field }) => (
         <Fragment>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <TextField {...componentProps(fieldConfig, field)} />
         </Fragment>
       )}

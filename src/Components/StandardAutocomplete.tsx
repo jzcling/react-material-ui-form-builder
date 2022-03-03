@@ -104,7 +104,7 @@ async function renderDnd<T>(
 
 function StandardAutocomplete<T>(props: {
   field: StandardAutocompleteProps<T>;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) {
   const {
     control,
@@ -113,7 +113,7 @@ function StandardAutocomplete<T>(props: {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
   const [focused, setFocused] = useState<boolean>();
 
   const options = getOptions<T>(
@@ -282,7 +282,7 @@ function StandardAutocomplete<T>(props: {
       control={control}
       render={({ field }) => (
         <Fragment>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           {fieldConfig.props?.multiple ? (
             <Autocomplete
               {...multipleComponentProps(fieldConfig, field.value)}

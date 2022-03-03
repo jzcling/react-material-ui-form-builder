@@ -13,10 +13,7 @@ export interface StandardEditorProps
   attribute: Required<CommonFieldProps<"rich-text">>["attribute"];
 }
 
-const StandardEditor = (props: {
-  field: StandardEditorProps;
-  showTitle?: boolean;
-}) => {
+const StandardEditor = (props: { field: StandardEditorProps }) => {
   const {
     control,
     getValues,

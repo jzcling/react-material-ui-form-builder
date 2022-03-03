@@ -25,7 +25,7 @@ export interface StandardCheckboxGroupProps<T>
 
 function StandardCheckboxGroup<T>(props: {
   field: StandardCheckboxGroupProps<T>;
-  showTitle?: boolean;
+  hideTitle?: boolean;
 }) {
   const {
     control,
@@ -34,7 +34,7 @@ function StandardCheckboxGroup<T>(props: {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { field: fieldConfig, showTitle } = props;
+  const { field: fieldConfig, hideTitle } = props;
 
   const options: Array<Option<T>> = useMemo(() => {
     let options = fieldConfig.options || [];
@@ -121,7 +121,7 @@ function StandardCheckboxGroup<T>(props: {
       defaultValue={getValues(fieldConfig.attribute) || 0}
       render={({ field }) => (
         <Fragment>
-          {showTitle && fieldConfig.title && <Title field={fieldConfig} />}
+          {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <FormGroup>
             <FormControl
               component={"fieldset" as "div"}
