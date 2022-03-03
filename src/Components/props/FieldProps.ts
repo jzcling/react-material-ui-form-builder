@@ -6,9 +6,10 @@ import { DatePickerProps, DateTimePickerProps, TimePickerProps } from "@mui/lab"
 import {
   AutocompleteProps, BoxProps, ButtonBaseProps, CheckboxProps, ChipProps, FormControlLabelProps,
   FormControlProps, GridProps, ImageListProps, PaperProps, RadioProps, RatingProps, SelectProps,
-  StandardProps, SwitchProps, TextFieldProps, TypographyProps
+  SwitchProps, TextFieldProps, TypographyProps
 } from "@mui/material";
 
+import { SchemaType } from "../../hooks/useValidation";
 import { AutocompleteOptionConfig } from "../../utils/autocomplete";
 import { OptionConfig } from "../../utils/options";
 import { TitleProps } from "../widgets/Title";
@@ -142,7 +143,7 @@ export interface CommonFieldProps {
   /** Hides field if truthy */
   hideCondition?: boolean;
   /** One of: `mixed`, `string`, `number`, `date`, `boolean`, `array` */
-  validationType?: SchemaType;
+  validationType?: keyof SchemaType;
   /** These are validation options accepted by `yup` in the form of `{validation: arguments}`.
    * Arguments can be a `string` or an `array` of strings in the order that it is accepted
    * by the `yup` option. For validations that do not require any arguments, set the argument
@@ -350,16 +351,6 @@ export interface GridColMap {
   lg?: number;
   xl?: number;
 }
-
-export const SchemaType = {
-  Mixed: "mixed",
-  String: "string",
-  Number: "number",
-  Date: "date",
-  Boolean: "boolean",
-  Array: "array",
-} as const;
-export type SchemaType = typeof SchemaType[keyof typeof SchemaType];
 
 export const ValidationMethod = {
   Required: "required",

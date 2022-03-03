@@ -2,9 +2,11 @@ import React from "react";
 import * as yup from "yup";
 
 import { FieldProp } from "../components/FormBuilder";
-import { SchemaType, Validation, ValidationMethod } from "../components/props/FieldProps";
+import { Validation } from "../components/props/FieldProps";
 
-function useValidation(fields: Array<FieldProp>) {
+function useValidation(fields: Array<FieldProp>): {
+  schema: yup.AnyObjectSchema;
+} {
   const formSchema: { [x: string]: yup.AnySchema } = {};
   for (const field of fields) {
     if (field.attribute) {
@@ -21,11 +23,11 @@ function useValidation(fields: Array<FieldProp>) {
   return { schema };
 }
 
-function getFieldSchema(
-  schemaType?: SchemaType,
+function getFieldSchema<T extends keyof SchemaType>(
+  schemaType?: T,
   validations?: Array<Validation>,
   label?: string
-): any {
+): SchemaType[T] {
   let schema: any;
 
   switch (schemaType) {
@@ -67,3 +69,12 @@ function getFieldSchema(
 }
 
 export { useValidation };
+
+export type SchemaType = {
+  string: yup.StringSchema;
+  number: yup.NumberSchema;
+  boolean: yup.BooleanSchema;
+  date: yup.DateSchema;
+  array: yup.ArraySchema<yup.AnySchema>;
+  mixed: yup.AnySchema;
+};
