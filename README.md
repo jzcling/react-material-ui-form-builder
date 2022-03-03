@@ -406,9 +406,11 @@ This includes `select`, `autocomplete`, `chip-group`, `checkbox-group` and `radi
 
 This includes `switch`.
 
-| Prop       | Type     | Default     | Description                                                                          |
-| ---------- | -------- | ----------- | ------------------------------------------------------------------------------------ |
-| labelProps | `object` | `undefined` | Any additional props to pass to Material UI's FormControlLabel that wraps the label. |
+| Prop                                | Type     | Default         | Description                                                                          |
+| ----------------------------------- | -------- | --------------- | ------------------------------------------------------------------------------------ |
+| options                             | `array`  | `[false, true]` | Options for switch in the form of `[offValue, onValue]`. Values must be              |
+| \* `string`, `number` or `boolean`. |
+| labelProps                          | `object` | `undefined`     | Any additional props to pass to Material UI's FormControlLabel that wraps the label. |
 
 ### Date/Time Pickers
 

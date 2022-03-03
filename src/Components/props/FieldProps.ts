@@ -200,6 +200,10 @@ export interface ChipGroupFieldProps<T> {
 }
 
 export interface SwitchFieldProps {
+  /** Options for switch in the form of `[offValue, onValue]`. Values must be
+   * `string`, `number` or `boolean`.
+   */
+  options?: [string | number | boolean, string | number | boolean];
   /**
    * Any additional props to pass to Material UI's FormControlLabel that wraps the label.
    * */

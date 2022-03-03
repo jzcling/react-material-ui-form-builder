@@ -26,25 +26,29 @@ const StandardSwitch = (props: {
   } = useFormContext();
   const { field: fieldConfig, hideTitle } = props;
 
-  const handleSwitchChange = (checked: boolean, value?: unknown) => {
+  const handleSwitchChange = (
+    checked: boolean,
+    options: [string | number | boolean, string | number | boolean]
+  ) => {
     if (checked) {
-      setValue(fieldConfig.attribute, value);
+      setValue(fieldConfig.attribute, options[1]);
     } else {
-      setValue(fieldConfig.attribute, undefined);
+      setValue(fieldConfig.attribute, options[0]);
     }
   };
 
   const componentProps = (
     fieldConfig: StandardSwitchProps,
-    value?: unknown
+    value?: string | number | boolean
   ): SwitchProps => {
+    const options = fieldConfig.options || [false, true];
     return {
       id: fieldConfig.attribute,
       key: fieldConfig.attribute,
       size: "small",
       color: "primary",
-      checked: !!value,
-      onChange: (event) => handleSwitchChange(event.target.checked, value),
+      checked: value === options[1],
+      onChange: (event) => handleSwitchChange(event.target.checked, options),
       onBlur: () => trigger(fieldConfig.attribute),
       ...fieldConfig.props,
     };
