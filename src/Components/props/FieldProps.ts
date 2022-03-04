@@ -373,36 +373,40 @@ export const FileType = {
 export type FileType = typeof FileType[keyof typeof FileType];
 
 export type ComponentType = {
-  "text-field": TextFieldProps;
-  select: SelectProps;
-  "date-picker": DatePickerProps<Date>;
-  "date-time-picker": DateTimePickerProps<Date>;
-  "time-picker": TimePickerProps<Date>;
+  "text-field": Partial<TextFieldProps>;
+  select: Partial<SelectProps>;
+  "date-picker": Partial<DatePickerProps<Date>>;
+  "date-time-picker": Partial<DateTimePickerProps<Date>>;
+  "time-picker": Partial<TimePickerProps<Date>>;
   autocomplete:
-    | AutocompleteProps<unknown, true, true, true>
-    | AutocompleteProps<unknown, false, true, true>;
-  "chip-group": ChipProps & {
+    | Partial<AutocompleteProps<unknown, true, true, true>>
+    | Partial<AutocompleteProps<unknown, false, true, true>>;
+  "chip-group": Partial<ChipProps> & {
     onClick?: (
       option: Option<unknown>,
       value: unknown | Array<unknown>
     ) => MouseEventHandler;
   };
-  "checkbox-group": CheckboxProps;
-  "radio-group": RadioProps;
-  switch: SwitchProps;
-  "file-upload": DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
+  "checkbox-group": Partial<CheckboxProps>;
+  "radio-group": Partial<RadioProps>;
+  switch: Partial<SwitchProps>;
+  "file-upload": Partial<
+    DetailedHTMLProps<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    >
   >;
-  "image-picker": ButtonBaseProps<"div", { component: "div" }>;
-  rating: RatingProps;
-  counter: BoxProps & { disabled?: boolean };
+  "image-picker": Partial<ButtonBaseProps<"div", { component: "div" }>>;
+  rating: Partial<RatingProps>;
+  counter: Partial<BoxProps> & { disabled?: boolean };
   "display-text": undefined;
-  "display-image": DetailedHTMLProps<
-    React.ImgHTMLAttributes<HTMLImageElement>,
-    HTMLImageElement
+  "display-image": Partial<
+    DetailedHTMLProps<
+      React.ImgHTMLAttributes<HTMLImageElement>,
+      HTMLImageElement
+    >
   >;
-  "display-media": ReactPlayerProps;
-  "rich-text": EditableProps;
+  "display-media": Partial<ReactPlayerProps>;
+  "rich-text": Partial<EditableProps>;
   custom: any;
 };
