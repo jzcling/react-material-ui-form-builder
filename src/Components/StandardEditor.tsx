@@ -1,3 +1,5 @@
+import "@jeremyling/react-material-ui-rich-text-editor/dist/editor.css";
+
 import React, { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
