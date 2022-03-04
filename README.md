@@ -30,24 +30,18 @@ To reduce redundant packages, you need not install the peer dependencies of the 
 
 ```js
 // Required
-@material-ui/core
+@mui/material
 lodash
 
 // Date/Time Pickers
 @date-io/date-fns
 date-fns
-@material-ui/pickers
-@material-ui/icons
+@mui/icons-material
 
 // Rating
-@material-ui/icons
-@material-ui/lab
+@mui/icons-material
 
 // Autocomplete
-@material-ui/lab
-
-// Autocomplete DnD
-@material-ui/lab
 react-beautiful-dnd
 
 // Rich Text
