@@ -353,7 +353,7 @@ export type ValidationMethod =
 
 export type Validation = [
   ValidationMethod,
-  true | string | number | RegExp | Array<any>
+  true | string | number | Date | RegExp | Array<any>
 ];
 
 export interface ImagePickerObject {
