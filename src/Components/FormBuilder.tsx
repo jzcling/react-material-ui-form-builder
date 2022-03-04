@@ -169,6 +169,12 @@ function getFormComponent(field: FieldProp) {
   }
 }
 
+interface Error {
+  attribute: string;
+  type: string;
+  message: string;
+}
+
 interface FormBuilderProps {
   title?: string;
   fields: Array<FieldProp>;
@@ -179,6 +185,7 @@ interface FormBuilderProps {
   className?: string;
   onSubmit: SubmitHandler<FieldValues>;
   submitButton?: React.ReactNode;
+  errors?: Array<Error>;
 }
 
 function FormBuilder(props: FormBuilderProps) {
@@ -191,6 +198,7 @@ function FormBuilder(props: FormBuilderProps) {
     idPrefix,
     onSubmit,
     submitButton,
+    errors,
   } = props;
   const { schema } = useValidation(fields);
   const methods = useForm({
@@ -201,6 +209,17 @@ function FormBuilder(props: FormBuilderProps) {
   useEffect(() => {
     methods.reset(defaultValue);
   }, [defaultValue]);
+
+  useEffect(() => {
+    if (errors) {
+      for (const error of errors) {
+        methods.setError(error.attribute, {
+          type: error.type,
+          message: error.message,
+        });
+      }
+    }
+  }, [errors]);
 
   return (
     <FormProvider {...methods}>
