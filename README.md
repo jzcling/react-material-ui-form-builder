@@ -46,11 +46,15 @@ date-fns
 react-beautiful-dnd
 
 // Rich Text
+slate
+slate-react
+react-mui-color
 @jeremyling/react-material-ui-rich-text-editor
 @jeremyling/react-material-ui-rich-text-editor/dist/editor.css
 
 // Display Media
 react-player
+
 ```
 
 ## Usage Example
