@@ -1,13 +1,13 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "build": "rm -rf dist && NODE_ENV=production rollup -c"
   },
   "description": "An easy-to-use and quick form builder using the following React Material UI input components:",
-  "main": "dist/cjs/index",
-  "module": "dist/es/index",
-  "typings": "dist/es/index",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "dist/cjs/index.d.ts",
   "files": [
     "dist/*"
   ],

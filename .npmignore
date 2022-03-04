@@ -23,3 +23,7 @@ yarn-error.log*
 .size-snapshot.json
 .eslintrc.js
 rollup.config.js
+
+.vscode
+.rollup.cache
+tsconfig.tsbuildinfo
