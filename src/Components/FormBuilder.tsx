@@ -92,7 +92,7 @@ export type FieldProp =
   | StandardDisplayMediaProps
   | StandardCustomProps;
 
-function getFormComponent(field: FieldProp): JSX.Element {
+function getFormComponent(field: FieldProp) {
   switch (field.component) {
     case "date-picker":
       return <StandardDatePicker field={field as StandardDatePickerProps} />;
@@ -178,11 +178,20 @@ interface FormBuilderProps {
   idPrefix?: string;
   className?: string;
   onSubmit: SubmitHandler<FieldValues>;
+  submitButton?: React.ReactNode;
 }
 
-function FormBuilder(props: FormBuilderProps): JSX.Element {
-  const { title, fields, defaultValue, children, index, idPrefix, onSubmit } =
-    props;
+function FormBuilder(props: FormBuilderProps) {
+  const {
+    title,
+    fields,
+    defaultValue,
+    children,
+    index,
+    idPrefix,
+    onSubmit,
+    submitButton,
+  } = props;
   const { schema } = useValidation(fields);
   const methods = useForm({
     mode: "onTouched",
@@ -195,7 +204,7 @@ function FormBuilder(props: FormBuilderProps): JSX.Element {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
         <Box
           key={String(index)}
           className={props.className}
@@ -214,7 +223,7 @@ function FormBuilder(props: FormBuilderProps): JSX.Element {
               return (
                 !field.hideCondition && (
                   <Grid
-                    key={field.id || index}
+                    key={field.attribute || index}
                     item
                     {...sanitizeColProps(field.col)}
                     {...field.containerProps}
@@ -228,7 +237,7 @@ function FormBuilder(props: FormBuilderProps): JSX.Element {
 
           {children}
         </Box>
-        <Button type="submit">Submit</Button>
+        {submitButton ? submitButton : <Button type="submit">Submit</Button>}
       </form>
     </FormProvider>
   );
