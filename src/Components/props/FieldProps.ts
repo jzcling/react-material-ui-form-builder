@@ -117,7 +117,7 @@ export interface CommonFieldProps<T extends keyof ComponentType> {
   props?: ComponentType[T];
   /** Any additional props to pass to the Material UI Grid item that contains the component */
   containerProps?: GridProps;
-  /** Hides field if truthy */
+  /** If true, hides field */
   hideCondition?: boolean;
   /** One of: `mixed`, `string`, `number`, `date`, `boolean`, `array` */
   validationType?: keyof SchemaType;
