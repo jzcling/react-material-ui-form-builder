@@ -30,6 +30,7 @@ const config = [
       StandardSwitch: "src/components/StandardSwitch.tsx",
       StandardTextField: "src/components/StandardTextField.tsx",
       StandardTimePicker: "src/components/StandardTimePicker.tsx",
+      useValidation: "src/hooks/useValidation.tsx",
       FormBuilder: "src/components/FormBuilder.tsx",
     },
     output: [
