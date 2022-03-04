@@ -127,7 +127,7 @@ export interface CommonFieldProps<T extends keyof ComponentType> {
    * to `true`. */
   validations?: Array<Validation>;
   /** Function that accepts the props `(field, ref)` and returns a node */
-  customComponent?: (field: unknown) => JSX.Element;
+  customComponent?: (field: unknown) => React.ReactNode;
 }
 
 export interface MultiOptionFieldProps<T> {
@@ -361,7 +361,7 @@ export interface ImagePickerObject {
   label: string;
   subLabel?: string;
   alt?: string;
-  customComponent: JSX.Element;
+  customComponent: React.ReactNode;
 }
 
 export const FileType = {

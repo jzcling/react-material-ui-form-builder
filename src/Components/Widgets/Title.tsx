@@ -6,7 +6,7 @@ export interface TitleProps {
   title?: string;
   titleProps?: TypographyProps;
   titleContainerProps?: BoxProps;
-  titleSuffixComponent?: JSX.Element;
+  titleSuffixComponent?: React.ReactNode;
   titleSuffix?: string;
   titleSuffixProps?: DetailedHTMLProps<
     React.HTMLAttributes<HTMLSpanElement>,

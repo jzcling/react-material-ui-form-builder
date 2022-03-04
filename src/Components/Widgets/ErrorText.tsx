@@ -7,7 +7,7 @@ interface ErrorProps {
   error: string;
 }
 
-export default function ErrorText(props: ErrorProps): JSX.Element {
+export default function ErrorText(props: ErrorProps) {
   const { error } = props;
   const theme = useTheme();
 

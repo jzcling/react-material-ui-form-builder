@@ -34,7 +34,7 @@ async function renderDnd<T>(
   options: Array<T>,
   fieldConfig: StandardAutocompleteProps<T>,
   getTagProps: AutocompleteRenderGetTagProps
-): Promise<JSX.Element> {
+): Promise<React.ReactNode> {
   const dnd = await import("react-beautiful-dnd");
   const { DragDropContext, Draggable, Droppable } = dnd;
 
