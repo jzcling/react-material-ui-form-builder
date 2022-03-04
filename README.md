@@ -37,6 +37,7 @@ lodash
 @date-io/date-fns
 date-fns
 @mui/icons-material
+@mui/lab
 
 // Rating
 @mui/icons-material
