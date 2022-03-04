@@ -1,6 +1,6 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "scripts": {
     "build": "rm -rf dist && NODE_ENV=production rollup -c"
   },
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
-    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.9",
+    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.10",
     "@mui/icons-material": "^5.4.4",
     "@mui/lab": "^5.0.0-alpha.71",
     "@mui/material": "^5.4.4",
@@ -59,7 +59,7 @@
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
-    "react-mui-color": "^0.1.4",
+    "react-mui-color": "^0.1.5",
     "react-player": "^2.9.0",
     "rollup-plugin-analyzer": "^4.0.0",
     "rollup-plugin-auto-external": "^2.0.0",
@@ -73,7 +73,7 @@
   "peerDependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
-    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.9",
+    "@jeremyling/react-material-ui-rich-text-editor": "^0.3.10",
     "@mui/icons-material": "^5.4.4",
     "@mui/lab": "^5.0.0-alpha.71",
     "@mui/material": "^5.4.4",
@@ -85,7 +85,7 @@
     "react-player": "^2.9.0",
     "slate": "^0.73.1",
     "slate-react": "^0.74.0",
-    "react-mui-color": "^0.1.4"
+    "react-mui-color": "^0.1.5"
   },
   "peerDependenciesMeta": {
     "@jeremyling/react-material-ui-rich-text-editor": {
