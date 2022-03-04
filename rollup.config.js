@@ -37,7 +37,7 @@ const config = [
         dir: "dist/es",
         format: "es",
         exports: "named",
-        sourcemap: true,
+        // sourcemap: true,
       },
     ],
     acornInjectPlugins: [jsx()],
@@ -54,8 +54,8 @@ const config = [
       typescript({
         declaration: true,
         declarationDir: "dist/es",
-        sourceMap: true,
-        inlineSources: true,
+        // sourceMap: true,
+        // inlineSources: true,
       }),
       analyze({ summaryOnly: true, limit: 10 }),
       sizeSnapshot(),
@@ -63,7 +63,7 @@ const config = [
       terser(),
       autoExternal(),
     ],
-    external: [/lodash/, /@mui\//, "react", "react-dom"],
+    external: [/lodash/, /@mui\//],
   },
   {
     input: {
@@ -89,7 +89,7 @@ const config = [
         dir: "dist/cjs",
         format: "cjs",
         exports: "named",
-        sourcemap: true,
+        // sourcemap: true,
       },
     ],
     acornInjectPlugins: [jsx()],
@@ -106,8 +106,8 @@ const config = [
       typescript({
         declaration: true,
         declarationDir: "dist/cjs",
-        sourceMap: true,
-        inlineSources: true,
+        // sourceMap: true,
+        // inlineSources: true,
       }),
       analyze({ summaryOnly: true, limit: 10 }),
       sizeSnapshot(),
@@ -115,7 +115,7 @@ const config = [
       terser(),
       autoExternal(),
     ],
-    external: [/lodash/, /@mui\//, "react", "react-dom"],
+    external: [/lodash/, /@mui\//],
   },
   {
     input: "src/index.ts",
