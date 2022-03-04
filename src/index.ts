@@ -31,6 +31,5 @@ export {
   StandardSwitch,
   StandardTextField,
   StandardTimePicker,
-  useValidation,
   FormBuilder,
 };
