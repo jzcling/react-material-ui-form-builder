@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { FieldValues, FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, Path, SubmitHandler, useForm, UseFormProps } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Grid, Typography } from "@mui/material";
@@ -169,26 +169,26 @@ function getFormComponent(field: FieldProp) {
   }
 }
 
-interface Error {
-  attribute: string;
+interface Error<T> {
+  attribute: Path<T>;
   type: string;
   message: string;
 }
 
-interface FormBuilderProps {
+interface FormBuilderProps<T> {
   title?: string;
   fields: Array<FieldProp>;
-  defaultValue: FieldValues;
+  defaultValue: UseFormProps<T>["defaultValues"];
   children?: React.ReactNode;
   index?: string | number;
   idPrefix?: string;
   className?: string;
-  onSubmit: SubmitHandler<FieldValues>;
+  onSubmit: SubmitHandler<T>;
   submitButton?: React.ReactNode;
-  errors?: Array<Error>;
+  errors?: Array<Error<T>>;
 }
 
-function FormBuilder(props: FormBuilderProps) {
+function FormBuilder<T>(props: FormBuilderProps<T>) {
   const {
     title,
     fields,
@@ -201,7 +201,7 @@ function FormBuilder(props: FormBuilderProps) {
     errors,
   } = props;
   const schema = getFormSchema(fields);
-  const methods = useForm({
+  const methods = useForm<T>({
     mode: "onTouched",
     resolver: yupResolver(schema),
   });
