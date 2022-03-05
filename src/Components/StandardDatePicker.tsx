@@ -64,7 +64,7 @@ const StandardDatePicker = (props: {
       open: !!open,
       onClose: () => setOpen(false),
       ...fieldConfig.props,
-      value: value ? parse(value, "yyyy-MM-dd", new Date()) : undefined,
+      value: value ? parse(value, "yyyy-MM-dd", new Date()) : null,
       onChange: (value) => {
         if (value) {
           try {

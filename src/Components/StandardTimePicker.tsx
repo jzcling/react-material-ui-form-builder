@@ -65,7 +65,7 @@ const StandardTimePicker = (props: {
       open: !!open,
       onClose: () => setOpen(false),
       ...fieldConfig.props,
-      value: value ? parse(value, "HH:mm:ss", new Date()) : undefined,
+      value: value ? parse(value, "HH:mm:ss", new Date()) : null,
       onChange: (value) => {
         if (value) {
           try {
