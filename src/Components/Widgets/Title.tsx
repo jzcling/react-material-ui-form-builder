@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps } from "react";
+import React, { DetailedHTMLProps, Fragment } from "react";
 
 import { Box, BoxProps, Typography, TypographyProps, TypographyTypeMap } from "@mui/material";
 
@@ -36,7 +36,17 @@ const Title = (props: { field: TitleProps }) => {
       }}
     >
       <Typography {...titleProps}>
-        {title}{" "}
+        {title?.split("\n").map((text, index) => {
+          if (index === 0) {
+            return <span key={index}>{text}</span>;
+          }
+          return (
+            <Fragment key={index}>
+              <br />
+              <span>{text}</span>
+            </Fragment>
+          );
+        })}{" "}
         {titleSuffixComponent ||
           (titleSuffix && <span {...titleSuffixProps}>{titleSuffix}</span>)}
       </Typography>
