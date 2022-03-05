@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, MouseEventHandler } from "react";
+import React, { DetailedHTMLProps, MouseEvent, MouseEventHandler } from "react";
 import { ReactPlayerProps } from "react-player";
 import { EditableProps } from "slate-react/dist/components/editable";
 
@@ -396,7 +396,14 @@ export type ComponentType = {
       HTMLInputElement
     >
   >;
-  "image-picker": Partial<ButtonBaseProps<"div", { component: "div" }>>;
+  "image-picker": Partial<
+    ButtonBaseProps<"div", { component: "div" }> & {
+      onClick?: (
+        option: ImagePickerObject,
+        value: ImagePickerObject | Array<ImagePickerObject>
+      ) => (event: MouseEvent) => void;
+    }
+  >;
   rating: Partial<RatingProps>;
   counter: Partial<BoxProps> & { disabled?: boolean };
   "display-text": undefined;

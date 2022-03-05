@@ -212,6 +212,9 @@ const StandardImagePicker = (props: {
       },
       ...fieldConfig.props,
       component: "div",
+      onClick: fieldConfig.props?.onClick
+        ? fieldConfig.props.onClick(option, value)
+        : () => handleClick(option, value),
     };
   };
 
