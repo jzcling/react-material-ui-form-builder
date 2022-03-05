@@ -48,7 +48,7 @@ export function getFieldSchema<T extends keyof SchemaType>(
       break;
   }
 
-  schema.optional().label(label || "This");
+  schema = schema.optional().label(label || "This");
 
   for (let [key, value] of validations || []) {
     if (value === true) {
