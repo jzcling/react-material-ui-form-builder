@@ -1,6 +1,6 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "scripts": {
     "build": "rm -rf dist && NODE_ENV=production rollup -c"
   },

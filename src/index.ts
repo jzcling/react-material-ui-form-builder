@@ -14,7 +14,7 @@ import { StandardSelect } from "./components/StandardSelect";
 import { StandardSwitch } from "./components/StandardSwitch";
 import { StandardTextField } from "./components/StandardTextField";
 import { StandardTimePicker } from "./components/StandardTimePicker";
-import { useValidation } from "./hooks/useValidation";
+import * as validationUtils from "./utils/validation";
 
 export {
   StandardAutocomplete,
@@ -32,6 +32,6 @@ export {
   StandardSwitch,
   StandardTextField,
   StandardTimePicker,
-  useValidation,
   FormBuilder,
+  validationUtils,
 };

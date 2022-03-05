@@ -4,9 +4,7 @@ import * as yup from "yup";
 import { FieldProp } from "../components/FormBuilder";
 import { Validation } from "../components/props/FieldProps";
 
-function useValidation(fields: Array<FieldProp>): {
-  schema: yup.AnyObjectSchema;
-} {
+export function getFormSchema(fields: Array<FieldProp>) {
   const formSchema: { [x: string]: yup.AnySchema } = {};
   for (const field of fields) {
     if (field.attribute) {
@@ -19,11 +17,10 @@ function useValidation(fields: Array<FieldProp>): {
     }
   }
   const schema = yup.object(formSchema).required();
-
-  return { schema };
+  return schema;
 }
 
-function getFieldSchema<T extends keyof SchemaType>(
+export function getFieldSchema<T extends keyof SchemaType>(
   schemaType?: T,
   validations?: Array<Validation>,
   label?: string
@@ -67,8 +64,6 @@ function getFieldSchema<T extends keyof SchemaType>(
   }
   return schema;
 }
-
-export { useValidation };
 
 export type SchemaType = {
   string: yup.StringSchema;

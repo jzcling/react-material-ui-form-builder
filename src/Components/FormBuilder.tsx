@@ -4,8 +4,8 @@ import { FieldValues, FormProvider, SubmitHandler, useForm } from "react-hook-fo
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Grid, Typography } from "@mui/material";
 
-import { useValidation } from "../hooks/useValidation";
 import { Unpack } from "../utils";
+import { getFormSchema } from "../utils/validation";
 import {
   GridColMap, StandardCustomProps, StandardDisplayImageProps, StandardDisplayMediaProps,
   StandardDisplayTextProps
@@ -200,7 +200,7 @@ function FormBuilder(props: FormBuilderProps) {
     submitButton,
     errors,
   } = props;
-  const { schema } = useValidation(fields);
+  const schema = getFormSchema(fields);
   const methods = useForm({
     mode: "onTouched",
     resolver: yupResolver(schema),

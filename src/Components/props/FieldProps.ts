@@ -9,9 +9,9 @@ import {
   SwitchProps, TextFieldProps, TypographyProps
 } from "@mui/material";
 
-import { SchemaType } from "../../hooks/useValidation";
 import { AutocompleteOptionConfig } from "../../utils/autocomplete";
 import { Option, OptionConfig } from "../../utils/options";
+import { SchemaType } from "../../utils/validation";
 import { TitleProps } from "../widgets/Title";
 
 export interface CommonFieldProps<T extends keyof ComponentType> {
