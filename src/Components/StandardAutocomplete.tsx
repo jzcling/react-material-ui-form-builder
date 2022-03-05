@@ -241,7 +241,7 @@ function StandardAutocomplete<T>(props: {
       },
       getOptionLabel: (option) =>
         getLabel(option, options, fieldConfig.optionConfig),
-      value: value || "",
+      value: value,
       onChange: (event, option) => {
         setValue(
           fieldConfig.attribute,
