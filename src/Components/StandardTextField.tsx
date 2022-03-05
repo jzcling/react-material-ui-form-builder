@@ -38,7 +38,7 @@ const StandardTextField = (props: {
           trigger(fieldConfig.attribute);
         }
       },
-      defaultValue = "",
+      defaultValue: "",
       ...fieldConfig.props,
       ...field,
     };
