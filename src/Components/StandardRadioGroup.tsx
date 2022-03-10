@@ -22,8 +22,8 @@ export interface StandardRadioGroupProps<TOption>
   groupContainerProps?: MultiOptionFieldProps<TOption>["groupContainerProps"];
 }
 
-export default function StandardRadioGroup<T>(props: {
-  field: StandardRadioGroupProps<T>;
+export default function StandardRadioGroup<TOption>(props: {
+  field: StandardRadioGroupProps<TOption>;
   hideTitle?: boolean;
 }) {
   const {
@@ -35,7 +35,7 @@ export default function StandardRadioGroup<T>(props: {
   } = useFormContext();
   const { field: fieldConfig, hideTitle } = props;
 
-  const options: Array<Option<T>> = useMemo(() => {
+  const options: Array<Option<TOption>> = useMemo(() => {
     let options = fieldConfig.options || [];
     if (fieldConfig.randomizeOptions) {
       options = shuffleArray(fieldConfig.options || []);
@@ -45,16 +45,16 @@ export default function StandardRadioGroup<T>(props: {
     );
   }, [fieldConfig.options, fieldConfig.optionConfig]);
 
-  const handleRadioChange = (value: T, checked: boolean) => {
+  const handleRadioChange = (value: TOption, checked: boolean) => {
     if (checked) {
       setValue(fieldConfig.attribute, value);
     }
   };
 
   const componentProps = (
-    fieldConfig: StandardRadioGroupProps<T>,
-    option: Option<T>,
-    value: T
+    fieldConfig: StandardRadioGroupProps<TOption>,
+    option: Option<TOption>,
+    value: TOption
   ): RadioProps => {
     return {
       id: fieldConfig.attribute,
@@ -69,7 +69,7 @@ export default function StandardRadioGroup<T>(props: {
   };
 
   const containerProps = (
-    fieldConfig: StandardRadioGroupProps<T>
+    fieldConfig: StandardRadioGroupProps<TOption>
   ): FormControlProps => {
     return {
       error: !!errors[fieldConfig.attribute],

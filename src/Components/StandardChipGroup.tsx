@@ -16,8 +16,8 @@ export interface StandardChipGroupProps<TOption>
   attribute: Required<CommonFieldProps<"chip-group", TOption>>["attribute"];
 }
 
-export default function StandardChipGroup<T>(props: {
-  field: StandardChipGroupProps<T>;
+export default function StandardChipGroup<TOption>(props: {
+  field: StandardChipGroupProps<TOption>;
   hideTitle?: boolean;
 }) {
   const {
@@ -29,7 +29,7 @@ export default function StandardChipGroup<T>(props: {
   } = useFormContext();
   const { field: fieldConfig, hideTitle } = props;
 
-  const options: Array<Option<T>> = useMemo(() => {
+  const options: Array<Option<TOption>> = useMemo(() => {
     let options = fieldConfig.options || [];
     if (fieldConfig.randomizeOptions) {
       options = shuffleArray(fieldConfig.options || []);
@@ -39,13 +39,16 @@ export default function StandardChipGroup<T>(props: {
     );
   }, [fieldConfig.options, fieldConfig.optionConfig]);
 
-  function handleChipClick(option: Option<T>, value: T | Array<T>): void {
+  function handleChipClick(
+    option: Option<TOption>,
+    value: TOption | Array<TOption>
+  ): void {
     if (fieldConfig.multiple) {
-      const index = ((value as Array<T>) || []).findIndex((opt: T) =>
-        isEqual(opt, option.value)
+      const index = ((value as Array<TOption>) || []).findIndex(
+        (opt: TOption) => isEqual(opt, option.value)
       );
       if (index > -1) {
-        let copy: Array<T> | undefined = [...(value as Array<T>)];
+        let copy: Array<TOption> | undefined = [...(value as Array<TOption>)];
         copy.splice(index, 1);
         if (copy.length === 0) {
           copy = undefined;
@@ -54,7 +57,7 @@ export default function StandardChipGroup<T>(props: {
         return;
       }
       setValue(fieldConfig.attribute, [
-        ...((value as Array<T>) || []),
+        ...((value as Array<TOption>) || []),
         option.value,
       ]);
     } else {
@@ -67,9 +70,9 @@ export default function StandardChipGroup<T>(props: {
   }
 
   const componentProps = (
-    fieldConfig: StandardChipGroupProps<T>,
-    option: Option<T>,
-    value: T | Array<T>
+    fieldConfig: StandardChipGroupProps<TOption>,
+    option: Option<TOption>,
+    value: TOption | Array<TOption>
   ): ChipProps => {
     let isSelected: boolean;
     if (fieldConfig.multiple && Array.isArray(value)) {
@@ -103,7 +106,7 @@ export default function StandardChipGroup<T>(props: {
   };
 
   const containerProps = (
-    fieldConfig: StandardChipGroupProps<T>
+    fieldConfig: StandardChipGroupProps<TOption>
   ): FormControlProps => {
     return {
       error: !!errors[fieldConfig.attribute],

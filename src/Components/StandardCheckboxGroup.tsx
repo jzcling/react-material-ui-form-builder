@@ -23,8 +23,8 @@ export interface StandardCheckboxGroupProps<TOption>
   groupContainerProps?: MultiOptionFieldProps<TOption>["groupContainerProps"];
 }
 
-export default function StandardCheckboxGroup<T>(props: {
-  field: StandardCheckboxGroupProps<T>;
+export default function StandardCheckboxGroup<TOption>(props: {
+  field: StandardCheckboxGroupProps<TOption>;
   hideTitle?: boolean;
 }) {
   const {
@@ -36,7 +36,7 @@ export default function StandardCheckboxGroup<T>(props: {
   } = useFormContext();
   const { field: fieldConfig, hideTitle } = props;
 
-  const options: Array<Option<T>> = useMemo(() => {
+  const options: Array<Option<TOption>> = useMemo(() => {
     let options = fieldConfig.options || [];
     if (fieldConfig.randomizeOptions) {
       options = shuffleArray(fieldConfig.options || []);
@@ -47,22 +47,22 @@ export default function StandardCheckboxGroup<T>(props: {
   }, [fieldConfig.options, fieldConfig.optionConfig]);
 
   function handleCheckboxChange(
-    option: Option<T>,
+    option: Option<TOption>,
     checked: boolean,
-    value: T | Array<T>
+    value: TOption | Array<TOption>
   ) {
     if (fieldConfig.multiple) {
       if (checked) {
         setValue(fieldConfig.attribute, [
-          ...((value as Array<T>) || []),
+          ...((value as Array<TOption>) || []),
           option.value,
         ]);
       } else {
-        const index = ((value as Array<T>) || []).findIndex((value) =>
+        const index = ((value as Array<TOption>) || []).findIndex((value) =>
           isEqual(value, option.value)
         );
         if (index > -1) {
-          let copy: Array<T> | undefined = [...(value as Array<T>)];
+          let copy: Array<TOption> | undefined = [...(value as Array<TOption>)];
           copy.splice(index, 1);
           if (copy.length === 0) {
             copy = undefined;
@@ -81,9 +81,9 @@ export default function StandardCheckboxGroup<T>(props: {
   }
 
   const componentProps = (
-    fieldConfig: StandardCheckboxGroupProps<T>,
-    option: Option<T>,
-    value: T | Array<T>
+    fieldConfig: StandardCheckboxGroupProps<TOption>,
+    option: Option<TOption>,
+    value: TOption | Array<TOption>
   ): CheckboxProps => {
     let isSelected: boolean;
     if (fieldConfig.multiple && Array.isArray(value)) {
@@ -104,7 +104,7 @@ export default function StandardCheckboxGroup<T>(props: {
   };
 
   const containerProps = (
-    fieldConfig: StandardCheckboxGroupProps<T>
+    fieldConfig: StandardCheckboxGroupProps<TOption>
   ): FormControlProps => {
     return {
       error: !!errors[fieldConfig.attribute],

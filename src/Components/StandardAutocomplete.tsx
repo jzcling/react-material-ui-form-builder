@@ -17,22 +17,22 @@ export interface StandardAutocompleteProps<TOption>
   attribute: Required<CommonFieldProps<"autocomplete", TOption>>["attribute"];
 }
 
-function reorderTags<T>(
-  list: Array<T>,
+function reorderTags<TOption>(
+  list: Array<TOption>,
   startIndex: number,
   endIndex: number
-): Array<T> {
+): Array<TOption> {
   const result = [...list];
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
   return result;
 }
 
-async function renderDnd<T>(
-  value: Array<T>,
+async function renderDnd<TOption>(
+  value: Array<TOption>,
   setValue: UseFormSetValue<FieldValues>,
-  options: Array<T>,
-  fieldConfig: StandardAutocompleteProps<T>,
+  options: Array<TOption>,
+  fieldConfig: StandardAutocompleteProps<TOption>,
   getTagProps: AutocompleteRenderGetTagProps
 ): Promise<React.ReactNode> {
   const dnd = await import("react-beautiful-dnd");
@@ -40,9 +40,9 @@ async function renderDnd<T>(
 
   const onDragEnd =
     (
-      value: Array<T>,
+      value: Array<TOption>,
       setValue: UseFormSetValue<FieldValues>,
-      fieldConfig: StandardAutocompleteProps<T>
+      fieldConfig: StandardAutocompleteProps<TOption>
     ) =>
     (result: import("react-beautiful-dnd").DropResult) => {
       if (!result.destination) {
@@ -53,7 +53,7 @@ async function renderDnd<T>(
         return;
       }
 
-      const reordered: Array<T> = reorderTags(
+      const reordered: Array<TOption> = reorderTags(
         value || [],
         result.source.index,
         result.destination.index
@@ -102,8 +102,8 @@ async function renderDnd<T>(
   );
 }
 
-export default function StandardAutocomplete<T>(props: {
-  field: StandardAutocompleteProps<T>;
+export default function StandardAutocomplete<TOption>(props: {
+  field: StandardAutocompleteProps<TOption>;
   hideTitle?: boolean;
 }) {
   const {
@@ -116,15 +116,15 @@ export default function StandardAutocomplete<T>(props: {
   const { field: fieldConfig, hideTitle } = props;
   const [focused, setFocused] = useState<boolean>();
 
-  const options = getOptions<T>(
+  const options = getOptions<TOption>(
     fieldConfig.options,
     fieldConfig.randomizeOptions
   );
 
   function multipleComponentProps(
-    fieldConfig: StandardAutocompleteProps<T>,
-    value?: Array<T>
-  ): AutocompleteProps<T, true, true, true> {
+    fieldConfig: StandardAutocompleteProps<TOption>,
+    value?: Array<TOption>
+  ): AutocompleteProps<TOption, true, true, true> {
     return {
       id: fieldConfig.attribute,
       size: "small",
@@ -152,7 +152,7 @@ export default function StandardAutocomplete<T>(props: {
             ) === value;
       },
       getOptionLabel: (option) =>
-        getLabel<T>(option, options, fieldConfig.optionConfig),
+        getLabel<TOption>(option, options, fieldConfig.optionConfig),
       renderTags: (value, getTagProps) => {
         // if (fieldConfig.sortable && focused) {
         //   return renderDnd(
@@ -167,7 +167,7 @@ export default function StandardAutocomplete<T>(props: {
           <Chip
             variant="outlined"
             size="small"
-            label={getLabel<T>(option, options, fieldConfig.optionConfig)}
+            label={getLabel<TOption>(option, options, fieldConfig.optionConfig)}
             {...getTagProps({ index })}
             key={index}
           />
@@ -190,7 +190,7 @@ export default function StandardAutocomplete<T>(props: {
         trigger(fieldConfig.attribute);
       },
       onFocus: () => setFocused(true),
-      ...(fieldConfig.props as AutocompleteProps<T, true, true, true>),
+      ...(fieldConfig.props as AutocompleteProps<TOption, true, true, true>),
       options,
       renderInput: (params) => (
         <TextField
@@ -210,9 +210,9 @@ export default function StandardAutocomplete<T>(props: {
   }
 
   function singleComponentProps(
-    fieldConfig: StandardAutocompleteProps<T>,
-    value?: NonNullable<T>
-  ): AutocompleteProps<T, false, true, true> {
+    fieldConfig: StandardAutocompleteProps<TOption>,
+    value?: NonNullable<TOption>
+  ): AutocompleteProps<TOption, false, true, true> {
     return {
       id: fieldConfig.attribute,
       size: "small",
@@ -257,7 +257,7 @@ export default function StandardAutocomplete<T>(props: {
         trigger(fieldConfig.attribute);
       },
       onFocus: () => setFocused(true),
-      ...(fieldConfig.props as AutocompleteProps<T, false, true, true>),
+      ...(fieldConfig.props as AutocompleteProps<TOption, false, true, true>),
       options,
       renderInput: (params) => (
         <TextField
