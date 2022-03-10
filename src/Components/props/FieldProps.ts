@@ -14,7 +14,10 @@ import { Option, OptionConfig } from "../../utils/options";
 import { SchemaType } from "../../utils/validation";
 import { TitleProps } from "../widgets/Title";
 
-export interface CommonFieldProps<T extends keyof ComponentType> {
+export interface CommonFieldProps<
+  TComp extends keyof ComponentType<TOption>,
+  TOption = unknown
+> {
   id?: string;
   /** Form attribute that controls input and is modified by input.
    * Also acts as id
@@ -93,7 +96,7 @@ export interface CommonFieldProps<T extends keyof ComponentType> {
    *
    * `custom`
    * */
-  component: T;
+  component: TComp;
   // | "text-field"
   // | "select"
   // | "date-picker"
@@ -114,7 +117,7 @@ export interface CommonFieldProps<T extends keyof ComponentType> {
   // | "rich-text"
   // | "custom";
   /** Any additional props to pass to the Material UI component */
-  props?: ComponentType[T];
+  props?: ComponentType<TOption>[TComp];
   /** Any additional props to pass to the Material UI Grid item that contains the component */
   containerProps?: GridProps;
   /** If true, hides field */
@@ -130,9 +133,9 @@ export interface CommonFieldProps<T extends keyof ComponentType> {
   customComponent?: (field: unknown) => React.ReactNode;
 }
 
-export interface MultiOptionFieldProps<T> {
+export interface MultiOptionFieldProps<TOption> {
   /** Required for `select`, `checkbox-group` and `radio-group` */
-  options: Array<T>;
+  options: Array<TOption>;
   /**
    * Only for `select`, `checkbox-group` and `radio-group`
    *
@@ -164,8 +167,8 @@ export interface MultiOptionFieldProps<T> {
   groupContainerProps?: FormControlProps;
 }
 
-export interface AutocompleteFieldProps<T> {
-  options: Array<T>;
+export interface AutocompleteFieldProps<TOption> {
+  options: Array<TOption>;
   /**
    * Required if options is an array of objects. Examples:
    *
@@ -180,8 +183,8 @@ export interface AutocompleteFieldProps<T> {
   sortable?: boolean;
 }
 
-export interface ChipGroupFieldProps<T> {
-  options: Array<T>;
+export interface ChipGroupFieldProps<TOption> {
+  options: Array<TOption>;
   /** Required if options is an array of objects. */
   optionConfig?: OptionConfig;
   /** If true, randomises option order on each render */
@@ -280,7 +283,7 @@ export interface ImagePickerFieldProps {
    *
    * Columns for each breakpoint default to the previous breakpoint is not specified
    * */
-  imageCols?: GridColMap;
+  imageCols?: ImageColMap;
   /** Number of lines allowed for label */
   labelLines?: number;
   /** Number of lines allowed for sublabel */
@@ -322,6 +325,14 @@ export interface RichTextFieldProps {
 }
 
 export interface GridColMap {
+  xs?: number | "auto" | true;
+  sm?: number | "auto" | true;
+  md?: number | "auto" | true;
+  lg?: number | "auto" | true;
+  xl?: number | "auto" | true;
+}
+
+export interface ImageColMap {
   xs?: number;
   sm?: number;
   md?: number;
@@ -372,19 +383,19 @@ export const FileType = {
 } as const;
 export type FileType = typeof FileType[keyof typeof FileType];
 
-export type ComponentType = {
+export type ComponentType<TOption = unknown> = {
   "text-field": Partial<TextFieldProps>;
   select: Partial<SelectProps>;
   "date-picker": Partial<DatePickerProps<Date>>;
   "date-time-picker": Partial<DateTimePickerProps<Date>>;
   "time-picker": Partial<TimePickerProps<Date>>;
   autocomplete:
-    | Partial<AutocompleteProps<unknown, true, true, true>>
-    | Partial<AutocompleteProps<unknown, false, true, true>>;
+    | Partial<AutocompleteProps<TOption, true, true, true>>
+    | Partial<AutocompleteProps<TOption, false, true, true>>;
   "chip-group": Partial<ChipProps> & {
     onClick?: (
-      option: Option<unknown>,
-      value: unknown | Array<unknown>
+      option: Option<TOption>,
+      value: TOption | Array<TOption>
     ) => MouseEventHandler;
   };
   "checkbox-group": Partial<CheckboxProps>;
