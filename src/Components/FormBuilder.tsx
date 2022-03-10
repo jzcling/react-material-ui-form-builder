@@ -77,16 +77,16 @@ function handleField(
 }
 
 export type FieldProp =
-  | StandardAutocompleteProps<unknown>
-  | StandardCheckboxGroupProps<unknown>
-  | StandardChipGroupProps<unknown>
+  | StandardAutocompleteProps<any>
+  | StandardCheckboxGroupProps<any>
+  | StandardChipGroupProps<any>
   | StandardCounterProps
   | StandardDatePickerProps
   | StandardDateTimePickerProps
   | StandardEditorProps
   | StandardFileUploadProps
   | StandardImagePickerProps
-  | StandardRadioGroupProps<unknown>
+  | StandardRadioGroupProps<any>
   | StandardRatingProps
   | StandardSelectProps
   | StandardSwitchProps
