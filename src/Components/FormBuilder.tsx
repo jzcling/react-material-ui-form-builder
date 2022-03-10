@@ -1,7 +1,10 @@
 import React, { Suspense, useEffect } from "react";
-import { FormProvider, Path, SubmitHandler, useForm, UseFormProps } from "react-hook-form";
+import {
+  FormProvider, Path, SubmitHandler, useForm, UseFormProps, UseFormReturn
+} from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
+import loadable from "@loadable/component";
 import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 
 import { Unpack } from "../utils";
@@ -27,26 +30,24 @@ import { StandardTextFieldProps } from "./StandardTextField";
 import { StandardTimePickerProps } from "./StandardTimePicker";
 import { Title } from "./widgets/Title";
 
-const StandardAutocomplete = React.lazy(() => import("./StandardAutocomplete"));
-const StandardCheckboxGroup = React.lazy(
-  () => import("./StandardCheckboxGroup")
-);
-const StandardChipGroup = React.lazy(() => import("./StandardChipGroup"));
-const StandardCounter = React.lazy(() => import("./StandardCounter"));
-const StandardDatePicker = React.lazy(() => import("./StandardDatePicker"));
-const StandardDateTimePicker = React.lazy(
+const StandardAutocomplete = loadable(() => import("./StandardAutocomplete"));
+const StandardCheckboxGroup = loadable(() => import("./StandardCheckboxGroup"));
+const StandardChipGroup = loadable(() => import("./StandardChipGroup"));
+const StandardCounter = loadable(() => import("./StandardCounter"));
+const StandardDatePicker = loadable(() => import("./StandardDatePicker"));
+const StandardDateTimePicker = loadable(
   () => import("./StandardDateTimePicker")
 );
-const StandardEditor = React.lazy(() => import("./StandardEditor"));
-const StandardFileUpload = React.lazy(() => import("./StandardFileUpload"));
-const StandardImagePicker = React.lazy(() => import("./StandardImagePicker"));
-const StandardRadioGroup = React.lazy(() => import("./StandardRadioGroup"));
-const StandardRating = React.lazy(() => import("./StandardRating"));
-const StandardSelect = React.lazy(() => import("./StandardSelect"));
-const StandardSwitch = React.lazy(() => import("./StandardSwitch"));
-const StandardTextField = React.lazy(() => import("./StandardTextField"));
-const StandardTimePicker = React.lazy(() => import("./StandardTimePicker"));
-const ReactPlayer = React.lazy(() => import("react-player"));
+const StandardEditor = loadable(() => import("./StandardEditor"));
+const StandardFileUpload = loadable(() => import("./StandardFileUpload"));
+const StandardImagePicker = loadable(() => import("./StandardImagePicker"));
+const StandardRadioGroup = loadable(() => import("./StandardRadioGroup"));
+const StandardRating = loadable(() => import("./StandardRating"));
+const StandardSelect = loadable(() => import("./StandardSelect"));
+const StandardSwitch = loadable(() => import("./StandardSwitch"));
+const StandardTextField = loadable(() => import("./StandardTextField"));
+const StandardTimePicker = loadable(() => import("./StandardTimePicker"));
+const ReactPlayer = loadable(() => import("react-player"));
 
 function sanitizeColProps(col?: GridColMap): GridColMap {
   col = col || {};
@@ -108,17 +109,13 @@ function getFormComponent(field: FieldProp) {
     case "select":
       return <StandardSelect field={field} />;
     case "autocomplete":
-      return (
-        <StandardAutocomplete<Unpack<typeof field.options>> field={field} />
-      );
+      return <StandardAutocomplete field={field} />;
     case "chip-group":
-      return <StandardChipGroup<Unpack<typeof field.options>> field={field} />;
+      return <StandardChipGroup field={field} />;
     case "checkbox-group":
-      return (
-        <StandardCheckboxGroup<Unpack<typeof field.options>> field={field} />
-      );
+      return <StandardCheckboxGroup field={field} />;
     case "radio-group":
-      return <StandardRadioGroup<Unpack<typeof field.options>> field={field} />;
+      return <StandardRadioGroup field={field} />;
     case "switch":
       return <StandardSwitch field={field} />;
     case "file-upload":
@@ -183,6 +180,7 @@ interface FormBuilderProps<TForm> {
   onSubmit: SubmitHandler<TForm>;
   submitButton?: React.ReactNode;
   errors?: Array<Error<TForm>>;
+  setMethods: (methods: UseFormReturn<TForm>) => void;
 }
 
 function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
@@ -196,6 +194,7 @@ function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
     onSubmit,
     submitButton,
     errors,
+    setMethods,
   } = props;
   const schema = getFormSchema(fields);
   const methods = useForm<TForm>({
@@ -206,6 +205,11 @@ function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
   useEffect(() => {
     methods.reset(defaultValue);
   }, [defaultValue]);
+
+  // emit methods on change
+  useEffect(() => {
+    setMethods(methods);
+  }, [methods]);
 
   useEffect(() => {
     if (errors) {
@@ -219,45 +223,43 @@ function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
   }, [errors]);
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
-        <Box
-          key={String(index)}
-          className={props.className}
-          sx={{ display: "flex", justifyContent: "center" }}
-        >
-          <Grid container spacing={1}>
-            {title && (
-              <Grid item xs={12}>
-                <Typography variant="h6">{title}</Typography>
-              </Grid>
-            )}
+    <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
+      <Box
+        key={String(index)}
+        className={props.className}
+        sx={{ display: "flex", justifyContent: "center" }}
+      >
+        <Grid container spacing={1}>
+          {title && (
+            <Grid item xs={12}>
+              <Typography variant="h6">{title}</Typography>
+            </Grid>
+          )}
 
-            {fields?.map((field, index) => {
-              field = handleField(field, index, idPrefix);
-              // const component = await getFormComponent(field);
-              return (
-                !field.hideCondition && (
-                  <Grid
-                    key={field.attribute || index}
-                    item
-                    {...sanitizeColProps(field.col)}
-                    {...field.containerProps}
-                  >
-                    <Suspense fallback={<Skeleton />}>
-                      {getFormComponent(field)}
-                    </Suspense>
-                  </Grid>
-                )
-              );
-            })}
-          </Grid>
+          {fields?.map((field, index) => {
+            field = handleField(field, index, idPrefix);
+            // const component = await getFormComponent(field);
+            return (
+              !field.hideCondition && (
+                <Grid
+                  key={field.attribute || index}
+                  item
+                  {...sanitizeColProps(field.col)}
+                  {...field.containerProps}
+                >
+                  {/* <Suspense fallback={<Skeleton />}> */}
+                  {getFormComponent(field)}
+                  {/* </Suspense> */}
+                </Grid>
+              )
+            );
+          })}
+        </Grid>
 
-          {children}
-        </Box>
-        {submitButton ? submitButton : <Button type="submit">Submit</Button>}
-      </form>
-    </FormProvider>
+        {children}
+      </Box>
+      {submitButton ? submitButton : <Button type="submit">Submit</Button>}
+    </form>
   );
 }
 
