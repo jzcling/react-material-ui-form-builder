@@ -6,32 +6,29 @@ import replace from "@rollup/plugin-replace";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
-import typescript from "@rollup/plugin-typescript";
-import jsx from "acorn-jsx";
-import sourcemaps from "rollup-plugin-sourcemaps";
 
 import pkg from "./package.json";
 
 const config = [
   {
     input: {
-      index: "src/index.ts",
-      StandardAutocomplete: "src/components/StandardAutocomplete.tsx",
-      StandardCheckboxGroup: "src/components/StandardCheckboxGroup.tsx",
-      StandardChipGroup: "src/components/StandardChipGroup.tsx",
-      StandardDatePicker: "src/components/StandardDatePicker.tsx",
-      StandardDateTimePicker: "src/components/StandardDateTimePicker.tsx",
-      StandardEditor: "src/components/StandardEditor.tsx",
-      StandardFileUpload: "src/components/StandardFileUpload.tsx",
-      StandardImagePicker: "src/components/StandardImagePicker.tsx",
-      StandardRadioGroup: "src/components/StandardRadioGroup.tsx",
-      StandardRating: "src/components/StandardRating.tsx",
-      StandardSelect: "src/components/StandardSelect.tsx",
-      StandardSwitch: "src/components/StandardSwitch.tsx",
-      StandardTextField: "src/components/StandardTextField.tsx",
-      StandardTimePicker: "src/components/StandardTimePicker.tsx",
-      FormBuilder: "src/components/FormBuilder.tsx",
-      validationUtils: "src/utils/validation.ts",
+      index: "build/index.js",
+      StandardAutocomplete: "build/components/StandardAutocomplete.js",
+      StandardCheckboxGroup: "build/components/StandardCheckboxGroup.js",
+      StandardChipGroup: "build/components/StandardChipGroup.js",
+      StandardDatePicker: "build/components/StandardDatePicker.js",
+      StandardDateTimePicker: "build/components/StandardDateTimePicker.js",
+      StandardEditor: "build/components/StandardEditor.js",
+      StandardFileUpload: "build/components/StandardFileUpload.js",
+      StandardImagePicker: "build/components/StandardImagePicker.js",
+      StandardRadioGroup: "build/components/StandardRadioGroup.js",
+      StandardRating: "build/components/StandardRating.js",
+      StandardSelect: "build/components/StandardSelect.js",
+      StandardSwitch: "build/components/StandardSwitch.js",
+      StandardTextField: "build/components/StandardTextField.js",
+      StandardTimePicker: "build/components/StandardTimePicker.js",
+      FormBuilder: "build/components/FormBuilder.js",
+      validationUtils: "build/utils/validation.js",
     },
     output: [
       {
@@ -40,52 +37,6 @@ const config = [
         exports: "named",
         // sourcemap: true,
       },
-    ],
-    acornInjectPlugins: [jsx()],
-    plugins: [
-      replace({
-        "process.env.NODE_ENV": JSON.stringify("production"),
-      }),
-      json(),
-      resolve(),
-      commonjs({
-        exclude: ["src/**"],
-        include: ["node_modules/**"],
-      }),
-      typescript({
-        declaration: true,
-        declarationDir: "dist/es",
-        // sourceMap: true,
-        // inlineSources: true,
-      }),
-      analyze({ summaryOnly: true, limit: 10 }),
-      sizeSnapshot(),
-      // sourcemaps(),
-      terser(),
-      autoExternal(),
-    ],
-    external: [/lodash/, /@mui\//],
-  },
-  {
-    input: {
-      index: "src/index.ts",
-      StandardAutocomplete: "src/components/StandardAutocomplete.tsx",
-      StandardCheckboxGroup: "src/components/StandardCheckboxGroup.tsx",
-      StandardChipGroup: "src/components/StandardChipGroup.tsx",
-      StandardDatePicker: "src/components/StandardDatePicker.tsx",
-      StandardDateTimePicker: "src/components/StandardDateTimePicker.tsx",
-      StandardEditor: "src/components/StandardEditor.tsx",
-      StandardFileUpload: "src/components/StandardFileUpload.tsx",
-      StandardImagePicker: "src/components/StandardImagePicker.tsx",
-      StandardRadioGroup: "src/components/StandardRadioGroup.tsx",
-      StandardRating: "src/components/StandardRating.tsx",
-      StandardSelect: "src/components/StandardSelect.tsx",
-      StandardSwitch: "src/components/StandardSwitch.tsx",
-      StandardTextField: "src/components/StandardTextField.tsx",
-      StandardTimePicker: "src/components/StandardTimePicker.tsx",
-      FormBuilder: "src/components/FormBuilder.tsx",
-    },
-    output: [
       {
         dir: "dist/cjs",
         format: "cjs",
@@ -93,7 +44,6 @@ const config = [
         // sourcemap: true,
       },
     ],
-    acornInjectPlugins: [jsx()],
     plugins: [
       replace({
         "process.env.NODE_ENV": JSON.stringify("production"),
@@ -101,17 +51,11 @@ const config = [
       json(),
       resolve(),
       commonjs({
-        exclude: ["src/**"],
+        exclude: ["src/**", "build/**"],
         include: ["node_modules/**"],
       }),
-      typescript({
-        declaration: true,
-        declarationDir: "dist/cjs",
-        // sourceMap: true,
-        // inlineSources: true,
-      }),
       analyze({ summaryOnly: true, limit: 10 }),
-      sizeSnapshot(),
+      // sizeSnapshot(),
       // sourcemaps(),
       terser(),
       autoExternal(),
@@ -119,7 +63,7 @@ const config = [
     external: [/lodash/, /@mui\//],
   },
   {
-    input: "src/index.ts",
+    input: "build/index.js",
     output: [
       {
         file: `dist/${pkg.name}.min.js`,
@@ -134,7 +78,6 @@ const config = [
         inlineDynamicImports: true,
       },
     ],
-    acornInjectPlugins: [jsx()],
     plugins: [
       replace({
         "process.env.NODE_ENV": JSON.stringify("production"),
@@ -142,10 +85,9 @@ const config = [
       json(),
       resolve(),
       commonjs({
-        exclude: ["src/**"],
+        exclude: ["src/**", "build/**"],
         include: ["node_modules/**"],
       }),
-      typescript(),
       analyze({ summaryOnly: true, limit: 10 }),
       sizeSnapshot(),
       // sourcemaps(),

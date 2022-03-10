@@ -1,13 +1,15 @@
 {
   "name": "@jeremyling/react-material-ui-form-builder",
-  "version": "1.0.15",
+  "version": "1.0.20",
   "scripts": {
-    "build": "rm -rf dist && NODE_ENV=production rollup -c"
+    "prebuild": "rm -rf build && tsc",
+    "build": "rm -rf dist && NODE_ENV=production rollup -c",
+    "postbuild": "mkdir dist/dts && cp -R build/dts/ dist/dts/"
   },
   "description": "An easy-to-use and quick form builder using the following React Material UI input components:",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
-  "types": "dist/cjs/index.d.ts",
+  "types": "dist/dts/index.d.ts",
   "files": [
     "dist/*"
   ],
@@ -82,10 +84,10 @@
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
+    "react-mui-color": "^0.1.5",
     "react-player": "^2.9.0",
     "slate": "^0.73.1",
-    "slate-react": "^0.74.0",
-    "react-mui-color": "^0.1.5"
+    "slate-react": "^0.74.0"
   },
   "peerDependenciesMeta": {
     "@jeremyling/react-material-ui-rich-text-editor": {

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
-    // "outDir": "dist",
+    "outDir": "build",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -16,9 +16,8 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "incremental": true,
-    "noEmit": true,
+    "declaration": true,
+    "declarationDir": "build/dts"
   },
   "include": [
     "src/**/*"

@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# tsc build folder
+/build
+
 # production
 /dist
 .size-snapshot.json
