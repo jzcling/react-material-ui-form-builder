@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { FormProvider, Path, SubmitHandler, useForm, UseFormProps } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 
 import { Unpack } from "../utils";
 import { getFormSchema } from "../utils/validation";
@@ -10,22 +10,43 @@ import {
   GridColMap, StandardCustomProps, StandardDisplayImageProps, StandardDisplayMediaProps,
   StandardDisplayTextProps
 } from "./props/FieldProps";
-import { StandardAutocomplete, StandardAutocompleteProps } from "./StandardAutocomplete";
-import { StandardCheckboxGroup, StandardCheckboxGroupProps } from "./StandardCheckboxGroup";
-import { StandardChipGroup, StandardChipGroupProps } from "./StandardChipGroup";
-import { StandardCounter, StandardCounterProps } from "./StandardCounter";
-import { StandardDatePicker, StandardDatePickerProps } from "./StandardDatePicker";
-import { StandardDateTimePicker, StandardDateTimePickerProps } from "./StandardDateTimePicker";
-import { StandardEditor, StandardEditorProps } from "./StandardEditor";
-import { StandardFileUpload, StandardFileUploadProps } from "./StandardFileUpload";
-import { StandardImagePicker, StandardImagePickerProps } from "./StandardImagePicker";
-import { StandardRadioGroup, StandardRadioGroupProps } from "./StandardRadioGroup";
-import { StandardRating, StandardRatingProps } from "./StandardRating";
-import { StandardSelect, StandardSelectProps } from "./StandardSelect";
-import { StandardSwitch, StandardSwitchProps } from "./StandardSwitch";
-import { StandardTextField, StandardTextFieldProps } from "./StandardTextField";
-import { StandardTimePicker, StandardTimePickerProps } from "./StandardTimePicker";
+import { StandardAutocompleteProps } from "./StandardAutocomplete";
+import { StandardCheckboxGroupProps } from "./StandardCheckboxGroup";
+import { StandardChipGroupProps } from "./StandardChipGroup";
+import { StandardCounterProps } from "./StandardCounter";
+import { StandardDatePickerProps } from "./StandardDatePicker";
+import { StandardDateTimePickerProps } from "./StandardDateTimePicker";
+import { StandardEditorProps } from "./StandardEditor";
+import { StandardFileUploadProps } from "./StandardFileUpload";
+import { StandardImagePickerProps } from "./StandardImagePicker";
+import { StandardRadioGroupProps } from "./StandardRadioGroup";
+import { StandardRatingProps } from "./StandardRating";
+import { StandardSelectProps } from "./StandardSelect";
+import { StandardSwitchProps } from "./StandardSwitch";
+import { StandardTextFieldProps } from "./StandardTextField";
+import { StandardTimePickerProps } from "./StandardTimePicker";
 import { Title } from "./widgets/Title";
+
+const StandardAutocomplete = React.lazy(() => import("./StandardAutocomplete"));
+const StandardCheckboxGroup = React.lazy(
+  () => import("./StandardCheckboxGroup")
+);
+const StandardChipGroup = React.lazy(() => import("./StandardChipGroup"));
+const StandardCounter = React.lazy(() => import("./StandardCounter"));
+const StandardDatePicker = React.lazy(() => import("./StandardDatePicker"));
+const StandardDateTimePicker = React.lazy(
+  () => import("./StandardDateTimePicker")
+);
+const StandardEditor = React.lazy(() => import("./StandardEditor"));
+const StandardFileUpload = React.lazy(() => import("./StandardFileUpload"));
+const StandardImagePicker = React.lazy(() => import("./StandardImagePicker"));
+const StandardRadioGroup = React.lazy(() => import("./StandardRadioGroup"));
+const StandardRating = React.lazy(() => import("./StandardRating"));
+const StandardSelect = React.lazy(() => import("./StandardSelect"));
+const StandardSwitch = React.lazy(() => import("./StandardSwitch"));
+const StandardTextField = React.lazy(() => import("./StandardTextField"));
+const StandardTimePicker = React.lazy(() => import("./StandardTimePicker"));
+const ReactPlayer = React.lazy(() => import("react-player"));
 
 function sanitizeColProps(col?: GridColMap): GridColMap {
   col = col || {};
@@ -38,27 +59,11 @@ function sanitizeColProps(col?: GridColMap): GridColMap {
   };
 }
 
-async function renderReactPlayer(field: StandardDisplayMediaProps) {
-  const module = await import("react-player");
-  const ReactPlayer = module.default;
-  return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <ReactPlayer
-        url={field.src}
-        controls
-        width={field.width}
-        height={field.height}
-        {...field.props}
-      />
-    </Box>
-  );
-}
-
-const handleField = (
+function handleField(
   field: FieldProp,
   index?: string | number,
   idPrefix?: string
-): FieldProp => {
+): FieldProp {
   if (!field.id) {
     field.id = field.attribute;
     if (index) {
@@ -69,7 +74,7 @@ const handleField = (
     }
   }
   return field;
-};
+}
 
 export type FieldProp =
   | StandardAutocompleteProps<unknown>
@@ -95,57 +100,39 @@ export type FieldProp =
 function getFormComponent(field: FieldProp) {
   switch (field.component) {
     case "date-picker":
-      return <StandardDatePicker field={field as StandardDatePickerProps} />;
+      return <StandardDatePicker field={field} />;
     case "date-time-picker":
-      return (
-        <StandardDateTimePicker field={field as StandardDateTimePickerProps} />
-      );
+      return <StandardDateTimePicker field={field} />;
     case "time-picker":
-      return <StandardTimePicker field={field as StandardTimePickerProps} />;
+      return <StandardTimePicker field={field} />;
     case "select":
-      return <StandardSelect field={field as StandardSelectProps} />;
+      return <StandardSelect field={field} />;
     case "autocomplete":
       return (
-        <StandardAutocomplete<Unpack<typeof field.options>>
-          field={
-            field as StandardAutocompleteProps<Unpack<typeof field.options>>
-          }
-        />
+        <StandardAutocomplete<Unpack<typeof field.options>> field={field} />
       );
     case "chip-group":
-      return (
-        <StandardChipGroup<Unpack<typeof field.options>>
-          field={field as StandardChipGroupProps<Unpack<typeof field.options>>}
-        />
-      );
+      return <StandardChipGroup<Unpack<typeof field.options>> field={field} />;
     case "checkbox-group":
       return (
-        <StandardCheckboxGroup<Unpack<typeof field.options>>
-          field={
-            field as StandardCheckboxGroupProps<Unpack<typeof field.options>>
-          }
-        />
+        <StandardCheckboxGroup<Unpack<typeof field.options>> field={field} />
       );
     case "radio-group":
-      return (
-        <StandardRadioGroup<Unpack<typeof field.options>>
-          field={field as StandardRadioGroupProps<Unpack<typeof field.options>>}
-        />
-      );
+      return <StandardRadioGroup<Unpack<typeof field.options>> field={field} />;
     case "switch":
-      return <StandardSwitch field={field as StandardSwitchProps} />;
+      return <StandardSwitch field={field} />;
     case "file-upload":
-      return <StandardFileUpload field={field as StandardFileUploadProps} />;
+      return <StandardFileUpload field={field} />;
     case "image-picker":
-      return <StandardImagePicker field={field as StandardImagePickerProps} />;
+      return <StandardImagePicker field={field} />;
     case "rating":
-      return <StandardRating field={field as StandardRatingProps} />;
+      return <StandardRating field={field} />;
     case "counter":
-      return <StandardCounter field={field as StandardCounterProps} />;
+      return <StandardCounter field={field} />;
     case "display-text":
       return <Title field={field} />;
     case "display-image":
-      let f: any = field as StandardDisplayImageProps;
+      let f: StandardDisplayImageProps = field;
       return (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <img
@@ -158,14 +145,24 @@ function getFormComponent(field: FieldProp) {
         </Box>
       );
     case "display-media":
-    // return await renderReactPlayer(field as StandardDisplayMediaProps);
+      return (
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <ReactPlayer
+            url={field.src}
+            controls
+            width={field.width}
+            height={field.height}
+            {...field.props}
+          />
+        </Box>
+      );
     case "rich-text":
-      return <StandardEditor field={field as StandardEditorProps} />;
+      return <StandardEditor field={field} />;
     case "custom":
       return field.customComponent!(field as any);
     case "text-field":
     default:
-      return <StandardTextField field={field as StandardTextFieldProps} />;
+      return <StandardTextField field={field} />;
   }
 }
 
@@ -175,20 +172,20 @@ interface Error<T> {
   message: string;
 }
 
-interface FormBuilderProps<T> {
+interface FormBuilderProps<TForm> {
   title?: string;
   fields: Array<FieldProp>;
-  defaultValue: UseFormProps<T>["defaultValues"];
+  defaultValue: UseFormProps<TForm>["defaultValues"];
   children?: React.ReactNode;
   index?: string | number;
   idPrefix?: string;
   className?: string;
-  onSubmit: SubmitHandler<T>;
+  onSubmit: SubmitHandler<TForm>;
   submitButton?: React.ReactNode;
-  errors?: Array<Error<T>>;
+  errors?: Array<Error<TForm>>;
 }
 
-function FormBuilder<T>(props: FormBuilderProps<T>) {
+function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
   const {
     title,
     fields,
@@ -201,7 +198,7 @@ function FormBuilder<T>(props: FormBuilderProps<T>) {
     errors,
   } = props;
   const schema = getFormSchema(fields);
-  const methods = useForm<T>({
+  const methods = useForm<TForm>({
     mode: "onTouched",
     resolver: yupResolver(schema),
   });
@@ -247,7 +244,9 @@ function FormBuilder<T>(props: FormBuilderProps<T>) {
                     {...sanitizeColProps(field.col)}
                     {...field.containerProps}
                   >
-                    {getFormComponent(field)}
+                    <Suspense fallback={<Skeleton />}>
+                      {getFormComponent(field)}
+                    </Suspense>
                   </Grid>
                 )
               );

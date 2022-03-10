@@ -8,7 +8,7 @@ import { styled, useTheme } from "@mui/material/styles";
 
 import { useDimensions } from "../hooks/useDimensions";
 import {
-  CommonFieldProps, GridColMap, ImagePickerFieldProps, ImagePickerObject
+  CommonFieldProps, ImageColMap, ImagePickerFieldProps, ImagePickerObject
 } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
 import { Title } from "./widgets/Title";
@@ -107,7 +107,7 @@ const getSubLabelFontSize = (fieldConfig: StandardImagePickerProps): number =>
       )
     : 14;
 
-function sanitizeImageCols(col?: GridColMap): GridColMap {
+function sanitizeImageCols(col?: ImageColMap): ImageColMap {
   const copy = { ...(col || { xs: 2 }) };
   copy.sm = col?.sm || copy.xs;
   copy.md = col?.md || copy.sm;
@@ -116,10 +116,10 @@ function sanitizeImageCols(col?: GridColMap): GridColMap {
   return copy;
 }
 
-const StandardImagePicker = (props: {
+export default function StandardImagePicker(props: {
   field: StandardImagePickerProps;
   hideTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -296,6 +296,4 @@ const StandardImagePicker = (props: {
       )}
     />
   );
-};
-
-export { StandardImagePicker };
+}

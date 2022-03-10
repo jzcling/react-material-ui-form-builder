@@ -14,10 +14,10 @@ export interface StandardCounterProps
   attribute: Required<CommonFieldProps<"counter">>["attribute"];
 }
 
-const StandardCounter = (props: {
+export default function StandardCounter(props: {
   field: StandardCounterProps;
   hideTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -105,6 +105,4 @@ const StandardCounter = (props: {
       )}
     />
   );
-};
-
-export { StandardCounter };
+}

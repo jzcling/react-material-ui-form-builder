@@ -12,7 +12,7 @@ export interface StandardEditorProps
   attribute: Required<CommonFieldProps<"rich-text">>["attribute"];
 }
 
-const StandardEditor = (props: { field: StandardEditorProps }) => {
+export default function StandardEditor(props: { field: StandardEditorProps }) {
   const {
     control,
     getValues,
@@ -48,6 +48,4 @@ const StandardEditor = (props: { field: StandardEditorProps }) => {
       )}
     />
   );
-};
-
-export { StandardEditor };
+}

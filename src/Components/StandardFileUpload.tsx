@@ -97,10 +97,10 @@ const StyledButtonBase = styled(ButtonBase)(() => ({
   display: "block",
 })) as typeof Button;
 
-const StandardFileUpload = (props: {
+export default function StandardFileUpload(props: {
   field: StandardFileUploadProps;
   hideTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -246,6 +246,4 @@ const StandardFileUpload = (props: {
       )}
     />
   );
-};
-
-export { StandardFileUpload };
+}

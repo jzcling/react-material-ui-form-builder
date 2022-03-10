@@ -13,10 +13,10 @@ export interface StandardSwitchProps
   label: Required<CommonFieldProps<"switch">>["label"];
 }
 
-const StandardSwitch = (props: {
+export default function StandardSwitch(props: {
   field: StandardSwitchProps;
   hideTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -77,6 +77,4 @@ const StandardSwitch = (props: {
       )}
     />
   );
-};
-
-export { StandardSwitch };
+}

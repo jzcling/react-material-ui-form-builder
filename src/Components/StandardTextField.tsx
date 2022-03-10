@@ -10,10 +10,10 @@ export interface StandardTextFieldProps extends CommonFieldProps<"text-field"> {
   attribute: Required<CommonFieldProps<"text-field">>["attribute"];
 }
 
-const StandardTextField = (props: {
+export default function StandardTextField(props: {
   field: StandardTextFieldProps;
   hideTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -56,6 +56,4 @@ const StandardTextField = (props: {
       )}
     />
   );
-};
-
-export { StandardTextField };
+}

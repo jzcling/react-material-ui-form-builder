@@ -1,4 +1,4 @@
-import { isEqual } from "lodash";
+import isEqual from "lodash/isEqual";
 import React, { Fragment, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -12,17 +12,17 @@ import { CommonFieldProps, MultiOptionFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
 import { Title } from "./widgets/Title";
 
-export interface StandardRadioGroupProps<T>
-  extends CommonFieldProps<"radio-group"> {
-  attribute: Required<CommonFieldProps<"radio-group">>["attribute"];
-  options: MultiOptionFieldProps<T>["options"];
-  optionConfig?: MultiOptionFieldProps<T>["optionConfig"];
-  randomizeOptions?: MultiOptionFieldProps<T>["randomizeOptions"];
-  labelProps?: MultiOptionFieldProps<T>["labelProps"];
-  groupContainerProps?: MultiOptionFieldProps<T>["groupContainerProps"];
+export interface StandardRadioGroupProps<TOption>
+  extends CommonFieldProps<"radio-group", TOption> {
+  attribute: Required<CommonFieldProps<"radio-group", TOption>>["attribute"];
+  options: MultiOptionFieldProps<TOption>["options"];
+  optionConfig?: MultiOptionFieldProps<TOption>["optionConfig"];
+  randomizeOptions?: MultiOptionFieldProps<TOption>["randomizeOptions"];
+  labelProps?: MultiOptionFieldProps<TOption>["labelProps"];
+  groupContainerProps?: MultiOptionFieldProps<TOption>["groupContainerProps"];
 }
 
-function StandardRadioGroup<T>(props: {
+export default function StandardRadioGroup<T>(props: {
   field: StandardRadioGroupProps<T>;
   hideTitle?: boolean;
 }) {
@@ -113,5 +113,3 @@ function StandardRadioGroup<T>(props: {
     />
   );
 }
-
-export { StandardRadioGroup };

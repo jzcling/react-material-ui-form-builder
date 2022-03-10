@@ -1,4 +1,4 @@
-import { isEqual } from "lodash";
+import isEqual from "lodash/isEqual";
 import React, { Fragment, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -10,13 +10,13 @@ import { ChipGroupFieldProps, CommonFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
 import { Title } from "./widgets/Title";
 
-export interface StandardChipGroupProps<T>
-  extends CommonFieldProps<"chip-group">,
-    ChipGroupFieldProps<T> {
-  attribute: Required<CommonFieldProps<"chip-group">>["attribute"];
+export interface StandardChipGroupProps<TOption>
+  extends CommonFieldProps<"chip-group", TOption>,
+    ChipGroupFieldProps<TOption> {
+  attribute: Required<CommonFieldProps<"chip-group", TOption>>["attribute"];
 }
 
-function StandardChipGroup<T>(props: {
+export default function StandardChipGroup<T>(props: {
   field: StandardChipGroupProps<T>;
   hideTitle?: boolean;
 }) {
@@ -140,5 +140,3 @@ function StandardChipGroup<T>(props: {
     />
   );
 }
-
-export { StandardChipGroup };

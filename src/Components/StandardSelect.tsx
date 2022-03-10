@@ -16,10 +16,10 @@ export interface StandardSelectProps extends CommonFieldProps<"select"> {
   randomizeOptions?: MultiOptionFieldProps<string | number>["randomizeOptions"];
 }
 
-const StandardSelect = (props: {
+export default function StandardSelect(props: {
   field: StandardSelectProps;
   hideTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -93,6 +93,4 @@ const StandardSelect = (props: {
       )}
     />
   );
-};
-
-export { StandardSelect };
+}

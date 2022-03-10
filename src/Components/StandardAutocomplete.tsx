@@ -11,10 +11,10 @@ import { getLabel, getOptionFromConfig, getOptions } from "../utils/autocomplete
 import { AutocompleteFieldProps, CommonFieldProps } from "./props/FieldProps";
 import { Title } from "./widgets/Title";
 
-export interface StandardAutocompleteProps<T>
-  extends CommonFieldProps<"autocomplete">,
-    AutocompleteFieldProps<T> {
-  attribute: Required<CommonFieldProps<"autocomplete">>["attribute"];
+export interface StandardAutocompleteProps<TOption>
+  extends CommonFieldProps<"autocomplete", TOption>,
+    AutocompleteFieldProps<TOption> {
+  attribute: Required<CommonFieldProps<"autocomplete", TOption>>["attribute"];
 }
 
 function reorderTags<T>(
@@ -102,7 +102,7 @@ async function renderDnd<T>(
   );
 }
 
-function StandardAutocomplete<T>(props: {
+export default function StandardAutocomplete<T>(props: {
   field: StandardAutocompleteProps<T>;
   hideTitle?: boolean;
 }) {
@@ -295,5 +295,3 @@ function StandardAutocomplete<T>(props: {
     />
   );
 }
-
-export { StandardAutocomplete };

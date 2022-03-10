@@ -18,10 +18,10 @@ export interface StandardDateTimePickerProps
   attribute: Required<CommonFieldProps<"date-time-picker">>["attribute"];
 }
 
-const StandardDateTimePicker = (props: {
+export default function StandardDateTimePicker(props: {
   field: StandardDateTimePickerProps;
   hideTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -112,6 +112,4 @@ const StandardDateTimePicker = (props: {
       )}
     />
   );
-};
-
-export { StandardDateTimePicker };
+}

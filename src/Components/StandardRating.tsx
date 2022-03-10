@@ -14,10 +14,10 @@ export interface StandardRatingProps
   attribute: Required<CommonFieldProps<"rating">>["attribute"];
 }
 
-const StandardRating = (props: {
+export default function StandardRating(props: {
   field: StandardRatingProps;
   hideTitle?: boolean;
-}) => {
+}) {
   const {
     control,
     getValues,
@@ -62,6 +62,4 @@ const StandardRating = (props: {
       )}
     />
   );
-};
-
-export { StandardRating };
+}

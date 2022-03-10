@@ -1,4 +1,4 @@
-import { isEqual } from "lodash";
+import isEqual from "lodash/isEqual";
 import React, { Fragment, useMemo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -12,18 +12,18 @@ import { CommonFieldProps, MultiOptionFieldProps } from "./props/FieldProps";
 import ErrorText from "./widgets/ErrorText";
 import { Title } from "./widgets/Title";
 
-export interface StandardCheckboxGroupProps<T>
-  extends CommonFieldProps<"checkbox-group"> {
-  attribute: Required<CommonFieldProps<"checkbox-group">>["attribute"];
-  options: MultiOptionFieldProps<T>["options"];
-  optionConfig?: MultiOptionFieldProps<T>["optionConfig"];
-  randomizeOptions?: MultiOptionFieldProps<T>["randomizeOptions"];
-  multiple?: MultiOptionFieldProps<T>["multiple"];
-  labelProps?: MultiOptionFieldProps<T>["labelProps"];
-  groupContainerProps?: MultiOptionFieldProps<T>["groupContainerProps"];
+export interface StandardCheckboxGroupProps<TOption>
+  extends CommonFieldProps<"checkbox-group", TOption> {
+  attribute: Required<CommonFieldProps<"checkbox-group", TOption>>["attribute"];
+  options: MultiOptionFieldProps<TOption>["options"];
+  optionConfig?: MultiOptionFieldProps<TOption>["optionConfig"];
+  randomizeOptions?: MultiOptionFieldProps<TOption>["randomizeOptions"];
+  multiple?: MultiOptionFieldProps<TOption>["multiple"];
+  labelProps?: MultiOptionFieldProps<TOption>["labelProps"];
+  groupContainerProps?: MultiOptionFieldProps<TOption>["groupContainerProps"];
 }
 
-function StandardCheckboxGroup<T>(props: {
+export default function StandardCheckboxGroup<T>(props: {
   field: StandardCheckboxGroupProps<T>;
   hideTitle?: boolean;
 }) {
@@ -148,5 +148,3 @@ function StandardCheckboxGroup<T>(props: {
     />
   );
 }
-
-export { StandardCheckboxGroup };
