@@ -76,6 +76,7 @@ export function getLabel<T>(
       ) || {};
     return String(get(o, config.label));
   }
+
   // if all else fails, return option as string
   return String(option || "");
 }

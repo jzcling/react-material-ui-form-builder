@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
-import { Path, SubmitHandler, useForm, UseFormProps, UseFormReturn } from "react-hook-form";
+import {
+  FormProvider, Path, SubmitHandler, useForm, UseFormProps, UseFormReturn
+} from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import loadable from "@loadable/component";
@@ -177,7 +179,7 @@ interface FormBuilderProps<TForm> {
   onSubmit: SubmitHandler<TForm>;
   submitButton?: React.ReactNode;
   errors?: Array<Error<TForm>>;
-  setMethods: (methods: UseFormReturn<TForm>) => void;
+  setMethods?: (methods: UseFormReturn<TForm>) => void;
 }
 
 function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
@@ -205,7 +207,9 @@ function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
 
   // emit methods on change
   useEffect(() => {
-    setMethods(methods);
+    if (setMethods) {
+      setMethods(methods);
+    }
   }, [methods]);
 
   useEffect(() => {
@@ -220,43 +224,45 @@ function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
   }, [errors]);
 
   return (
-    <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
-      <Box
-        key={String(index)}
-        className={props.className}
-        sx={{ display: "flex", justifyContent: "center" }}
-      >
-        <Grid container spacing={1}>
-          {title && (
-            <Grid item xs={12}>
-              <Typography variant="h6">{title}</Typography>
-            </Grid>
-          )}
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
+        <Box
+          key={String(index)}
+          className={props.className}
+          sx={{ display: "flex", justifyContent: "center" }}
+        >
+          <Grid container spacing={1}>
+            {title && (
+              <Grid item xs={12}>
+                <Typography variant="h6">{title}</Typography>
+              </Grid>
+            )}
 
-          {fields?.map((field, index) => {
-            field = handleField(field, index, idPrefix);
-            // const component = await getFormComponent(field);
-            return (
-              !field.hideCondition && (
-                <Grid
-                  key={field.attribute || index}
-                  item
-                  {...sanitizeColProps(field.col)}
-                  {...field.containerProps}
-                >
-                  {/* <Suspense fallback={<Skeleton />}> */}
-                  {getFormComponent(field)}
-                  {/* </Suspense> */}
-                </Grid>
-              )
-            );
-          })}
-        </Grid>
+            {fields?.map((field, index) => {
+              field = handleField(field, index, idPrefix);
+              // const component = await getFormComponent(field);
+              return (
+                !field.hideCondition && (
+                  <Grid
+                    key={field.attribute || index}
+                    item
+                    {...sanitizeColProps(field.col)}
+                    {...field.containerProps}
+                  >
+                    {/* <Suspense fallback={<Skeleton />}> */}
+                    {getFormComponent(field)}
+                    {/* </Suspense> */}
+                  </Grid>
+                )
+              );
+            })}
+          </Grid>
 
-        {children}
-      </Box>
-      {submitButton ? submitButton : <Button type="submit">Submit</Button>}
-    </form>
+          {children}
+        </Box>
+        {submitButton ? submitButton : <Button type="submit">Submit</Button>}
+      </form>
+    </FormProvider>
   );
 }
 
