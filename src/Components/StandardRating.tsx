@@ -1,5 +1,5 @@
 import React from "react";
-import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
+import { Controller, ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
 import { Star, StarBorder } from "@mui/icons-material";
 import { Box, Rating, RatingProps } from "@mui/material";
@@ -16,15 +16,20 @@ export interface StandardRatingProps
 
 export default function StandardRating(props: {
   field: StandardRatingProps;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
 
   const componentProps = (
     fieldConfig: StandardRatingProps,

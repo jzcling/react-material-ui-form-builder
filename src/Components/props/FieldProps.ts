@@ -1,4 +1,7 @@
-import React, { DetailedHTMLProps, MouseEvent, MouseEventHandler } from "react";
+import React, {
+  DetailedHTMLProps, JSXElementConstructor, MouseEvent, MouseEventHandler, ReactElement
+} from "react";
+import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import { ReactPlayerProps } from "react-player";
 import { EditableProps } from "slate-react/dist/components/editable";
 
@@ -130,7 +133,11 @@ export interface CommonFieldProps<
    * to `true`. */
   validations?: Array<Validation>;
   /** Function that accepts the props `(field, ref)` and returns a node */
-  customComponent?: (field: unknown) => React.ReactNode;
+  customComponent?: (
+    field: unknown,
+    methods: UseFormReturn<any>,
+    hookField: ControllerRenderProps
+  ) => ReactElement<any, string | JSXElementConstructor<any>>;
 }
 
 export interface MultiOptionFieldProps<TOption> {

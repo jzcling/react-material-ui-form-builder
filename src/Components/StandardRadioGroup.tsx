@@ -1,6 +1,6 @@
 import isEqual from "lodash/isEqual";
 import React, { Fragment, useMemo } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import {
   FormControl, FormControlLabel, FormControlProps, FormGroup, Radio, RadioProps, Typography
@@ -24,16 +24,20 @@ export interface StandardRadioGroupProps<TOption>
 
 export default function StandardRadioGroup<TOption>(props: {
   field: StandardRadioGroupProps<TOption>;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
 
   const options: Array<Option<TOption>> = useMemo(() => {
     let options = fieldConfig.options || [];

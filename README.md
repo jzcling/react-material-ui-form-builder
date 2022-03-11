@@ -32,6 +32,10 @@ To reduce redundant packages, you need not install the peer dependencies of the 
 // Required
 @mui/material
 lodash
+react-hook-forms
+
+// Required if using yup resolver for validation
+yup
 
 // Date/Time Pickers
 @date-io/date-fns
@@ -384,7 +388,7 @@ export default function EmployeeForm(props) {
 | hideCondition       | `bool`   | `undefined`  | If true, hides field                                                                                                                                                                                                                                                                                                                                                                   |
 | validationType^     | `string` | `undefined`  | One of: `mixed`, `string`, `number`, `date`, `boolean`, `array`.                                                                                                                                                                                                                                                                                                                       |
 | validations^        | `object` | `undefined`  | These are validation options accepted by `yup` in the form of `[validation, arguments]`. Arguments can be a `string`, `number`, `true`, `regex` or an `array` of such in the order that it is accepted by the `yup` option. For validations that do not require any arguments, set the argument to `true`.                                                                             |
-| customComponent     | `func`   | `undefined`  | Function that accepts the props `(field, ref)` and returns a node                                                                                                                                                                                                                                                                                                                      |
+| customComponent     | `func`   | `undefined`  | Function that accepts the props `(field, methods, hookField)` and returns a node                                                                                                                                                                                                                                                                                                       |
 
 ^See below for examples
 

@@ -1,5 +1,5 @@
 import React, { DetailedHTMLProps, Fragment, useMemo, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import { Button, ButtonBase, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -99,16 +99,20 @@ const StyledButtonBase = styled(ButtonBase)(() => ({
 
 export default function StandardFileUpload(props: {
   field: StandardFileUploadProps;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
 
   const [fileErrors, setFileErrors] = useState<Array<string>>([]);
 
@@ -188,9 +192,9 @@ export default function StandardFileUpload(props: {
       render={({ field }) => (
         <Fragment>
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
-          <input {...componentProps(fieldConfig)} />
+          <input id={fieldConfig.attribute} {...componentProps(fieldConfig)} />
           <label
-            htmlFor={componentProps(fieldConfig).id}
+            htmlFor={fieldConfig.attribute}
             onBlur={() => trigger(fieldConfig.attribute)}
           >
             {field.value?.files?.length > 0 ? (

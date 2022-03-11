@@ -1,5 +1,5 @@
 import React, { Fragment, useMemo } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import {
   Box, ButtonBase, ButtonBaseProps, ImageList, ImageListProps, Typography
@@ -118,16 +118,20 @@ function sanitizeImageCols(col?: ImageColMap): ImageColMap {
 
 export default function StandardImagePicker(props: {
   field: StandardImagePickerProps;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
   const theme = useTheme();
   const { widthType } = useDimensions();
 

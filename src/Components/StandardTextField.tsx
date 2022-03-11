@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Controller, ControllerRenderProps, useFormContext } from "react-hook-form";
+import { Controller, ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
 import { TextField, TextFieldProps } from "@mui/material";
 
@@ -12,15 +12,20 @@ export interface StandardTextFieldProps extends CommonFieldProps<"text-field"> {
 
 export default function StandardTextField(props: {
   field: StandardTextFieldProps;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
 
   const componentProps = (
     fieldConfig: StandardTextFieldProps,

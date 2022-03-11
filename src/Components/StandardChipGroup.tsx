@@ -1,6 +1,6 @@
 import isEqual from "lodash/isEqual";
 import React, { Fragment, useMemo } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import { Box, Chip, ChipProps, FormControl, FormControlProps, FormGroup } from "@mui/material";
 
@@ -18,16 +18,20 @@ export interface StandardChipGroupProps<TOption>
 
 export default function StandardChipGroup<TOption>(props: {
   field: StandardChipGroupProps<TOption>;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
 
   const options: Array<Option<TOption>> = useMemo(() => {
     let options = fieldConfig.options || [];

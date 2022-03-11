@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import { Editor } from "@jeremyling/react-material-ui-rich-text-editor";
 
@@ -12,15 +12,20 @@ export interface StandardEditorProps
   attribute: Required<CommonFieldProps<"rich-text">>["attribute"];
 }
 
-export default function StandardEditor(props: { field: StandardEditorProps }) {
+export default function StandardEditor(props: {
+  field: StandardEditorProps;
+  methods: UseFormReturn;
+}) {
   const {
-    control,
-    getValues,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+  } = props;
   const [touched, setTouched] = useState<boolean>(false);
 
   useEffect(() => {

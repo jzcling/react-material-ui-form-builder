@@ -1,7 +1,7 @@
 import isEqual from "lodash/isEqual";
 import isObject from "lodash/isObject";
 import React, { Fragment, useState } from "react";
-import { Controller, FieldValues, useFormContext, UseFormSetValue } from "react-hook-form";
+import { Controller, FieldValues, UseFormReturn, UseFormSetValue } from "react-hook-form";
 
 import {
   Autocomplete, AutocompleteProps, AutocompleteRenderGetTagProps, Chip, TextField
@@ -104,16 +104,20 @@ async function renderDnd<TOption>(
 
 export default function StandardAutocomplete<TOption>(props: {
   field: StandardAutocompleteProps<TOption>;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
   const [focused, setFocused] = useState<boolean>();
 
   const options = getOptions<TOption>(

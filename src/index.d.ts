@@ -9,8 +9,8 @@ declare module "@jeremyling/react-material-ui-rich-text-editor" {
   export const Editor: React.FunctionComponent<EditorProps>;
 }
 
-declare namespace React {
-  function lazy<T extends ComponentType<any>>(
-    factory: () => Promise<{ default: T }>
-  ): T;
-}
+// declare namespace React {
+//   function lazy<T extends ComponentType<any>>(
+//     factory: () => Promise<{ default: T }>
+//   ): T;
+// }

@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
-import {
-  FormProvider, Path, SubmitHandler, useForm, UseFormProps, UseFormReturn
-} from "react-hook-form";
+import { Controller, Path, UseFormProps, UseFormReturn } from "react-hook-form";
 
-import { yupResolver } from "@hookform/resolvers/yup";
 import loadable from "@loadable/component";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
-import { getFormSchema } from "../utils/validation";
 import {
   GridColMap, StandardCustomProps, StandardDisplayImageProps, StandardDisplayMediaProps,
   StandardDisplayTextProps
@@ -59,23 +55,6 @@ function sanitizeColProps(col?: GridColMap): GridColMap {
   };
 }
 
-function handleField(
-  field: FieldProp,
-  index?: string | number,
-  idPrefix?: string
-): FieldProp {
-  if (!field.id) {
-    field.id = field.attribute;
-    if (index) {
-      field.id = index + "-" + field.id;
-    }
-    if (idPrefix) {
-      field.id = idPrefix + "-" + field.id;
-    }
-  }
-  return field;
-}
-
 export type FieldProp =
   | StandardAutocompleteProps<any>
   | StandardCheckboxGroupProps<any>
@@ -97,34 +76,34 @@ export type FieldProp =
   | StandardDisplayMediaProps
   | StandardCustomProps;
 
-function getFormComponent(field: FieldProp) {
+function getFormComponent(field: FieldProp, methods: UseFormReturn<any>) {
   switch (field.component) {
     case "date-picker":
-      return <StandardDatePicker field={field} />;
+      return <StandardDatePicker field={field} methods={methods} />;
     case "date-time-picker":
-      return <StandardDateTimePicker field={field} />;
+      return <StandardDateTimePicker field={field} methods={methods} />;
     case "time-picker":
-      return <StandardTimePicker field={field} />;
+      return <StandardTimePicker field={field} methods={methods} />;
     case "select":
-      return <StandardSelect field={field} />;
+      return <StandardSelect field={field} methods={methods} />;
     case "autocomplete":
-      return <StandardAutocomplete field={field} />;
+      return <StandardAutocomplete field={field} methods={methods} />;
     case "chip-group":
-      return <StandardChipGroup field={field} />;
+      return <StandardChipGroup field={field} methods={methods} />;
     case "checkbox-group":
-      return <StandardCheckboxGroup field={field} />;
+      return <StandardCheckboxGroup field={field} methods={methods} />;
     case "radio-group":
-      return <StandardRadioGroup field={field} />;
+      return <StandardRadioGroup field={field} methods={methods} />;
     case "switch":
-      return <StandardSwitch field={field} />;
+      return <StandardSwitch field={field} methods={methods} />;
     case "file-upload":
-      return <StandardFileUpload field={field} />;
+      return <StandardFileUpload field={field} methods={methods} />;
     case "image-picker":
-      return <StandardImagePicker field={field} />;
+      return <StandardImagePicker field={field} methods={methods} />;
     case "rating":
-      return <StandardRating field={field} />;
+      return <StandardRating field={field} methods={methods} />;
     case "counter":
-      return <StandardCounter field={field} />;
+      return <StandardCounter field={field} methods={methods} />;
     case "display-text":
       return <Title field={field} />;
     case "display-image":
@@ -153,12 +132,20 @@ function getFormComponent(field: FieldProp) {
         </Box>
       );
     case "rich-text":
-      return <StandardEditor field={field} />;
+      return <StandardEditor field={field} methods={methods} />;
     case "custom":
-      return field.customComponent!(field as any);
+      return (
+        <Controller
+          name={field.attribute!}
+          control={methods.control}
+          render={({ field: f }) =>
+            field.customComponent!(field as any, methods, f)
+          }
+        />
+      );
     case "text-field":
     default:
-      return <StandardTextField field={field} />;
+      return <StandardTextField field={field} methods={methods} />;
   }
 }
 
@@ -168,49 +155,22 @@ interface Error<T> {
   message: string;
 }
 
-interface FormBuilderProps<TForm> {
-  title?: string;
+export interface FormBuilderProps<TForm> {
   fields: Array<FieldProp>;
   defaultValue: UseFormProps<TForm>["defaultValues"];
   children?: React.ReactNode;
   index?: string | number;
   idPrefix?: string;
-  className?: string;
-  onSubmit: SubmitHandler<TForm>;
-  submitButton?: React.ReactNode;
   errors?: Array<Error<TForm>>;
-  setMethods?: (methods: UseFormReturn<TForm>) => void;
+  methods: UseFormReturn<any>;
 }
 
 function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
-  const {
-    title,
-    fields,
-    defaultValue,
-    children,
-    index,
-    idPrefix,
-    onSubmit,
-    submitButton,
-    errors,
-    setMethods,
-  } = props;
-  const schema = getFormSchema(fields);
-  const methods = useForm<TForm>({
-    mode: "onTouched",
-    resolver: yupResolver(schema),
-  });
+  const { fields, defaultValue, children, errors, methods } = props;
 
   useEffect(() => {
     methods.reset(defaultValue);
   }, [defaultValue]);
-
-  // emit methods on change
-  useEffect(() => {
-    if (setMethods) {
-      setMethods(methods);
-    }
-  }, [methods]);
 
   useEffect(() => {
     if (errors) {
@@ -224,45 +184,25 @@ function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
   }, [errors]);
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
-        <Box
-          key={String(index)}
-          className={props.className}
-          sx={{ display: "flex", justifyContent: "center" }}
-        >
-          <Grid container spacing={1}>
-            {title && (
-              <Grid item xs={12}>
-                <Typography variant="h6">{title}</Typography>
+    <Box>
+      <Grid container spacing={1}>
+        {fields?.map((field, index) => {
+          return (
+            !field.hideCondition && (
+              <Grid
+                key={field.attribute || index}
+                item
+                {...sanitizeColProps(field.col)}
+                {...field.containerProps}
+              >
+                {getFormComponent(field, methods)}
               </Grid>
-            )}
-
-            {fields?.map((field, index) => {
-              field = handleField(field, index, idPrefix);
-              // const component = await getFormComponent(field);
-              return (
-                !field.hideCondition && (
-                  <Grid
-                    key={field.attribute || index}
-                    item
-                    {...sanitizeColProps(field.col)}
-                    {...field.containerProps}
-                  >
-                    {/* <Suspense fallback={<Skeleton />}> */}
-                    {getFormComponent(field)}
-                    {/* </Suspense> */}
-                  </Grid>
-                )
-              );
-            })}
-          </Grid>
-
-          {children}
-        </Box>
-        {submitButton ? submitButton : <Button type="submit">Submit</Button>}
-      </form>
-    </FormProvider>
+            )
+          );
+        })}
+      </Grid>
+      {children}
+    </Box>
   );
 }
 

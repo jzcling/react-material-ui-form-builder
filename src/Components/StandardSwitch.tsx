@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import { FormControl, FormControlLabel, FormHelperText, Switch, SwitchProps } from "@mui/material";
 
@@ -15,16 +15,20 @@ export interface StandardSwitchProps
 
 export default function StandardSwitch(props: {
   field: StandardSwitchProps;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
 
   const handleSwitchChange = (
     checked: boolean,

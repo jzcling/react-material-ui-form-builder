@@ -1,6 +1,6 @@
 import { format, parse } from "date-fns";
 import React, { Fragment, useCallback, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import { Schedule } from "@mui/icons-material";
 import {
@@ -20,16 +20,20 @@ export interface StandardTimePickerProps
 
 export default function StandardTimePicker(props: {
   field: StandardTimePickerProps;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
   const [open, setOpen] = useState<boolean>();
 
   const component = useCallback(

@@ -1,5 +1,5 @@
 import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import { Add, Remove } from "@mui/icons-material";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
@@ -16,15 +16,20 @@ export interface StandardCounterProps
 
 export default function StandardCounter(props: {
   field: StandardCounterProps;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
 
   return (
     <Controller

@@ -1,6 +1,6 @@
 import get from "lodash/get";
 import React, { Fragment, useMemo } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import { FormControl, FormHelperText, InputLabel, Select, SelectProps } from "@mui/material";
 
@@ -18,16 +18,20 @@ export interface StandardSelectProps extends CommonFieldProps<"select"> {
 
 export default function StandardSelect(props: {
   field: StandardSelectProps;
+  methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
   const {
-    control,
-    getValues,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext();
-  const { field: fieldConfig, hideTitle } = props;
+    field: fieldConfig,
+    methods: {
+      control,
+      getValues,
+      setValue,
+      trigger,
+      formState: { errors },
+    },
+    hideTitle,
+  } = props;
 
   const options: Array<Option<string | number>> = useMemo(() => {
     let options = fieldConfig.options || [];
