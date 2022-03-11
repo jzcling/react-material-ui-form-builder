@@ -6,6 +6,7 @@ import replace from "@rollup/plugin-replace";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
+import dts from "rollup-plugin-dts";
 
 import pkg from "./package.json";
 
@@ -61,6 +62,11 @@ const config = [
       autoExternal(),
     ],
     external: [/lodash/, /@mui\//],
+  },
+  {
+    input: "build/dts/index.d.ts",
+    output: [{ file: "dist/dts/index.d.ts" }],
+    plugins: [dts()],
   },
   {
     input: "build/index.js",
