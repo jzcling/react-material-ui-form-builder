@@ -138,8 +138,8 @@ export interface CommonFieldProps<
     methods: UseFormReturn<any>,
     hookField: ControllerRenderProps
   ) => ReactElement<any, string | JSXElementConstructor<any>>;
-  index: string | number;
-  idPrefix: string;
+  index?: string | number;
+  idPrefix?: string;
 }
 
 export interface MultiOptionFieldProps<TOption> {
