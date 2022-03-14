@@ -67,7 +67,7 @@ react-player
 
 Suppose you need to submit a form with the following structure:
 
-```jsx
+```tsx
 // Employee
 {
   name: "First Last",
@@ -85,7 +85,7 @@ Suppose you need to submit a form with the following structure:
 
 Subordinates are other employees with the same data structure as above. Other data you have include:
 
-```jsx
+```tsx
 const employees = [
   {
     id: 1,
@@ -125,7 +125,7 @@ const statuses = ["Inactive", "Active"];
 
 With the predefined data above, the following functional component illustrates how FormBuilder is used.
 
-```jsx
+```tsx
 import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -169,7 +169,7 @@ const statuses: [string, string] = ["Inactive", "Active"];
 
 interface Props {
   defaultValue: {
-    status: "Active",
+    status: "Active";
   };
 }
 
@@ -181,7 +181,7 @@ interface Employee {
   skills: string[];
   subordinates: number[];
   details: {
-    joinDate: string,
+    joinDate: string;
   };
   profilePicFile: string;
 }
@@ -588,7 +588,7 @@ This includes `counter`.
 
 Validation is done using yup, which has 6 core types that inherit from the `mixed` type: `string`, `number`, `boolean`, `date`, `array` and `object`. For this project, it should be sufficient to use only `string` and `number` for the various components. In fact, other than the `text-field` component, it is unlikely you would need any validation beyond `required`. Here are some examples of how you might use validation.
 
-```jsx
+```tsx
 // Example field 1
 {
   attribute: ...,
