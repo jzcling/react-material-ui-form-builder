@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Controller, Path, UseFormProps, UseFormReturn } from "react-hook-form";
 
 import loadable from "@loadable/component";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
 import {
   GridColMap, StandardCustomProps, StandardDisplayImageProps, StandardDisplayMediaProps,
@@ -55,6 +55,23 @@ function sanitizeColProps(col?: GridColMap): GridColMap {
   };
 }
 
+function handleField(
+  field: FieldProp,
+  index?: string | number,
+  idPrefix?: string
+): FieldProp {
+  if (!field.id) {
+    field.id = field.attribute;
+    if (index) {
+      field.id = index + "-" + field.id;
+    }
+    if (idPrefix) {
+      field.id = idPrefix + "-" + field.id;
+    }
+  }
+  return field;
+}
+
 export type FieldProp =
   | StandardAutocompleteProps<any>
   | StandardCheckboxGroupProps<any>
@@ -67,7 +84,7 @@ export type FieldProp =
   | StandardImagePickerProps
   | StandardRadioGroupProps<any>
   | StandardRatingProps
-  | StandardSelectProps
+  | StandardSelectProps<any>
   | StandardSwitchProps
   | StandardTextFieldProps
   | StandardTimePickerProps
@@ -187,6 +204,7 @@ function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
     <Box>
       <Grid container spacing={1}>
         {fields?.map((field, index) => {
+          field = handleField(field);
           return (
             !field.hideCondition && (
               <Grid
