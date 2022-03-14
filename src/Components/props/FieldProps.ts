@@ -138,6 +138,8 @@ export interface CommonFieldProps<
     methods: UseFormReturn<any>,
     hookField: ControllerRenderProps
   ) => ReactElement<any, string | JSXElementConstructor<any>>;
+  index: string | number;
+  idPrefix: string;
 }
 
 export interface MultiOptionFieldProps<TOption> {
@@ -164,7 +166,7 @@ export interface MultiOptionFieldProps<TOption> {
    *
    * Any additional props to pass to Material UI's FormControlLabel that wraps the label.
    * */
-  labelProps?: FormControlLabelProps;
+  labelProps?: Partial<FormControlLabelProps>;
   /**
    * Only for `checkbox-group`, `radio-group`.
    *
@@ -217,7 +219,7 @@ export interface SwitchFieldProps {
   /**
    * Any additional props to pass to Material UI's FormControlLabel that wraps the label.
    * */
-  labelProps?: FormControlLabelProps;
+  labelProps?: Partial<FormControlLabelProps>;
 }
 
 export interface DateTimeFieldProps {
