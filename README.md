@@ -30,6 +30,8 @@ To reduce redundant packages, you need not install the peer dependencies of the 
 
 ```js
 // Required
+@emotion/react
+@emotion/styled
 @mui/material
 lodash
 react-hook-forms
@@ -118,240 +120,336 @@ const skills = [
   'People Management',
 ];
 
-const statuses = ["Active", "Inactive"];
+const statuses = ["Inactive", "Active"];
 ```
 
 With the predefined data above, the following functional component illustrates how FormBuilder is used.
 
 ```jsx
-import React, { useState } from "react";
-import FormBuilder from "@jeremyling/react-material-ui-form-builder";
-import _ from "lodash";
+import React from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  FieldProp,
+  FormBuilder,
+  validationUtils,
+} from "@jeremyling/react-material-ui-form-builder";
+import { useForm, UseFormReturn } from "react-hook-form";
+import { parseISO, isAfter } from "date-fns";
+import { Button } from "@mui/material";
 
-export default function EmployeeForm(props) {
-  const [form, setForm] = useState({});
+const employees = [
+  {
+    id: 1,
+    name: "First Employee",
+  },
+  {
+    id: 2,
+    name: "Second Employee",
+  },
+  {
+    id: 3,
+    name: "Third Employee",
+  },
+];
 
-  const updateForm = (updates) => {
-    const copy = JSON.parse(JSON.stringify(form));
-    for (const [key, value] of Object.entries(updates)) {
-      _.set(copy, key, value);
-    }
-    setForm(copy);
+const jobs = [
+  {
+    id: 1,
+    title: "Manager",
+  },
+  {
+    id: 2,
+    title: "Entry Level Staff",
+  },
+];
+
+const skills = ["Data Entry", "People Management"];
+
+const statuses: [string, string] = ["Inactive", "Active"];
+
+interface Props {
+  defaultValue: {
+    status: "Active",
   };
+}
 
-  const fields = [
-    {
-      component: "display-text",
-      titleProps: {
-        variant: "h6",
-      },
-      title: "Create Employee",
-    },
-    {
-      component: "display-image",
-      src: "https://via.placeholder.com/800x450?text=Create+Employee",
-      alt: "Create Employee",
-      props: {
-        style: {
-          height: 225,
-          width: 400,
-          objectFit: "cover",
+interface Employee {
+  name: string;
+  email: string;
+  jobId: number;
+  status: "Active" | "Inactive";
+  skills: string[];
+  subordinates: number[];
+  details: {
+    joinDate: string,
+  };
+  profilePicFile: string;
+}
+
+export default function EmployeeForm(props: Props) {
+  const { defaultValue } = props;
+
+  function fields(
+    methods?: UseFormReturn<Employee>,
+    watch?: [number]
+  ): Array<FieldProp> {
+    return [
+      {
+        component: "display-text",
+        titleProps: {
+          variant: "h6",
         },
+        title: "Create Employee",
       },
-    },
-    {
-      // Default component is Material UI's TextField
-      attribute: "name",
-      label: "Name",
-      col: {
-        // Here you can specify how many Grid columns the field should take for the corresponding breakpoints
-        sm: 6,
-      },
-      validationType: "string",
-      validations: [
-        [required, true],
-        [max, 50],
-      ],
-    },
-    {
-      attribute: "email",
-      label: "Email",
-      col: {
-        sm: 6,
-      },
-      component: "text-field",
-      props: {
-        // Here you can pass any props that are accepted by Material UI's TextField component
-      },
-      validationType: "string",
-      validations: [
-        [required, true],
-        [email, true],
-      ],
-    },
-    {
-      attribute: "jobId",
-      label: "Job",
-      col: {
-        sm: 6,
-      },
-      component: "select",
-      options: jobs,
-      // If options is an array of objects, optionConfig is required
-      optionConfig: {
-        key: "id", // The attribute to use for the key required for each option
-        value: "id", // The attribute to use to determine the value that should be passed to the form field
-        label: "title", // The attribute to use to determine the label for the select option
-      },
-    },
-    {
-      attribute: "details.joinDate",
-      label: "Join Date",
-      col: {
-        sm: 6,
-      },
-      component: "date-picker",
-      props: {
-        // Here you can pass any props that are accepted by Material UI's KeyboardDatePicker component
-      },
-    },
-    {
-      attribute: "status",
-      label: "Status",
-      col: {
-        sm: 6,
-      },
-      component: "select",
-      options: statuses, // optionConfig not required as options is an array of strings
-      props: {
-        // Here you can pass any props that are accepted by Material UI's Select component
-      },
-      idPrefix: "select",
-    },
-    {
-      attribute: "status",
-      title: "Status", // You can omit this if you do not want a title for the field
-      col: {
-        sm: 6,
-      },
-      component: "checkbox-group",
-      options: ["Active"], // Single option for a single checkbox
-      props: {
-        // Here you can pass any props that are accepted by Material UI's Checkbox component
-        onChange: (event) => {
-          if (event.target.checked) {
-            updateForm("status", "Active");
-          } else {
-            updateForm("status", "Inactive");
-          }
-        },
-      },
-      labelProps: {
-        // Here you can pass any props that are accepted by Material UI's FormControlLabel component
-        variant: "body2",
-      },
-      groupContainerProps: {
-        // Here you can pass any props that are accepted by Material UI's FormControl component
-      },
-      idPrefix: "checkbox",
-    },
-    {
-      attribute: "status",
-      title: "Status", // You can omit this if you do not want a title for the field
-      col: {
-        sm: 6,
-      },
-      component: "radio-group",
-      options: statuses,
-      props: {
-        // Here you can pass any props that are accepted by Material UI's Radio component
-        color: "secondary",
-      },
-      labelProps: {
-        // Here you can pass any props that are accepted by Material UI's FormControlLabel component
-        variant: "body2",
-      },
-      groupContainerProps: {
-        // Here you can pass any props that are accepted by Material UI's FormControl component
-        sx: {
-          "& .MuiFormControl-root": {
-            flexDirection: "row",
+      {
+        component: "display-image",
+        src: "https://via.placeholder.com/800x450?text=Create+Employee",
+        alt: "Create Employee",
+        props: {
+          style: {
+            height: 225,
+            width: 400,
+            objectFit: "cover",
           },
         },
       },
-      idPrefix: "radio",
-    },
+      {
+        component: "text-field",
+        attribute: "name",
+        label: "Name",
+        col: {
+          // Here you can specify how many Grid columns the field should take for the corresponding breakpoints
+          sm: 6,
+        },
+        validationType: "string",
+        validations: [
+          ["required", true],
+          ["max", 50],
+        ],
+      },
+      {
+        component: "text-field",
+        attribute: "email",
+        label: "Email",
+        col: {
+          sm: 6,
+        },
+        props: {
+          // Here you can pass any props that are accepted by Material UI's TextField component
+        },
+        validationType: "string",
+        validations: [
+          ["required", true],
+          ["email", true],
+        ],
+      },
+      {
+        component: "select",
+        attribute: "jobId",
+        label: "Job",
+        col: {
+          sm: 6,
+        },
+        options: jobs,
+        // If options is an array of objects, optionConfig is required
+        optionConfig: {
+          key: "id", // The attribute to use for the key required for each option
+          value: "id", // The attribute to use to determine the value that should be passed to the form field
+          label: "title", // The attribute to use to determine the label for the select option
+        },
+      },
+      {
+        component: "date-picker",
+        attribute: "details.joinDate",
+        label: "Join Date",
+        col: {
+          sm: 6,
+        },
+        props: {
+          // Here you can pass any props that are accepted by Material UI's DatePicker component
+          clearable: true,
+          inputFormat: "dd MMM yyyy",
+          disableFuture: true,
+          openTo: "year",
+          views: ["year", "month", "day"],
+        },
+        validationType: "string",
+        validations: [
+          [
+            "test",
+            [
+              "notAfterToday",
+              "Date of Birth must be in the past",
+              (value: string) => {
+                const parsed = parseISO(value);
+                return !isAfter(parsed, new Date());
+              },
+            ],
+          ],
+        ],
+      },
+      {
+        component: "switch",
+        attribute: "status",
+        label: "Status",
+        col: {
+          sm: 6,
+        },
+        options: statuses, // options in the form [offValue, onValue]
+        props: {
+          // Here you can pass any props that are accepted by Material UI's Switch component
+        },
+        idPrefix: "switch",
+      },
+      {
+        component: "checkbox-group",
+        attribute: "status",
+        title: "Status", // You can omit this if you do not want a title for the field
+        col: {
+          sm: 6,
+        },
+        options: ["Active"], // Single option for a single checkbox
+        props: {
+          // Here you can pass any props that are accepted by Material UI's Checkbox component
+          onChange: (event) => {
+            if (event.target.checked) {
+              methods?.setValue("status", "Active");
+            } else {
+              methods?.setValue("status", "Inactive");
+            }
+          },
+        },
+        labelProps: {
+          // Here you can pass any props that are accepted by Material UI's FormControlLabel component
+        },
+        groupContainerProps: {
+          // Here you can pass any props that are accepted by Material UI's FormControl component
+        },
+        idPrefix: "checkbox",
+      },
+      {
+        attribute: "status",
+        title: "Status", // You can omit this if you do not want a title for the field
+        col: {
+          sm: 6,
+        },
+        component: "radio-group",
+        options: statuses,
+        props: {
+          // Here you can pass any props that are accepted by Material UI's Radio component
+          color: "secondary",
+        },
+        groupContainerProps: {
+          // Here you can pass any props that are accepted by Material UI's FormControl component
+          sx: {
+            flexDirection: "row",
+          },
+        },
+        labelProps: {
+          // Here you can pass any props that are accepted by Material UI's FormControlLabel component
+          sx: {
+            padding: "8px 16px",
+          },
+        },
+        idPrefix: "radio",
+      },
+      {
+        attribute: "skills",
+        title: "Skills",
+        col: {
+          sm: 12,
+        },
+        component: "chip-group",
+        options: skills, // optionConfig not required as options is an array of strings
+        multiple: true, // Allow multiple selections
+        props: {
+          // Here you can pass any props that are accepted by Material UI's Chip component
+        },
+        groupContainerProps: {
+          // Here you can pass any props that are accepted by Material UI's FormControl component
+          sx: {
+            flexDirection: "row",
+          },
+        },
+        labelProps: {
+          // Here you can pass any props that are accepted by the span component
+          style: {
+            padding: "8px 16px",
+          },
+        },
+      },
+      {
+        attribute: "subordinates",
+        label: "Subordinates",
+        component: "autocomplete",
+        options: employees,
+        optionConfig: {
+          value: "id",
+          label: "name",
+        },
+        props: {
+          // Here you can pass any props that are accepted by Material UI's Autocomplete component
+          autoHighlight: true,
+          multiple: true,
+        },
+        hideCondition:
+          // This will hide the form field if the condition is true
+          jobs.find((j) => j.id === Number(watch?.[0]))?.title ===
+          "Entry Level Staff",
+      },
+      {
+        attribute: "profilePicFile",
+        label: "Select Image",
+        component: "file-upload",
+        acceptTypes: "image/*",
+        maxSizeMb: 1,
+        props: {
+          // Here you can pass any props that are accepted by the input component
+        },
+      },
+    ];
+  }
+
+  const schema = validationUtils.getFormSchema(fields());
+  const methods =
+    useForm <
+    Employee >
     {
-      attribute: "status",
-      label: "Active",
-      col: {
-        sm: 6,
-      },
-      component: "switch",
-      props: {
-        // Here you can pass any props that are accepted by Material UI's Radio component
-        color: "secondary",
-        checked: _.get(form, "status") === "Active",
-        onChange: (event) =>
-          event.target.checked
-            ? updateForm("status", "Active")
-            : updateForm("status", "Inactive"),
-      },
-      idPrefix: "switch",
-    },
-    {
-      attribute: "skills",
-      label: "Skills",
-      col: {
-        sm: 12,
-      },
-      component: "chip-group",
-      options: skills, // optionConfig not required as options is an array of strings
-      multiple: true, // Allow multiple selections
-      props: {
-        // Here you can pass any props that are accepted by Material UI's Chip component
-      },
-      groupContainerProps: {
-        // Here you can pass any props that are accepted by Material UI's FormControl component
-        sx: { overflow: auto },
-      },
-    },
-    {
-      attribute: "subordinates",
-      label: "Subordinates",
-      component: "autocomplete",
-      options: employees,
-      optionConfig: {
-        value: "id",
-        label: "name",
-      },
-      props: {
-        // Here you can pass any props that are accepted by Material UI's Autocomplete component
-        autoHighlight: true,
-        multiple: true,
-      },
-      hideCondition:
-        (jobs.find((j) => j.id === form.jobId)?.title ===
-        "Entry Level Staff", // This will hide the form field if the condition is true
-    },
-    {
-      attribute: "profilePicFile",
-      label: "Select Image",
-      component: "file-upload",
-      acceptTypes: "image/*",
-      maxSizeMb: 1,
-      props: {
-        // Here you can pass any props that are accepted by the input component
-      },
-    },
-  ];
+      mode: "onTouched",
+      resolver: yupResolver(schema),
+    };
+
+  const watch = methods.watch(["jobId"]);
+
+  React.useEffect(() => {
+    console.log(watch);
+  }, [watch]);
+
+  const onSubmit = (data: Employee) => {
+    console.log(data);
+    // handle form submission
+  };
+
+  const submitButton = (
+    <Button
+      fullWidth
+      variant="contained"
+      color="primary"
+      sx={{ mt: 1 }}
+      onClick={methods.handleSubmit(onSubmit)}
+    >
+      Submit
+    </Button>
+  );
 
   return (
     <FormBuilder
-      fields={fields}
-      form={form}
-      updateForm={(updates) => updateForm(updates)}
-    />
+      fields={fields(methods, watch)}
+      defaultValue={defaultValue}
+      methods={methods}
+    >
+      {submitButton}
+    </FormBuilder>
   );
 }
 ```
@@ -502,14 +600,14 @@ Validation is done using yup, which has 6 core types that inherit from the `mixe
   label: ...,
   validationType: 'string',
   validations: [
-    [required, true],
-    [length, 10],
-    [min, 5],
-    [max, 20],
-    [matches, ['/[a-z]/i', 'Can only contain letters']],
-    [email, true],
-    [url, true],
-    [uuid, true],
+    ["required", true],
+    ["length", 10],
+    ["min", 5],
+    ["max", 20],
+    ["matches", [/[a-z]/i, "Can only contain letters"]],
+    ["email", true],
+    ["url", true],
+    ["uuid", true],
   ]
 }
 
@@ -523,16 +621,14 @@ Validation is done using yup, which has 6 core types that inherit from the `mixe
   label: ...,
   validationType: 'number',
   validations: [
-    [required, true],
-    [min, 5],
-    [max, 20],
-    [lessThan, 20],
-    [moreThan, 5],
-    [positive, true],
-    [negative, true],
-    [integer, true],
+    ["required", true],
+    ["min", 5],
+    ["max", 20],
+    ["lessThan", 20],
+    ["moreThan", 5],
+    ["positive", true],
+    ["negative", true],
+    ["integer", true],
   ]
 }
 ```
-
-For dates, most validation can already be done with Material UI's pickers.
