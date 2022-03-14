@@ -421,10 +421,6 @@ export default function EmployeeForm(props: Props) {
 
   const watch = methods.watch(["jobId"]);
 
-  React.useEffect(() => {
-    console.log(watch);
-  }, [watch]);
-
   const onSubmit = (data: Employee) => {
     console.log(data);
     // handle form submission
