@@ -1,23 +1,23 @@
-import get from "lodash/get";
 import React, { Fragment, useMemo } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
 import { FormControl, FormHelperText, InputLabel, Select, SelectProps } from "@mui/material";
 
 import { shuffleArray } from "../utils";
-import { getOptionFromConfig, Option } from "../utils/options";
+import { getSelectOptionFromConfig, SelectOption } from "../utils/options";
 import { CommonFieldProps, MultiOptionFieldProps } from "./props/FieldProps";
 import { Title } from "./widgets/Title";
 
-export interface StandardSelectProps extends CommonFieldProps<"select"> {
-  attribute: Required<CommonFieldProps<"select">>["attribute"];
-  options: MultiOptionFieldProps<string | number>["options"];
-  optionConfig?: MultiOptionFieldProps<string | number>["optionConfig"];
-  randomizeOptions?: MultiOptionFieldProps<string | number>["randomizeOptions"];
+export interface StandardSelectProps<TOption>
+  extends CommonFieldProps<"select", TOption> {
+  attribute: Required<CommonFieldProps<"select", TOption>>["attribute"];
+  options: MultiOptionFieldProps<TOption>["options"];
+  optionConfig?: MultiOptionFieldProps<TOption>["optionConfig"];
+  randomizeOptions?: MultiOptionFieldProps<TOption>["randomizeOptions"];
 }
 
-export default function StandardSelect(props: {
-  field: StandardSelectProps;
+export default function StandardSelect<TOption>(props: {
+  field: StandardSelectProps<TOption>;
   methods: UseFormReturn;
   hideTitle?: boolean;
 }) {
@@ -33,18 +33,18 @@ export default function StandardSelect(props: {
     hideTitle,
   } = props;
 
-  const options: Array<Option<string | number>> = useMemo(() => {
+  const options: Array<SelectOption> = useMemo(() => {
     let options = fieldConfig.options || [];
     if (fieldConfig.randomizeOptions) {
       options = shuffleArray(fieldConfig.options || []);
     }
     return options.map((opt) =>
-      getOptionFromConfig<string | number>(opt, fieldConfig.optionConfig)
+      getSelectOptionFromConfig(opt, fieldConfig.optionConfig)
     );
   }, [fieldConfig.options, fieldConfig.optionConfig]);
 
   const componentProps = (
-    fieldConfig: StandardSelectProps,
+    fieldConfig: StandardSelectProps<TOption>,
     value: string | number
   ): SelectProps => {
     return {
