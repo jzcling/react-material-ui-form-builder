@@ -27,4 +27,5 @@ rollup.config.js
 
 .vscode
 .rollup.cache
+tsconfig.json
 tsconfig.tsbuildinfo
