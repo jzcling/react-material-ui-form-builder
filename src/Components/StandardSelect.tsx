@@ -76,7 +76,11 @@ export default function StandardSelect<TOption>(props: {
             error={!!errors[fieldConfig.attribute]}
           >
             <InputLabel
-              // size="small"
+              sx={{
+                // this is to set the label position correctly.
+                // size is currently not a prop for InputLabel
+                top: "-8px",
+              }}
               htmlFor={fieldConfig.attribute}
             >
               {fieldConfig.label}

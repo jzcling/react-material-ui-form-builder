@@ -1,5 +1,4 @@
 import get from "lodash/get";
-import isObject from "lodash/isObject";
 
 export interface Option<T> {
   key: string;
