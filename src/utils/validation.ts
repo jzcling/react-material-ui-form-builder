@@ -12,9 +12,8 @@ export function getFormSchema(fields: Array<FieldProp>) {
         field.validations,
         field.label
       );
-      formSchema[field.attribute] = fieldSchema;
-      if (field.hideCondition) {
-        delete formSchema["required"];
+      if (!field.hideCondition) {
+        formSchema[field.attribute] = fieldSchema;
       }
     }
   }
