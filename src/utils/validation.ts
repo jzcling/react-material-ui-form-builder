@@ -13,6 +13,9 @@ export function getFormSchema(fields: Array<FieldProp>) {
         field.label
       );
       formSchema[field.attribute] = fieldSchema;
+      if (field.hideCondition) {
+        delete formSchema["required"];
+      }
     }
   }
   const schema = yup.object(formSchema).required();
