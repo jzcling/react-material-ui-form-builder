@@ -55,18 +55,14 @@ function sanitizeColProps(col?: GridColMap): GridColMap {
   };
 }
 
-function handleField(
-  field: FieldProp,
-  index?: string | number,
-  idPrefix?: string
-): FieldProp {
+function handleField(field: FieldProp, index?: string | number): FieldProp {
   if (!field.id) {
     field.id = field.attribute;
     if (index) {
       field.id = index + "-" + field.id;
     }
-    if (idPrefix) {
-      field.id = idPrefix + "-" + field.id;
+    if (field.idPrefix) {
+      field.id = field.idPrefix + "-" + field.id;
     }
   }
   return field;
@@ -204,11 +200,11 @@ function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
     <Box>
       <Grid container spacing={1}>
         {fields?.map((field, index) => {
-          field = handleField(field);
+          field = handleField(field, index);
           return (
             !field.hideCondition && (
               <Grid
-                key={field.attribute || index}
+                key={field.id || field.attribute || index}
                 item
                 {...sanitizeColProps(field.col)}
                 {...field.containerProps}

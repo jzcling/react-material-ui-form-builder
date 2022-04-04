@@ -139,7 +139,7 @@ export default function StandardChipGroup<TOption>(props: {
               ))}
             </FormControl>
             {!!errors[fieldConfig.attribute] && (
-              <ErrorText error={errors[fieldConfig.attribute].message} />
+              <ErrorText error={errors[fieldConfig.attribute]?.message} />
             )}
           </FormGroup>
         </Fragment>

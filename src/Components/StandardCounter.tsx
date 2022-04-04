@@ -104,7 +104,7 @@ export default function StandardCounter(props: {
           </Tooltip>
 
           {!!errors[fieldConfig.attribute] && (
-            <ErrorText error={errors[fieldConfig.attribute].message} />
+            <ErrorText error={errors[fieldConfig.attribute]?.message} />
           )}
         </Box>
       )}

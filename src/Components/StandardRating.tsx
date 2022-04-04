@@ -61,7 +61,7 @@ export default function StandardRating(props: {
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <Rating {...componentProps(fieldConfig, field)} />
           {!!errors[fieldConfig.attribute] && (
-            <ErrorText error={errors[fieldConfig.attribute].message} />
+            <ErrorText error={errors[fieldConfig.attribute]?.message} />
           )}
         </Box>
       )}
