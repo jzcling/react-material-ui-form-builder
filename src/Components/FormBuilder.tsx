@@ -149,7 +149,7 @@ function getFormComponent(field: FieldProp, methods: UseFormReturn<any>) {
     case "custom":
       return (
         <Controller
-          name={field.attribute!}
+          name={field.attribute || ""}
           control={methods.control}
           render={({ field: f }) =>
             field.customComponent!(field as any, methods, f)
