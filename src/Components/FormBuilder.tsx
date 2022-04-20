@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Controller, Path, UseFormProps, UseFormReturn } from "react-hook-form";
 
 import loadable from "@loadable/component";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, GridProps } from "@mui/material";
 
 import {
   GridColMap, StandardCustomProps, StandardDisplayImageProps, StandardDisplayMediaProps,
@@ -176,10 +176,11 @@ export interface FormBuilderProps<TForm> {
   idPrefix?: string;
   errors?: Array<Error<TForm>>;
   methods: UseFormReturn<any>;
+  sx?: GridProps["sx"];
 }
 
 function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
-  const { fields, defaultValue, children, errors, methods } = props;
+  const { fields, defaultValue, children, errors, methods, sx } = props;
 
   useEffect(() => {
     methods.reset(defaultValue);
@@ -198,7 +199,7 @@ function FormBuilder<TForm>(props: FormBuilderProps<TForm>) {
 
   return (
     <Box>
-      <Grid container spacing={1}>
+      <Grid container spacing={1} sx={sx}>
         {fields?.map((field, index) => {
           field = handleField(field, index);
           return (
