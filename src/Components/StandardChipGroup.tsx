@@ -87,7 +87,7 @@ export default function StandardChipGroup<TOption>(props: {
     }
 
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       key: option.key,
       label: option.label,
       color: isSelected ? "primary" : "default",

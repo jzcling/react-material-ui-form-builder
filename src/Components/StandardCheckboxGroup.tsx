@@ -97,7 +97,7 @@ export default function StandardCheckboxGroup<TOption>(props: {
       isSelected = isEqual(value, option.value);
     }
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       key: option.key,
       color: "primary",
       checked: isSelected,

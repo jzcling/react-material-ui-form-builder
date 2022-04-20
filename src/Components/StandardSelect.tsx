@@ -48,12 +48,12 @@ export default function StandardSelect<TOption>(props: {
     value: string | number
   ): SelectProps => {
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       native: true,
       size: "small",
       inputProps: {
         name: fieldConfig.attribute,
-        id: fieldConfig.attribute,
+        id: fieldConfig.id || fieldConfig.attribute,
       },
       value: value || "",
       onChange: (event) => setValue(fieldConfig.attribute, event.target.value),

@@ -36,7 +36,7 @@ export default function StandardRating(props: {
     field: ControllerRenderProps
   ): RatingProps => {
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       name: field.name,
       value: field.value || 0,
       precision: 0.5,

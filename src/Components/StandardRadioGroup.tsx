@@ -61,7 +61,7 @@ export default function StandardRadioGroup<TOption>(props: {
     value: TOption
   ): RadioProps => {
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       key: option.key,
       color: "primary",
       ...fieldConfig.props,

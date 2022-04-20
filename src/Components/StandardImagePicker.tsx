@@ -202,7 +202,7 @@ export default function StandardImagePicker(props: {
     value: ImagePickerObject | Array<ImagePickerObject>
   ): ButtonBaseProps<"div", { component: "div" }> => {
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       sx: {
         width: `calc(100% - ${
           isSelected(fieldConfig, option, value) ? "12px" : "8px"

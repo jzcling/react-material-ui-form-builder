@@ -32,7 +32,7 @@ export default function StandardTextField(props: {
     field: ControllerRenderProps
   ): TextFieldProps => {
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       fullWidth: true,
       size: "small",
       label: fieldConfig.label,

@@ -175,7 +175,7 @@ export default function StandardFileUpload(props: {
     HTMLInputElement
   > => {
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       type: "file",
       hidden: true,
       multiple: false,

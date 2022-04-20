@@ -47,7 +47,7 @@ export default function StandardSwitch(props: {
   ): SwitchProps => {
     const options = fieldConfig.options || [false, true];
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       key: fieldConfig.attribute,
       size: "small",
       color: "primary",
