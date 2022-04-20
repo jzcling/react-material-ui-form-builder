@@ -130,7 +130,7 @@ export default function StandardAutocomplete<TOption>(props: {
     value?: Array<TOption>
   ): AutocompleteProps<TOption, true, true, true> {
     return {
-      id: fieldConfig.attribute,
+      id: fieldConfig.id || fieldConfig.attribute,
       size: "small",
       fullWidth: true,
       isOptionEqualToValue: (option, value) => {
