@@ -452,18 +452,16 @@ export default function EmployeeForm(props: Props) {
 
 ## Props
 
-| Prop       | Type                 | Default              | Description                                                                                                             |
-| ---------- | -------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| title      | `string`             | `undefined`          | Form title                                                                                                              |
-| fields     | `array`              | required             | Array of form fields along with props (details below)                                                                   |
-| form       | `object`             | required             | Form object to be filled                                                                                                |
-| updateForm | `func`               | `(updates) => {}`    | Method to update form. `updates` is an object of the form `{ [key]: value }` and will update all `form[key]` to `value` |
-| children   | `node`               | `undefined`          | Additional content to the right of the form                                                                             |
-| index      | `string` or `number` | `undefined`          | To uniquely identify fields if FormBuilder is used in a loop                                                            |
-| idPrefix   | `string`             | `undefined`          | To uniquely identify fields if multiple fields use the same attribute                                                   |
-| errors     | `array`              | `undefined`          | External errors outside of FormBuilder that you would like to pass to be rendered                                       |
-| methods    | `object`             | `UseFormReturn<any>` | React Hook Form's UseFormReturn type for updating and syncing form                                                      |
-| sx         | `string`             | `undefined`          | Material UI's sx prop to pass to Grid component wrapping form fields                                                    |
+| Prop         | Type                 | Default              | Description                                                                       |
+| ------------ | -------------------- | -------------------- | --------------------------------------------------------------------------------- |
+| fields       | `array`              | required             | Array of form fields along with props (details below)                             |
+| defaultValue | `object`             | required             | Initial value of form                                                             |
+| children     | `node`               | `undefined`          | Additional content to the right of the form                                       |
+| index        | `string` or `number` | `undefined`          | To uniquely identify fields if FormBuilder is used in a loop                      |
+| idPrefix     | `string`             | `undefined`          | To uniquely identify fields if multiple fields use the same attribute             |
+| errors       | `array`              | `undefined`          | External errors outside of FormBuilder that you would like to pass to be rendered |
+| methods      | `object`             | `UseFormReturn<any>` | React Hook Form's UseFormReturn type for updating and syncing form                |
+| sx           | `string`             | `undefined`          | Material UI's sx prop to pass to Grid component wrapping form fields              |
 
 ## Field Props
 
