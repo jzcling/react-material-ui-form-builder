@@ -4,7 +4,8 @@ import React, { Fragment, useState } from "react";
 import { Controller, FieldValues, UseFormReturn, UseFormSetValue } from "react-hook-form";
 
 import {
-  Autocomplete, AutocompleteProps, AutocompleteRenderGetTagProps, Chip, TextField
+  Autocomplete, AutocompleteProps, AutocompleteRenderGetTagProps, AutocompleteRenderInputParams,
+  Chip, TextField
 } from "@mui/material";
 
 import { getLabel, getOptionFromConfig, getOptions } from "../utils/autocomplete";
@@ -125,135 +126,48 @@ export default function StandardAutocomplete<TOption>(props: {
     fieldConfig.randomizeOptions
   );
 
-  function multipleComponentProps(
+  function componentProps(
     fieldConfig: StandardAutocompleteProps<TOption>,
     value?: Array<TOption>
-  ): AutocompleteProps<TOption, true, true, true> {
-    return {
+  ): AutocompleteProps<TOption, boolean, boolean, boolean> {
+    const multiple = fieldConfig.props?.multiple || false;
+    const disableClearable = fieldConfig.props?.disableClearable || false;
+    const freeSolo = fieldConfig.props?.freeSolo || false;
+
+    let props: AutocompleteProps<
+      TOption,
+      typeof multiple,
+      typeof disableClearable,
+      typeof freeSolo
+    > = {
       id: fieldConfig.id || fieldConfig.attribute,
       size: "small",
       fullWidth: true,
-      isOptionEqualToValue: (option, value) => {
+      isOptionEqualToValue: (option: TOption, value: TOption) => {
         // Required to handle the quirky behaviour of Autocomplete component
         // where it returns the value object sometimes and value value sometimes
         return isObject(value)
           ? isEqual(
-              getOptionFromConfig(
-                option,
-                fieldConfig.optionConfig,
-                fieldConfig.props?.multiple
-              ),
-              getOptionFromConfig(
-                value,
-                fieldConfig.optionConfig,
-                fieldConfig.props?.multiple
-              )
+              getOptionFromConfig(option, fieldConfig.optionConfig, multiple),
+              getOptionFromConfig(value, fieldConfig.optionConfig, multiple)
             )
-          : getOptionFromConfig(
-              option,
-              fieldConfig.optionConfig,
-              fieldConfig.props?.multiple
-            ) === value;
+          : getOptionFromConfig(option, fieldConfig.optionConfig, multiple) ===
+              value;
       },
-      getOptionLabel: (option) =>
-        getLabel<TOption>(option, options, fieldConfig.optionConfig),
-      renderTags: (value, getTagProps) => {
-        // if (fieldConfig.sortable && focused) {
-        //   return renderDnd(
-        //     value,
-        //     setValue,
-        //     options,
-        //     fieldConfig,
-        //     getTagProps
-        //   ).then((component) => component);
-        // } else {
-        return value.map((option, index) => (
-          <Chip
-            variant="outlined"
-            size="small"
-            label={getLabel<TOption>(option, options, fieldConfig.optionConfig)}
-            {...getTagProps({ index })}
-            key={index}
-          />
-        ));
-        // }
-      },
-      value: value || [],
-      onChange: (event, option) => {
-        setValue(
-          fieldConfig.attribute,
-          getOptionFromConfig(
-            option,
-            fieldConfig.optionConfig,
-            fieldConfig.props?.multiple
-          )
-        );
-      },
-      onBlur: () => {
-        setFocused(false);
-        trigger(fieldConfig.attribute);
-      },
-      onFocus: () => setFocused(true),
-      ...(fieldConfig.props as AutocompleteProps<TOption, true, true, true>),
-      options,
-      renderInput: (params) => (
-        <TextField
-          {...params}
-          variant="outlined"
-          size="small"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: "off", // disable autocomplete and autofill
-          }}
-          label={fieldConfig.label}
-          error={!!errors[fieldConfig.attribute]}
-          helperText={errors[fieldConfig.attribute]?.message}
-        />
-      ),
-    };
-  }
-
-  function singleComponentProps(
-    fieldConfig: StandardAutocompleteProps<TOption>,
-    value?: NonNullable<TOption>
-  ): AutocompleteProps<TOption, false, true, true> {
-    return {
-      id: fieldConfig.attribute,
-      size: "small",
-      fullWidth: true,
-      isOptionEqualToValue: (option, value) => {
-        // Required to handle the quirky behaviour of Autocomplete component
-        // where it returns the value object sometimes and value value sometimes
-        return isObject(value)
-          ? isEqual(
-              getOptionFromConfig(
-                option,
-                fieldConfig.optionConfig,
-                fieldConfig.props?.multiple
-              ),
-              getOptionFromConfig(
-                value,
-                fieldConfig.optionConfig,
-                fieldConfig.props?.multiple
-              )
-            )
-          : getOptionFromConfig(
-              option,
-              fieldConfig.optionConfig,
-              fieldConfig.props?.multiple
-            ) === value;
-      },
-      getOptionLabel: (option) =>
+      getOptionLabel: (option: string | TOption) =>
         getLabel(option, options, fieldConfig.optionConfig),
-      value: value || "",
-      onChange: (event, option) => {
+      onChange: (
+        event: React.SyntheticEvent<Element, Event>,
+        option:
+          | string
+          | TOption
+          | NonNullable<TOption>
+          | (string | TOption)[]
+          | null
+      ) => {
         setValue(
           fieldConfig.attribute,
-          getOptionFromConfig(
-            option,
-            fieldConfig.optionConfig,
-            fieldConfig.props?.multiple
-          )
+          getOptionFromConfig(option, fieldConfig.optionConfig, multiple)
         );
       },
       onBlur: () => {
@@ -261,9 +175,15 @@ export default function StandardAutocomplete<TOption>(props: {
         trigger(fieldConfig.attribute);
       },
       onFocus: () => setFocused(true),
-      ...(fieldConfig.props as AutocompleteProps<TOption, false, true, true>),
+      value: value || (multiple ? [] : ""),
+      ...(fieldConfig.props as AutocompleteProps<
+        TOption,
+        typeof multiple,
+        typeof disableClearable,
+        typeof freeSolo
+      >),
       options,
-      renderInput: (params) => (
+      renderInput: (params: AutocompleteRenderInputParams) => (
         <TextField
           {...params}
           variant="outlined"
@@ -278,6 +198,38 @@ export default function StandardAutocomplete<TOption>(props: {
         />
       ),
     };
+
+    if (multiple) {
+      props = {
+        ...props,
+        renderTags: (
+          value: Array<TOption>,
+          getTagProps: AutocompleteRenderGetTagProps
+        ) => {
+          // if (fieldConfig.sortable && focused) {
+          //   return renderDnd(
+          //     value,
+          //     setValue,
+          //     options,
+          //     fieldConfig,
+          //     getTagProps
+          //   ).then((component) => component);
+          // } else {
+          return value.map((option, index) => (
+            <Chip
+              variant="outlined"
+              size="small"
+              label={getLabel(option, options, fieldConfig.optionConfig)}
+              {...getTagProps({ index })}
+              key={index}
+            />
+          ));
+          // }
+        },
+      };
+    }
+
+    return props;
   }
 
   return (
@@ -287,13 +239,7 @@ export default function StandardAutocomplete<TOption>(props: {
       render={({ field }) => (
         <Fragment>
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
-          {fieldConfig.props?.multiple ? (
-            <Autocomplete
-              {...multipleComponentProps(fieldConfig, field.value)}
-            />
-          ) : (
-            <Autocomplete {...singleComponentProps(fieldConfig, field.value)} />
-          )}
+          <Autocomplete {...componentProps(fieldConfig, field.value)} />
         </Fragment>
       )}
     />
