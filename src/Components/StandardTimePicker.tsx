@@ -1,4 +1,5 @@
 import { format, parse } from "date-fns";
+import get from "lodash/get";
 import React, { Fragment, useCallback, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
@@ -88,8 +89,8 @@ export default function StandardTimePicker(props: {
           size="small"
           {...params}
           onClick={() => setOpen(true)}
-          error={!!errors[fieldConfig.attribute]}
-          helperText={errors[fieldConfig.attribute]?.message}
+          error={!!get(errors, fieldConfig.attribute)}
+          helperText={get(errors, fieldConfig.attribute)?.message}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               trigger(fieldConfig.attribute);

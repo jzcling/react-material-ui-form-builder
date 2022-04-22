@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import React, { DetailedHTMLProps, useMemo, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
@@ -216,7 +217,7 @@ export default function StandardFileUpload(props: {
                     sx={{
                       border: (theme) =>
                         `1px solid ${
-                          !!errors[fieldConfig.attribute]
+                          !!get(errors, fieldConfig.attribute)
                             ? theme.palette.error.main
                             : "#b9b9b9"
                         }`,
@@ -246,7 +247,7 @@ export default function StandardFileUpload(props: {
                     color: "#777777",
                     border: (theme) =>
                       `1px solid ${
-                        !!errors[fieldConfig.attribute]
+                        !!get(errors, fieldConfig.attribute)
                           ? theme.palette.error.main
                           : "#b9b9b9"
                       }`,
@@ -257,8 +258,8 @@ export default function StandardFileUpload(props: {
               </StyledButtonBase>
             )}
           </label>
-          {!!errors[fieldConfig.attribute] && (
-            <ErrorText error={errors[fieldConfig.attribute]?.message} />
+          {!!get(errors, fieldConfig.attribute) && (
+            <ErrorText error={get(errors, fieldConfig.attribute)?.message} />
           )}
           {fileErrors?.length > 0 && <ErrorText error={fileErrors[0]} />}
         </>

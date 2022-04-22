@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import isEqual from "lodash/isEqual";
 import React, { Fragment, useMemo } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
@@ -113,7 +114,7 @@ export default function StandardChipGroup<TOption>(props: {
     fieldConfig: StandardChipGroupProps<TOption>
   ): FormControlProps => {
     return {
-      error: !!errors[fieldConfig.attribute],
+      error: !!get(errors, fieldConfig.attribute),
       onBlur: () => trigger(fieldConfig.attribute),
       ...fieldConfig.groupContainerProps,
       sx: { flexWrap: "wrap", ...fieldConfig.groupContainerProps?.sx },
@@ -138,8 +139,8 @@ export default function StandardChipGroup<TOption>(props: {
                 </Box>
               ))}
             </FormControl>
-            {!!errors[fieldConfig.attribute] && (
-              <ErrorText error={errors[fieldConfig.attribute]?.message} />
+            {!!get(errors, fieldConfig.attribute) && (
+              <ErrorText error={get(errors, fieldConfig.attribute)?.message} />
             )}
           </FormGroup>
         </Fragment>

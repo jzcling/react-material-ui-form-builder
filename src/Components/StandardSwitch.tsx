@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import React, { Fragment } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
@@ -65,7 +66,7 @@ export default function StandardSwitch(props: {
       render={({ field }) => (
         <Fragment>
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
-          <FormControl error={!!errors[fieldConfig.attribute]}>
+          <FormControl error={!!get(errors, fieldConfig.attribute)}>
             <FormControlLabel
               key={fieldConfig.attribute}
               control={<Switch {...componentProps(fieldConfig, field.value)} />}
@@ -74,7 +75,7 @@ export default function StandardSwitch(props: {
               {...fieldConfig.labelProps}
             />
             <FormHelperText>
-              {errors[fieldConfig.attribute]?.message}
+              {get(errors, fieldConfig.attribute)?.message}
             </FormHelperText>
           </FormControl>
         </Fragment>

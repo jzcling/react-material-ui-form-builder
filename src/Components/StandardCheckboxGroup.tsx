@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import isEqual from "lodash/isEqual";
 import React, { Fragment, useMemo } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
@@ -111,7 +112,7 @@ export default function StandardCheckboxGroup<TOption>(props: {
     fieldConfig: StandardCheckboxGroupProps<TOption>
   ): FormControlProps => {
     return {
-      error: !!errors[fieldConfig.attribute],
+      error: !!get(errors, fieldConfig.attribute),
       onBlur: () => trigger(fieldConfig.attribute),
       ...fieldConfig.groupContainerProps,
       sx: { flexWrap: "wrap", ...fieldConfig.groupContainerProps?.sx },
@@ -143,8 +144,8 @@ export default function StandardCheckboxGroup<TOption>(props: {
                 />
               ))}
             </FormControl>
-            {!!errors[fieldConfig.attribute] && (
-              <ErrorText error={errors[fieldConfig.attribute]?.message} />
+            {!!get(errors, fieldConfig.attribute) && (
+              <ErrorText error={get(errors, fieldConfig.attribute)?.message} />
             )}
           </FormGroup>
         </Fragment>

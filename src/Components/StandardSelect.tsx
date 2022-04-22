@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import React, { Fragment, useMemo } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
@@ -73,7 +74,7 @@ export default function StandardSelect<TOption>(props: {
           <FormControl
             variant="outlined"
             fullWidth
-            error={!!errors[fieldConfig.attribute]}
+            error={!!get(errors, fieldConfig.attribute)}
           >
             <InputLabel
               sx={{
@@ -94,7 +95,7 @@ export default function StandardSelect<TOption>(props: {
               ))}
             </Select>
             <FormHelperText>
-              {errors[fieldConfig.attribute]?.message}
+              {get(errors, fieldConfig.attribute)?.message}
             </FormHelperText>
           </FormControl>
         </Fragment>

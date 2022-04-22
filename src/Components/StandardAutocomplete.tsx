@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import isEqual from "lodash/isEqual";
 import isObject from "lodash/isObject";
 import React, { Fragment, useState } from "react";
@@ -193,8 +194,8 @@ export default function StandardAutocomplete<TOption>(props: {
             autoComplete: "off", // disable autocomplete and autofill
           }}
           label={fieldConfig.label}
-          error={!!errors[fieldConfig.attribute]}
-          helperText={errors[fieldConfig.attribute]?.message}
+          error={!!get(errors, fieldConfig.attribute)}
+          helperText={get(errors, fieldConfig.attribute)?.message}
         />
       ),
     };

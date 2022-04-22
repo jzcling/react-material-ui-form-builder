@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import React from "react";
 import { Controller, ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
@@ -60,8 +61,8 @@ export default function StandardRating(props: {
         <Box>
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
           <Rating {...componentProps(fieldConfig, field)} />
-          {!!errors[fieldConfig.attribute] && (
-            <ErrorText error={errors[fieldConfig.attribute]?.message} />
+          {!!get(errors, fieldConfig.attribute) && (
+            <ErrorText error={get(errors, fieldConfig.attribute)?.message} />
           )}
         </Box>
       )}

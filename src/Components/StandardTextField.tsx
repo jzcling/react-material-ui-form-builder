@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import React, { Fragment } from "react";
 import { Controller, ControllerRenderProps, UseFormReturn } from "react-hook-form";
 
@@ -36,8 +37,8 @@ export default function StandardTextField(props: {
       fullWidth: true,
       size: "small",
       label: fieldConfig.label,
-      error: !!errors[fieldConfig.attribute],
-      helperText: errors[fieldConfig.attribute]?.message,
+      error: !!get(errors, fieldConfig.attribute),
+      helperText: get(errors, fieldConfig.attribute)?.message,
       onKeyDown: (event) => {
         if (event.key === "Enter") {
           trigger(fieldConfig.attribute);

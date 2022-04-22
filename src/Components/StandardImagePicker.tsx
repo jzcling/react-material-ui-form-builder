@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import React, { Fragment, useMemo } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
@@ -293,8 +294,8 @@ export default function StandardImagePicker(props: {
               ))}
             </StyledImageList>
           </ImageListRoot>
-          {!!errors[fieldConfig.attribute] && (
-            <ErrorText error={errors[fieldConfig.attribute]?.message} />
+          {!!get(errors, fieldConfig.attribute) && (
+            <ErrorText error={get(errors, fieldConfig.attribute)?.message} />
           )}
         </Fragment>
       )}

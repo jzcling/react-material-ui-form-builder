@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import React, { useEffect, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
@@ -46,8 +47,8 @@ export default function StandardEditor(props: {
             containerProps={fieldConfig.groupContainerProps}
             editableProps={fieldConfig.props}
           />
-          {!!errors[fieldConfig.attribute] && (
-            <ErrorText error={errors[fieldConfig.attribute]?.message} />
+          {!!get(errors, fieldConfig.attribute) && (
+            <ErrorText error={get(errors, fieldConfig.attribute)?.message} />
           )}
         </div>
       )}
