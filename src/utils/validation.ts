@@ -5,20 +5,7 @@ import { FieldProp } from "../components/FormBuilder";
 import { Validation } from "../components/props/FieldProps";
 
 export function getFormSchema(fields: Array<FieldProp>) {
-  const formSchema: { [x: string]: yup.AnySchema } = {};
-  for (const field of fields) {
-    if (field.attribute) {
-      const fieldSchema = getFieldSchema(
-        field.validationType,
-        field.validations,
-        field.label
-      );
-      if (!field.hideCondition) {
-        set(formSchema, field.attribute, fieldSchema);
-      }
-    }
-  }
-  const schema = yup.object(formSchema).required();
+  const schema = getValidationSchema(fields);
   return schema;
 }
 
@@ -64,7 +51,7 @@ export function getFieldSchema<T extends keyof SchemaType>(
       }
     }
   }
-  return schema;
+  return schema as SchemaType[T];
 }
 
 export type SchemaType = {
@@ -74,4 +61,47 @@ export type SchemaType = {
   date: yup.DateSchema;
   array: yup.ArraySchema<yup.AnySchema>;
   mixed: yup.AnySchema;
+};
+
+const getValidationSchema = (fields: Array<FieldProp>) => {
+  const schema = fields.reduce((schema, field) => {
+    const { attribute, validationType, validations, label } = field;
+    if (!attribute) {
+      return schema;
+    }
+    const schemaType = validationType || "mixed";
+    if (!yup[schemaType]) {
+      return schema;
+    }
+
+    const validator = getFieldSchema(validationType, validations, label);
+
+    const isObject = attribute.indexOf(".") >= 0;
+    if (!isObject) {
+      return schema.concat(yup.object({ [attribute]: validator }));
+    }
+
+    const reversePath = attribute.split(".").reverse();
+    const currNestedObject = reversePath.slice(1).reduce(
+      (yupObj, path) => {
+        // current path is a number
+        // return object with array key to be handled later
+        // this is because we don't know yet what the parent path is
+        if (!isNaN(Number(path))) {
+          return { array: yup.array(yup.object(yupObj)) };
+        }
+        // if child is an array, return previously set array schema
+        if (yupObj.array) {
+          return { [path]: yupObj.array };
+        }
+        return { [path]: yup.object(yupObj) };
+      },
+      { [reversePath[0]]: validator }
+    );
+
+    const newSchema = yup.object(currNestedObject);
+    return schema.concat(newSchema);
+  }, yup.object({}).required());
+
+  return schema;
 };
