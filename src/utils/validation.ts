@@ -1,3 +1,4 @@
+import set from "lodash/set";
 import * as yup from "yup";
 
 import { FieldProp } from "../components/FormBuilder";
@@ -13,7 +14,7 @@ export function getFormSchema(fields: Array<FieldProp>) {
         field.label
       );
       if (!field.hideCondition) {
-        formSchema[field.attribute] = fieldSchema;
+        set(formSchema, field.attribute, fieldSchema);
       }
     }
   }
