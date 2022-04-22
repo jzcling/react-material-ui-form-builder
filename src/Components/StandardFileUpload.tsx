@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, Fragment, useMemo, useState } from "react";
+import React, { DetailedHTMLProps, useMemo, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 
 import { Button, ButtonBase, Typography } from "@mui/material";
@@ -47,7 +47,7 @@ type FieldConfigProps = {
 };
 
 type InputProps = {
-  error: boolean;
+  err: boolean;
 };
 
 const ImageContainerRoot = styled("div")<FieldConfigProps>(
@@ -81,9 +81,8 @@ const Image = styled("img")(() => ({
   objectFit: "contain",
 }));
 
-const Input = styled(Typography)<InputProps>(({ theme, error }) => ({
+const Input = styled(Typography)(({ theme }) => ({
   textAlign: "start",
-  border: `1px solid ${error ? theme.palette.error.main : "#b9b9b9"}`,
   borderRadius: "4px",
   padding: "7px 10px",
   color: "rgba(0, 0, 0, 0.87)",
@@ -190,11 +189,11 @@ export default function StandardFileUpload(props: {
       name={fieldConfig.attribute}
       control={control}
       render={({ field }) => (
-        <Fragment>
+        <>
           {!hideTitle && fieldConfig.title && <Title field={fieldConfig} />}
-          <input id={fieldConfig.attribute} {...componentProps(fieldConfig)} />
+          <input {...componentProps(fieldConfig)} />
           <label
-            htmlFor={fieldConfig.attribute}
+            htmlFor={fieldConfig.id || fieldConfig.attribute}
             onBlur={() => trigger(fieldConfig.attribute)}
           >
             {field.value?.files?.length > 0 ? (
@@ -213,7 +212,16 @@ export default function StandardFileUpload(props: {
                         </ImageContainer>
                       </ImageContainerRoot>
                     )}
-                  <Input error={!!errors[fieldConfig.attribute]}>
+                  <Input
+                    sx={{
+                      border: (theme) =>
+                        `1px solid ${
+                          !!errors[fieldConfig.attribute]
+                            ? theme.palette.error.main
+                            : "#b9b9b9"
+                        }`,
+                    }}
+                  >
                     {file.name || file}
                   </Input>
                 </StyledButtonBase>
@@ -234,8 +242,15 @@ export default function StandardFileUpload(props: {
                     </ImageContainerRoot>
                   )}
                 <Input
-                  error={!!errors[fieldConfig.attribute]}
-                  sx={{ color: "#777777" }}
+                  sx={{
+                    color: "#777777",
+                    border: (theme) =>
+                      `1px solid ${
+                        !!errors[fieldConfig.attribute]
+                          ? theme.palette.error.main
+                          : "#b9b9b9"
+                      }`,
+                  }}
                 >
                   {fieldConfig.imageUrls?.[0] || fieldConfig.label}
                 </Input>
@@ -246,7 +261,7 @@ export default function StandardFileUpload(props: {
             <ErrorText error={errors[fieldConfig.attribute]?.message} />
           )}
           {fileErrors?.length > 0 && <ErrorText error={fileErrors[0]} />}
-        </Fragment>
+        </>
       )}
     />
   );
