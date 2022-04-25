@@ -65,6 +65,8 @@ react-player
 
 ## Usage Example
 
+The example below is replicated in this [CodeSandbox](https://codesandbox.io/s/heuristic-alex-5h68ql).
+
 Suppose you need to submit a form with the following structure:
 
 ```tsx
