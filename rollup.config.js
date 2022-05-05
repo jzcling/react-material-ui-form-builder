@@ -7,6 +7,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
 import dts from "rollup-plugin-dts";
+import nodePolyfills from "rollup-plugin-polyfill-node";
 
 import pkg from "./package.json";
 
@@ -88,6 +89,7 @@ const config = [
       replace({
         "process.env.NODE_ENV": JSON.stringify("production"),
       }),
+      nodePolyfills(),
       json(),
       resolve(),
       commonjs({
