@@ -2,8 +2,6 @@ import React, {
   DetailedHTMLProps, JSXElementConstructor, MouseEvent, MouseEventHandler, ReactElement
 } from "react";
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
-import { ReactPlayerProps } from "react-player";
-import { EditableProps } from "slate-react/dist/components/editable";
 
 import { DatePickerProps, DateTimePickerProps, TimePickerProps } from "@mui/lab";
 import {
@@ -16,6 +14,8 @@ import { AutocompleteOptionConfig } from "../../utils/autocomplete";
 import { Option, OptionConfig } from "../../utils/options";
 import { SchemaType } from "../../utils/validation";
 import { TitleProps } from "../widgets/Title";
+
+import type { EditableProps } from "slate-react/dist/components/editable";
 
 export interface CommonFieldProps<
   TComp extends keyof ComponentType<TOption>,
@@ -93,8 +93,6 @@ export interface CommonFieldProps<
    *
    * `display-image`,
    *
-   * `display-media`,
-   *
    * `rich-text`,
    *
    * `custom`
@@ -116,7 +114,6 @@ export interface CommonFieldProps<
   // | "counter"
   // | "display-text"
   // | "display-image"
-  // | "display-media"
   // | "rich-text"
   // | "custom";
   /** Any additional props to pass to the Material UI component */
@@ -258,27 +255,15 @@ export interface StandardDisplayImageProps
   extends CommonFieldProps<"display-image">,
     DisplayFieldProps {}
 
-export interface StandardDisplayMediaProps
-  extends CommonFieldProps<"display-media">,
-    DisplayFieldProps {}
-
 export interface StandardCustomProps extends CommonFieldProps<"custom"> {}
 
 export interface DisplayFieldProps {
-  /** Source of image or media. */
+  /** Source of image. */
   src: string;
-  /** Only for `display-image`.
-   *
-   * Alt passed to `img` node. */
+  /**
+   * Alt passed to `img` node.
+   * */
   alt?: string;
-  /** Only for `display-media`.
-   *
-   * Width of media player. */
-  width?: number;
-  /** Only for `display-media`.
-   *
-   * Height of media player. */
-  height?: number;
 }
 
 export interface ImagePickerFieldProps {
@@ -433,7 +418,6 @@ export type ComponentType<TOption = unknown> = {
       HTMLImageElement
     >
   >;
-  "display-media": Partial<ReactPlayerProps>;
   "rich-text": Partial<EditableProps>;
   custom: any;
 };

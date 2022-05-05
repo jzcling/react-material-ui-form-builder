@@ -5,8 +5,7 @@ import loadable from "@loadable/component";
 import { Box, Grid, GridProps } from "@mui/material";
 
 import {
-  GridColMap, StandardCustomProps, StandardDisplayImageProps, StandardDisplayMediaProps,
-  StandardDisplayTextProps
+  GridColMap, StandardCustomProps, StandardDisplayImageProps, StandardDisplayTextProps
 } from "./props/FieldProps";
 import { StandardAutocompleteProps } from "./StandardAutocomplete";
 import { StandardCheckboxGroupProps } from "./StandardCheckboxGroup";
@@ -42,7 +41,6 @@ const StandardSelect = loadable(() => import("./StandardSelect"));
 const StandardSwitch = loadable(() => import("./StandardSwitch"));
 const StandardTextField = loadable(() => import("./StandardTextField"));
 const StandardTimePicker = loadable(() => import("./StandardTimePicker"));
-const ReactPlayer = loadable(() => import("react-player"));
 
 function sanitizeColProps(col?: GridColMap): GridColMap {
   col = col || {};
@@ -86,7 +84,6 @@ export type FieldProp =
   | StandardTimePickerProps
   | StandardDisplayTextProps
   | StandardDisplayImageProps
-  | StandardDisplayMediaProps
   | StandardCustomProps;
 
 function getFormComponent(field: FieldProp, methods: UseFormReturn<any>) {
@@ -129,18 +126,6 @@ function getFormComponent(field: FieldProp, methods: UseFormReturn<any>) {
             title={f.alt}
             {...f.props}
             loading="lazy"
-          />
-        </Box>
-      );
-    case "display-media":
-      return (
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <ReactPlayer
-            url={field.src}
-            controls
-            width={field.width}
-            height={field.height}
-            {...field.props}
           />
         </Box>
       );
