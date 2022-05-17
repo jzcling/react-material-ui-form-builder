@@ -69,7 +69,7 @@
     "rollup-plugin-size-snapshot": "^0.12.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-terser": "^7.0.2",
-    "slate": "^0.77.2",
+    "slate": "^0.78.0",
     "slate-react": "^0.77.2",
     "typescript": "^4.6.3",
     "yup": "^0.32.11"
