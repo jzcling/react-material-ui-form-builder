@@ -34,7 +34,7 @@ To reduce redundant packages, you need not install the peer dependencies of the 
 @emotion/styled
 @mui/material
 lodash
-react-hook-forms
+react-hook-form
 
 // Required if using yup resolver for validation
 yup
